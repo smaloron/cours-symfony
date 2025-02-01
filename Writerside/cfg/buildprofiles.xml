@@ -1,0 +1,25 @@
+<buildprofiles xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/build-profiles.xsd"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <variables>
+
+    </variables>
+    <build-profile instance="instance_id"/>
+    <footer>
+        <copyright>Sébastien Maloron 2025</copyright>
+
+    </footer>
+    <build-profile instance="hi">
+        <variables>
+            <noindex-content>true</noindex-content>
+            <offline-docs>true</offline-docs>
+            <content-max-width>1800</content-max-width>
+        </variables>
+    </build-profile>
+    <build-profile instance="s">
+        <variables>
+            <noindex-content>true</noindex-content>
+            <offline-docs>false</offline-docs>
+            <content-max-width>1800</content-max-width>
+        </variables>
+    </build-profile>
+</buildprofiles>
