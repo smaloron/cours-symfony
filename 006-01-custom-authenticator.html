@@ -1,0 +1,258 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-02-01T11:39:32.238544"><title>Custom Authenticator | Symfony support</title><script type="application/json" id="virtual-toc-data">[{"id":"objectifs","level":0,"title":"Objectifs","anchor":"#objectifs"},{"id":"une-classe-authenticator","level":0,"title":"Une classe Authenticator","anchor":"#une-classe-authenticator"},{"id":"identifiants-multiples","level":0,"title":"Identifiants multiples","anchor":"#identifiants-multiples"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.css" rel="stylesheet"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Custom Authenticator | Symfony support"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Symfony support Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation//version 1/006-01-custom-authenticator.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Custom Authenticator | Symfony support"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation//version 1/006-01-custom-authenticator.html#webpage",
+    "url": "writerside-documentation//version 1/006-01-custom-authenticator.html",
+    "name": "Custom Authenticator | Symfony support",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Symfony support Help"
+}</script><!-- End Schema.org --></head><body data-id="006-01-custom-authenticator" data-main-title="Custom Authenticator" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="006-00-Securite.md|Sécurité"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Symfony support version 1 Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="006-01-custom-authenticator" id="006-01-custom-authenticator.md">Custom Authenticator</h1><section class="chapter"><h2 id="objectifs" data-toc="objectifs">Objectifs</h2><ul class="list _bullet" id="-jg4pl5_6"><li class="list__item" id="-jg4pl5_7"><p>D&eacute;finir un comportement d'authentification personnalis&eacute;</p></li><li class="list__item" id="-jg4pl5_8"><p>Identifier le r&ocirc;le du passeport et des badges</p></li></ul></section><section class="chapter"><h2 id="une-classe-authenticator" data-toc="une-classe-authenticator">Une classe Authenticator</h2><p id="-jg4pl5_9">Symfony utilise une classe <code class="code" id="-jg4pl5_16">Authenticator</code> par d&eacute;faut qui convient parfaitement pour le cas le plus fr&eacute;quent. Nous pouvons cependant lui substituer notre propre logique si nos besoins diff&egrave;rent du comportement par d&eacute;faut.</p><p id="-jg4pl5_10">Pour ce faire, il faut cr&eacute;er une classe qui h&eacute;rite de <code class="code" id="-jg4pl5_17">AbstractAuthenticator</code>.</p><div class="code-block" data-lang="php">
+// dans src/Security/CustomAuthenticator
+
+namespace App\Security;
+
+class CustomAuthenticator extends AbstractAuthenticator
+{
+
+    /**
+    * Retourne un booléen indiquant si 
+    * l'Authenticator doit être exécuté
+    * Ici la route doit être /login et la méthode POST
+    */
+    public function supports(Request $request): ?bool
+    {
+        return $request-&gt;attributes-&gt;get('_route') === 'app_login' &amp;&amp; $request-&gt;isMethod('POST');
+    }
+
+    /**
+    * Authentifie l'utilisateur
+    */
+    public function authenticate(Request $request): Passport
+    {
+        // Informations saisies
+        $email = $request-&gt;request-&gt;get('email');
+        $password = $request-&gt;request-&gt;get('password');
+
+        return new Passport(
+            new UserBadge($email),
+            new PasswordCredentials($password)
+        );
+    }
+
+    /**
+    * Code a éxécuter en cas de succès
+    */
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
+    {
+        return new Response('Authentication successful', Response::HTTP_OK);
+    }
+
+    /**
+    * Code a éxécuter en cas d'échec
+    */
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
+    {
+        return new Response('Authentication failed', Response::HTTP_UNAUTHORIZED);
+    }
+}
+</div><p id="-jg4pl5_12">Il faut ensuite changer la configuration de la s&eacute;curit&eacute; comme suit :</p><div class="code-block" data-lang="yaml">
+firewalls:
+        main:
+            custom_authenticators:
+                - App\Security\CustomAuthenticator
+</div><section class="chapter"><h3 id="le-passeport" data-toc="le-passeport">Le passeport</h3><p id="-jg4pl5_18">Un Passport est une structure qui regroupe toutes les informations n&eacute;cessaires pour valider une authentification. Il est utilis&eacute; par le Authenticator pour v&eacute;rifier si l'utilisateur peut acc&eacute;der &agrave; l'application.</p><p id="-jg4pl5_19">Un Passport contient :</p><ul class="list _bullet" id="-jg4pl5_20"><li class="list__item" id="-jg4pl5_23"><p>Les informations d&rsquo;identification (ex. : nom d'utilisateur, mot de passe, token&hellip;).</p></li><li class="list__item" id="-jg4pl5_24"><p>Les badges (qui d&eacute;finissent des exigences suppl&eacute;mentaires, comme la v&eacute;rification du mot de passe ou la v&eacute;rification en deux &eacute;tapes).</p></li></ul><p id="-jg4pl5_21">Le principal avantage du Passport est qu'il permet de s&eacute;parer la logique d'authentification et les exigences de s&eacute;curit&eacute;.</p><section class="chapter"><h4 id="quelques-types-de-passports" data-toc="quelques-types-de-passports">Quelques types de passports</h4><p id="-jg4pl5_25">Symfony propose plusieurs types de Passport via l'interface <code class="code" id="-jg4pl5_28">Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface</code>.</p><section class="chapter"><h5 id="selfvalidatingpassport" data-toc="selfvalidatingpassport">SelfValidatingPassport</h5><p id="-jg4pl5_29">Il est utilis&eacute; lorsqu'il n'y a pas besoin de v&eacute;rifier le mot de passe, comme pour :</p><ul class="list _bullet" id="-jg4pl5_30"><li class="list__item" id="-jg4pl5_32"><p>Une authentification via un jeton (API token, JWT&hellip;).</p></li><li class="list__item" id="-jg4pl5_33"><p>Une authentification par cl&eacute; publique.</p></li></ul><div class="code-block" data-lang="php">
+$passport = new SelfValidatingPassport(new UserBadge('username'));
+</div></section><section class="chapter"><h5 id="passport-classique" data-toc="passport-classique">Passport classique</h5><p id="-jg4pl5_34">Ce type de Passport est utilis&eacute; lorsque des identifiants doivent &ecirc;tre valid&eacute;s (ex. : nom d'utilisateur et mot de passe).</p><div class="code-block" data-lang="php">
+$passport = new Passport(
+    new UserBadge('username'),
+    new PasswordCredentials('password')
+);
+</div></section></section></section><section class="chapter"><h3 id="les-badges" data-toc="les-badges">Les badges</h3><p id="-jg4pl5_36">Outre <code class="code" id="-jg4pl5_39">UserBadge</code> et <code class="code" id="-jg4pl5_40">PasswordCredentials</code>, Symfony propose, un syst&egrave;me de badges optionnels qui ajoutent des r&egrave;gles suppl&eacute;mentaires &agrave; l'authentification.</p><ul class="list _bullet" id="-jg4pl5_37"><li class="list__item" id="-jg4pl5_41"><p><code class="code" id="-jg4pl5_45">CsrfTokenBadge</code>: Utilis&eacute; pour v&eacute;rifier la pr&eacute;sence et la validit&eacute; du token CSRF du formulaire de login.</p></li><li class="list__item" id="-jg4pl5_42"><p><code class="code" id="-jg4pl5_46">TwoFactorCodeBadge</code>: Utilis&eacute; pour l'athentification &agrave; deux facteurs.</p></li><li class="list__item" id="-jg4pl5_43"><p><code class="code" id="-jg4pl5_47">RememberMeBadge</code>: Utilis&eacute; pour l'authentification automatique pas cookie.</p></li><li class="list__item" id="-jg4pl5_44"><p><code class="code" id="-jg4pl5_48">UserCheckerBadge</code>: Utilis&eacute; pour v&eacute;rifier des conditions suppl&eacute;mentaires pour valider un utilisateur (compte actif, non banni ...)</p></li></ul><p id="-jg4pl5_38">Nous pouvons &eacute;galement coder nos propres badges pour ajouter des r&egrave;gles m&eacute;tiers.</p></section></section><section class="chapter"><h2 id="identifiants-multiples" data-toc="identifiants-multiples">Identifiants multiples</h2><p id="-jg4pl5_49">Imaginons que nous souhaitions identifier les utilisateurs avec leur nom d'utilisateur, mais &eacute;galement leur adresse e-mail. Par d&eacute;faut Symfony, ne nous permet de d&eacute;finir qu'une seule information qui portera l'identification. Il nous faut donc cr&eacute;er une classe personnalis&eacute;e pour impl&eacute;menter ce comportement de double information pour l'authentification.</p><section class="chapter"><h3 id="mise-en-place" data-toc="mise-en-place">Mise en place</h3><p id="-jg4pl5_53">Commen&ccedil;ons par ajouter une propri&eacute;t&eacute; pour l'adresse e-mail au sein de l'entit&eacute;.</p><div class="code-block" data-lang="bash">
+symfony console make:entity User
+</div><p id="-jg4pl5_55">Nous pr&eacute;cisons &eacute;galement dans les attributs PHP, que l'adresse e-mail doit &ecirc;tre unique. Ceci est important puisque nous allons rechercher des utilisateurs selon cette adresse e-mail.</p><p id="-jg4pl5_56">L'adresse e-mail est d&eacute;clar&eacute;e comme nullable. En effet, nous avons d&eacute;j&agrave; des utilisateurs enregistr&eacute;s dans la base de donn&eacute;es et donc la migration &eacute;choua. Si l'adresse e-mail ne peut &ecirc;tre nulle. Apr&egrave;s la migration et l'ex&eacute;cution des fixtures, nous pourrons modifier cet attribut.</p><div class="code-block" data-lang="php">
+#[ORM\Column(length: 50, unique: true, nullable: true)]
+    private ?string $email = null;
+</div><p id="-jg4pl5_58">Ensuite, nous cr&eacute;ons la migration et nous l'ex&eacute;cutons.</p><div class="code-block" data-lang="bash">
+symfony console make:migration
+</div><div class="code-block" data-lang="bash">
+symfony console doctrine:migrations:migrate
+</div><section class="chapter"><h4 id="les-fixtures" data-toc="les-fixtures">Les fixtures</h4><p id="-jg4pl5_63">Nous ajoutons la propri&eacute;t&eacute; e-mail &agrave; nos fixtures.</p><div class="code-block" data-lang="php">
+// src/DataFixtures/UserFixtures.php
+
+public function load(
+        ObjectManager $manager,
+    ): void
+    {
+        // Un admin
+        $user = new User();
+        $user-&gt;setEmail('god@heaven.com')
+             -&gt;setUsername('admin')
+             -&gt;setRoles(['ROLE_ADMIN'])
+             -&gt;setFirstName('God')
+             -&gt;setLastName('Almighty')
+             -&gt;setPassword(
+                 $this-&gt;passwordHasher-&gt;hashPassword(
+                     $user, '123'
+                 )
+             );
+        $manager-&gt;persist($user);
+
+        // Un utilisateur lambda
+        $user = new User();
+        $user-&gt;setEmail('joe@user.com')
+             -&gt;setUsername('user')
+             -&gt;setFirstName('Joe')
+             -&gt;setLastName('User')
+             -&gt;setPassword(
+                $this-&gt;passwordHasher-&gt;hashPassword(
+                    $user, '123'
+                )
+             );
+             
+        $manager-&gt;persist($user);
+
+        $manager-&gt;flush();
+    }
+</div></section><section class="chapter"><h4 id="le-formulaire" data-toc="le-formulaire">Le formulaire</h4><p id="-jg4pl5_65">Nous modifions &eacute;galement le formulaire d'inscription.</p><div class="code-block" data-lang="php">
+// dans src/Form/RegisterType.php
+
+-&gt;add('email', EmailType::class, [
+               'label' =&gt; 'Adresse email'
+])
+</div></section></section><section class="chapter"><h3 id="une-requ-te-dans-le-repository" data-toc="une-requ-te-dans-le-repository">Une requ&ecirc;te dans le repository</h3><p id="-jg4pl5_67">Ensuite, nous aurons besoin d'une requ&ecirc;te pour r&eacute;cup&eacute;rer un utilisateur en fonction d'un identifiant que nous rechercher dans les colonnes <code class="code" id="-jg4pl5_70">username</code> ou <code class="code" id="-jg4pl5_71">email</code>.</p><p id="-jg4pl5_68">Nous ajouterons donc une nouvelle requ&ecirc;te dans le repository de l'entit&eacute; User.</p><div class="code-block" data-lang="php">
+// dans src/Repository/UserRepository.php
+
+public function findOneByEmailOrUserName(string $identifier): ?User{
+    return $this-&gt;createQueryBuilder('u')
+        -&gt;andWhere('u.email = :identifier OR u.username = :identifier')
+        -&gt;setParameter('identifier', $identifier)
+        -&gt;getQuery()
+        -&gt;getOneOrNullResult()
+    ;
+}
+</div></section><section class="chapter"><h3 id="la-classe-authenticator" data-toc="la-classe-authenticator">La classe Authenticator</h3><div class="code-block" data-lang="php">
+&lt;?php
+
+namespace App\Security;
+
+use App\Repository\UserRepository;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\CsrfTokenBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
+use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+
+class AppAuthenticator extends AbstractAuthenticator
+{
+    public function __construct(
+        private UserRepository $userRepository,
+        private UrlGeneratorInterface $urlGenerator
+    ) {}
+
+
+    /**
+     * @inheritDoc
+     */
+    public function supports(Request $request): ?bool
+    {
+        return  $request-&gt;attributes-&gt;get('_route') === 'app_login'
+                &amp;&amp; $request-&gt;isMethod('POST');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function authenticate(Request $request): Passport
+    {
+        // Récupération des données du formulaire de login
+        $identifier = $request-&gt;request-&gt;get('_username', '');
+        $password = $request-&gt;request-&gt;get('_password');
+        $csrfToken = $request-&gt;request-&gt;get('_csrf_token');
+
+
+        if (!$identifier || !$password) {
+            throw new AuthenticationException(
+                &quot;Informations d'authentification incomplètes&quot;
+            );
+        }
+
+        // Check if identifier is email or username
+        $user = $this-&gt;userRepository
+                     -&gt;findOneByEmailOrUserName($identifier);
+
+
+        if (!$user) {
+            throw new AuthenticationException('utilisateur inconnu.');
+        }
+
+        return new Passport(
+            new UserBadge($user-&gt;getUsername()),
+            new PasswordCredentials($password),
+            [
+                new CsrfTokenBadge(
+                    'authenticate', $csrfToken
+                )
+            ]
+        );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function onAuthenticationSuccess(
+        Request $request, 
+        TokenInterface $token, 
+        string $firewallName): ?Response
+    {
+        // Récupération de la cible de redirection
+        $targetPath = $request-&gt;getSession()-&gt;get(
+            &quot;_security.$firewallName.target_path&quot;
+        );
+
+        // Redirection
+        return new RedirectResponse($targetPath ?? '/');
+
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function onAuthenticationFailure(
+        Request $request, 
+        AuthenticationException $exception): ?Response
+    {
+        // définition d'un message flash
+        $request-&gt;getSession()
+                -&gt;getBag('flashes')
+                -&gt;add(
+                    'error',
+                    'Identifiant ou mot de passe incorrect'
+                );
+        
+        // Redirection vers la route de login
+        return new RedirectResponse(
+            $this-&gt;urlGenerator-&gt;generate('app_login')
+        );
+    }
+}
+</div><p id="-jg4pl5_73">N'oublions pas de d&eacute;clarer notre classe d'authentification dans la configuration de la s&eacute;curit&eacute;.</p><div class="code-block" data-lang="yaml">
+# dans config/packages/security.yaml
+    firewalls:
+        main:
+            custom_authenticators:
+                - App\Security\AppAuthenticator
+
+</div></section></section><div class="last-modified">Last modified: 01 février 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="006-00-securite.html" class="navigation-links__prev">S&eacute;curit&eacute;</a><a href="006-02-les-voters.html" class="navigation-links__next">Les voters</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.js"></script></body></html>

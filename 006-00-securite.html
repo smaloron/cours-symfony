@@ -1,0 +1,661 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-02-01T11:39:32.221867"><title>S&eacute;curit&eacute; | Symfony support</title><script type="application/json" id="virtual-toc-data">[{"id":"objectifs","level":0,"title":"Objectifs","anchor":"#objectifs"},{"id":"installation","level":0,"title":"Installation","anchor":"#installation"},{"id":"mise-en-place-de-la-s-curit","level":0,"title":"Mise en place de la sécurité","anchor":"#mise-en-place-de-la-s-curit"},{"id":"la-s-curit-dans-twig","level":0,"title":"La sécurité dans Twig","anchor":"#la-s-curit-dans-twig"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.css" rel="stylesheet"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="S&eacute;curit&eacute; | Symfony support"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Symfony support Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation//version 1/006-00-securite.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="S&eacute;curit&eacute; | Symfony support"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation//version 1/006-00-securite.html#webpage",
+    "url": "writerside-documentation//version 1/006-00-securite.html",
+    "name": "S&eacute;curit&eacute; | Symfony support",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Symfony support Help"
+}</script><!-- End Schema.org --></head><body data-id="006-00-Securite" data-main-title="Sécurité" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs=""><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Symfony support version 1 Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="006-00-Securite" id="006-00-Securite.md">Sécurité</h1><section class="chapter"><h2 id="objectifs" data-toc="objectifs">Objectifs</h2><ul class="list _bullet" id="-63zf8f_7"><li class="list__item" id="-63zf8f_8"><p>Identifier le fonctionnement de la s&eacute;curit&eacute; dans Symfony</p></li><li class="list__item" id="-63zf8f_9"><p>Utiliser les outils de Symfony pour rapidement mettre en place la s&eacute;curit&eacute;</p></li></ul></section><section class="chapter"><h2 id="installation" data-toc="installation">Installation</h2><div class="code-block" data-lang="bash">
+composer require security
+</div><p id="-63zf8f_11">Flex g&eacute;n&egrave;re deux nouveaux fichiers <code class="code" id="-63zf8f_17">security.yaml</code>. Un dans <code class="code" id="-63zf8f_18">config/packages</code> et un autre dans <code class="code" id="-63zf8f_19">config/routes</code>.</p><div class="code-block" data-lang="yaml">
+# config/routes/security.yaml
+
+_security_logout:
+    resource: security.route_loader.logout
+    type: service
+</div><div class="code-block" data-lang="yaml">
+# config/packages/security.yaml
+
+security:
+    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+    # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
+    providers:
+        users_in_memory: { memory: null }
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            lazy: true
+            provider: users_in_memory
+
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#the-firewall
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+        # - { path: ^/admin, roles: ROLE_ADMIN }
+        # - { path: ^/profile, roles: ROLE_USER }
+
+when@test:
+    security:
+        password_hashers:
+            # By default, password hashers are resource intensive and take time. This is
+            # important to generate secure password hashes. In tests however, secure hashes
+            # are not important, waste resources and increase test times. The following
+            # reduces the work factor to the lowest possible values.
+            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+                algorithm: auto
+                cost: 4 # Lowest possible value for bcrypt
+                time_cost: 3 # Lowest possible value for argon
+                memory_cost: 10 # Lowest possible value for argon
+</div><section class="chapter"><h3 id="password-hashers" data-toc="password-hashers">password_hashers</h3><p id="-63zf8f_20">Indique l'algorithme utilis&eacute; pour hacher les mots de passe. Il est possible de d&eacute;finir un algorithme diff&eacute;rent pour chaque classe ou interface poss&eacute;dant un mot de passe.</p><p id="-63zf8f_21">Symfony dispose d'un service de hachage de mot de passe qui impl&eacute;mente <code class="code" id="-63zf8f_22">UserPasswordHasherInterface</code> et utilisera le bon algorithme en fonction de la classe qui sera pass&eacute;e en argument.</p></section><section class="chapter"><h3 id="providers" data-toc="providers">providers</h3><p id="-63zf8f_23">Dans la clef <code class="code" id="-63zf8f_25">providers</code>, nous indiquons la source d'authentification. Il y a ici quatre options :</p><ul class="list _bullet" id="-63zf8f_24"><li class="list__item" id="-63zf8f_26"><p><span class="control" id="-63zf8f_30">entity</span>: Le cas le plus fr&eacute;quent, les informations d'authentification r&eacute;sident dans une entit&eacute; Doctrine.</p></li><li class="list__item" id="-63zf8f_27"><p><span class="control" id="-63zf8f_31">ldap</span>: Les informations d'authentification sont r&eacute;cup&eacute;r&eacute;es depuis un annuaire LDAP. Cette option est utilis&eacute;e pour cr&eacute;er une application intranet dans laquelle nous r&eacute;cup&eacute;rons l'authentification du r&eacute;seau.</p></li><li class="list__item" id="-63zf8f_28"><p><span class="control" id="-63zf8f_32">memory</span>: Les informations d'authentification r&eacute;sident dans le fichier <code class="code" id="-63zf8f_33">security.yaml</code> lui-m&ecirc;me ou dans un autre fichier <code class="code" id="-63zf8f_34">yaml</code> inclus dans <code class="code" id="-63zf8f_35">security</code>.</p></li><li class="list__item" id="-63zf8f_29"><p><span class="control" id="-63zf8f_36">chain</span>: Les informations d'authentification r&eacute;sident dans plusieurs sources. Cette option existe, car un <code class="code" id="-63zf8f_37">firewall</code> Symfony ne peut avoir qu'un seul provider.</p></li></ul></section><section class="chapter"><h3 id="firewall" data-toc="firewall">firewall</h3><p id="-63zf8f_38">Le <code class="code" id="-63zf8f_39">firewall</code> d&eacute;termine quelles parties de notre application sera s&eacute;curis&eacute;e et quelles r&egrave;gles seront appliqu&eacute;es. Dans la plupart des cas, nous n'avons be soin que de deux firewalls, <code class="code" id="-63zf8f_40">dev</code> qui d&eacute;sactive la s&eacute;curit&eacute; pour les assets et <code class="code" id="-63zf8f_41">main</code> qui s&eacute;curise tout ou partie de l'application.</p></section></section><section class="chapter"><h2 id="mise-en-place-de-la-s-curit" data-toc="mise-en-place-de-la-s-curit">Mise en place de la s&eacute;curit&eacute;</h2><section class="chapter"><h3 id="une-classe-user" data-toc="une-classe-user">Une classe User</h3><p id="-63zf8f_48">Commen&ccedil;ons par d&eacute;finir une classe User.</p><div class="code-block" data-lang="bash">
+symfony console make:user
+</div><figure id="-63zf8f_50"><img alt="CleanShot 2025-01-29 at 08.35.23@2x.png" src="images/CleanShot%202025-01-29%20at%2008.35.23%402x.png" title="CleanShot 2025-01-29 at 08.35.23@2x.png" width="3246" height="1636"></figure><p id="-63zf8f_51">Nous constatons que Symfony a modifi&eacute; le fichier <code class="code" id="-63zf8f_60">security.yaml</code>.</p><div class="code-block" data-lang="yaml">
+    providers:
+        # used to reload user from session &amp; other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: username
+</div><div class="code-block" data-lang="yaml">
+   main:
+       lazy: true
+       provider: app_user_provider
+</div><p id="-63zf8f_54">Et qu'il a &eacute;galement cr&eacute;&eacute; ou modifi&eacute; la classe User.</p><ul class="list _bullet" id="-63zf8f_55"><li class="list__item" id="-63zf8f_61"><p>La classe impl&eacute;mente <code class="code" id="-63zf8f_64">UserInterface</code>.</p></li><li class="list__item" id="-63zf8f_62"><p>La classe impl&eacute;mente <code class="code" id="-63zf8f_65">PasswordAuthenticatedUserInterface</code>.</p></li><li class="list__item" id="-63zf8f_63"><p>Nous avons de nouvelles propri&eacute;t&eacute;s et m&eacute;thodes </p><ul class="list _bullet" id="-63zf8f_66"><li class="list__item" id="-63zf8f_67"><p><code class="code" id="-63zf8f_72">username</code> comme nous l'avons d&eacute;fini lors de l'ex&eacute;cution de <code class="code" id="-63zf8f_73">make:user</code>.</p></li><li class="list__item" id="-63zf8f_68"><p><code class="code" id="-63zf8f_74">roles</code> qui stocke un tableau des roles de l'utilisateur</p></li><li class="list__item" id="-63zf8f_69"><p><code class="code" id="-63zf8f_75">password</code> qui stocke le mot de passe hach&eacute;</p></li><li class="list__item" id="-63zf8f_70"><p><code class="code" id="-63zf8f_76">getUserIdentifier()</code> retourne la propri&eacute;t&eacute; utilis&eacute;e comme identifiant.</p></li><li class="list__item" id="-63zf8f_71"><p><code class="code" id="-63zf8f_77">eraseCredentials()</code> qui sera invoqu&eacute;e avant la s&eacute;rialisation de l'objet User et supprimera les informations confidentielles comme un &eacute;ventuel mot de passe en clair.</p></li></ul></li></ul><div class="code-block" data-lang="php">
+&lt;?php
+
+namespace App\Entity;
+
+use App\Repository\UserRepository;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Table(name: '`user`')]
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
+    #[ORM\Column(length: 180)]
+    private ?string $username = null;
+
+    /**
+     * @var list&lt;string&gt; The user roles
+     */
+    #[ORM\Column]
+    private array $roles = [];
+
+    /**
+     * @var string The hashed password
+     */
+    #[ORM\Column]
+    private ?string $password = null;
+
+    public function getId(): ?int
+    {
+        return $this-&gt;id;
+    }
+
+    public function getUsername(): ?string
+    {
+        return $this-&gt;username;
+    }
+
+    public function setUsername(string $username): static
+    {
+        $this-&gt;username = $username;
+
+        return $this;
+    }
+
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this-&gt;username;
+    }
+
+    /**
+     * @see UserInterface
+     *
+     * @return list&lt;string&gt;
+     */
+    public function getRoles(): array
+    {
+        $roles = $this-&gt;roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    /**
+     * @param list&lt;string&gt; $roles
+     */
+    public function setRoles(array $roles): static
+    {
+        $this-&gt;roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
+    public function getPassword(): ?string
+    {
+        return $this-&gt;password;
+    }
+
+    public function setPassword(string $password): static
+    {
+        $this-&gt;password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials(): void
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this-&gt;plainPassword = null;
+    }
+}
+</div><p id="-63zf8f_57">Notre entit&eacute; poss&egrave;de de nouvelles propri&eacute;t&eacute;s li&eacute;es &agrave; Doctrine, il faut donc cr&eacute;er une nouvelle migration et l'ex&eacute;cuter.</p><div class="code-block" data-lang="none">
+symfony console make:migration
+</div><div class="code-block" data-lang="none">
+symfony console doctrine:migrations:migrate
+</div></section><section class="chapter"><h3 id="cr-ation-du-formulaire-de-login" data-toc="cr-ation-du-formulaire-de-login">Cr&eacute;ation du formulaire de login</h3><div class="code-block" data-lang="none">
+symfony console make:security:form-login
+</div><p id="-63zf8f_79">Ajoute un nouveau contr&ocirc;leur et une nouvelle vue</p><div class="code-block" data-lang="php">
+&lt;?php
+
+namespace App\Controller;
+
+use App\Entity\User;
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+
+class SecurityController extends AbstractController
+{
+    #[Route(path: '/login', name: 'app_login')]
+    public function login(
+        AuthenticationUtils $authenticationUtils
+    ): Response
+    {
+        // get the login error if there is one
+        $error = $authenticationUtils-&gt;getLastAuthenticationError();
+
+        // last username entered by the user
+        $lastUsername = $authenticationUtils-&gt;getLastUsername();
+
+        return $this-&gt;render('security/login.html.twig', [
+            'last_username' =&gt; $lastUsername,
+            'error' =&gt; $error,
+        ]);
+    }
+
+    #[Route(path: '/logout', name: 'app_logout')]
+    public function logout(): void
+    {
+        throw new \LogicException(
+            &quot;This method can be blank 
+            - it will be intercepted 
+            by the logout key on your firewall.&quot;
+        );
+    }
+}
+</div><p id="-63zf8f_81">Et une modification dans <code class="code" id="-63zf8f_83">security.yaml</code></p><div class="code-block" data-lang="yaml">
+ form_login:
+     login_path: app_login
+     check_path: app_login
+     enable_csrf: true
+ logout:
+     path: app_logout
+</div></section><section class="chapter"><h3 id="fixtures" data-toc="fixtures">Fixtures</h3><p id="-63zf8f_84">Pour tester le login, il nous faut des utilisateurs.</p><p id="-63zf8f_85">Nous injectons le service de hachage des mots de passe dans le constructeur. Ce service utilisera la configuration dans <code class="code" id="-63zf8f_88">service.yaml</code> pour d&eacute;terminer l'algorithme &agrave; utiliser.</p><div class="code-block" data-lang="none">
+symfony make:fixtures
+</div><div class="code-block" data-lang="php">
+&lt;?php
+
+namespace App\DataFixtures;
+
+use App\Entity\User;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+
+class UserFixtures extends Fixture
+{
+    public function __construct(
+        private UserPasswordHasherInterface $passwordHasher
+    ) {}
+
+    public function load(
+        ObjectManager $manager,
+    ): void
+    {
+        // Un admin
+        $user = new User();
+        $user-&gt;setUsername('admin');
+        $user-&gt;setRoles(['ROLE_ADMIN']);
+        $user-&gt;setPassword(
+            $this-&gt;passwordHasher-&gt;hashPassword(
+                $user, '123'
+            )
+        );
+        $manager-&gt;persist($user);
+
+        // Un utilisateur lambda
+        $user = new User();
+        $user-&gt;setUsername('user');
+        $user-&gt;setPassword(
+            $this-&gt;passwordHasher-&gt;hashPassword(
+                $user, '123'
+            )
+        );
+        $manager-&gt;persist($user);
+
+
+        $manager-&gt;flush();
+    }
+}
+</div></section><section class="chapter"><h3 id="test-du-login" data-toc="test-du-login">Test du login</h3><p id="-63zf8f_89">Si nous testons le formulaire de login avec des informations valides, nous obtenons une redirection vers la page d'accueil (Il est possible de modifier la route de redirection dans <code class="code" id="-63zf8f_96">security.yaml</code>).</p><p id="-63zf8f_90">Dans la <code class="code" id="-63zf8f_97">debugbar</code>, nous constatons que nous sommes authentifi&eacute;s.</p><ul class="list _bullet" id="-63zf8f_91"><li class="list__item" id="-63zf8f_98"><p id="-63zf8f_100">Symfony a g&eacute;n&eacute;r&eacute; un token d'authentification, cette information r&eacute;side dans la session et est charg&eacute;e &agrave; chaque nouvelle requ&ecirc;te.</p></li><li class="list__item" id="-63zf8f_99"><p id="-63zf8f_101">Dans l'onglet <code class="code" id="-63zf8f_102">Authenticators</code> nous constatons que Symfony a utilis&eacute; une classe <code class="code" id="-63zf8f_103">FormLoginAuthenticator</code>pour traiter le formulaire.</p></li></ul><p id="-63zf8f_92">Le syst&egrave;me de s&eacute;curit&eacute; de Symfony est tr&egrave;s souple, il permet de mettre en place de multiples strat&eacute;gies d'authentification. Cependant, pour le cas le plus fr&eacute;quent nous n'avons pas grand-chose &agrave; faire puisque tout est d&eacute;j&agrave; g&eacute;r&eacute; par le Framework.</p><p id="-63zf8f_93">Si nous souhaitons d&eacute;finir des r&egrave;gles d'authentification alternatives, nous n'auront qu'&agrave; cr&eacute;er notre propre classe qui h&eacute;ritera de <code class="code" id="-63zf8f_104">AbstractAuthenticator</code>.</p><figure id="-63zf8f_94"><img alt="CleanShot 2025-01-29 at 12.29.48@2x.png" src="images/CleanShot%202025-01-29%20at%2012.29.48%402x.png" title="CleanShot 2025-01-29 at 12.29.48@2x.png" width="2236" height="1616"></figure><figure id="-63zf8f_95"><img alt="CleanShot 2025-01-29 at 12.31.51@2x.png" src="images/CleanShot%202025-01-29%20at%2012.31.51%402x.png" title="CleanShot 2025-01-29 at 12.31.51@2x.png" width="2236" height="1668"></figure></section><section class="chapter"><h3 id="formulaire-d-inscription" data-toc="formulaire-d-inscription">Formulaire d'inscription</h3><p id="-63zf8f_105">Pour inscrire un nouvel utilisateur, nous ajouterons une propri&eacute;t&eacute; <code class="code" id="-63zf8f_111">plainPassword</code> &agrave; la classe User.</p><p id="-63zf8f_106">Cette propri&eacute;t&eacute; ne sera pas li&eacute;e &agrave; Doctrine, nous coderons donc cette modification &agrave; la main.</p><div class="code-block" data-lang="php">
+// Dans scr/entity/User.php
+
+private ?string $plainPassword = null;
+
+public function getPlainPassword(): ?string
+{
+    return $this-&gt;plainPassword;
+}
+
+public function setPlainPassword(string $password): static
+{
+    $this-&gt;plainPassword = $password;
+
+    return $this;
+}
+</div><section class="chapter"><h4 id="cr-ation-du-formulaire" data-toc="cr-ation-du-formulaire">Cr&eacute;ation du formulaire</h4><div class="code-block" data-lang="none">
+symfony console make:Form
+</div><p id="-63zf8f_113">Nous cr&eacute;ons une classe <code class="code" id="-63zf8f_117">RegisterType</code> li&eacute;e &agrave; l'entit&eacute; <code class="code" id="-63zf8f_118">User</code>.</p><div class="code-block" data-lang="php">
+// Dans src/Form/RegisterType.php
+
+
+public function buildForm(FormBuilderInterface $builder, array $options): void
+{
+    $builder
+        -&gt;add('username', null, [
+            'label' =&gt; 'Nom d\'utilisateur'
+        ])
+        -&gt;add('roles', ChoiceType::class, [
+            'choices' =&gt; [
+                'Utilisateur' =&gt; 'ROLE_USER',
+                'Administrateur' =&gt; 'ROLE_ADMIN']
+            ,
+            'expanded' =&gt; true,
+            'multiple' =&gt; true,
+        ])
+        -&gt;add('plainPassword', PasswordType::class, [
+            'label' =&gt; 'Mot de passe'
+        ])
+    ;
+}
+</div><p id="-63zf8f_115">Pour les r&ocirc;les, nous utilisons un <code class="code" id="-63zf8f_119">ChoiceType</code>. Si d'aventure, nous souhaitions pouvoir ajouter des r&ocirc;les, nous opterions pour un EntityType li&eacute; &agrave; une entit&eacute; <code class="code" id="-63zf8f_120">Role</code>.</p><p id="-63zf8f_116">Concernant le mot de passe, nous pourrions &eacute;galement opter pour un <code class="code" id="-63zf8f_121">RepeatedType</code> afin de nous assurer de la bonne saisie de cette information cruciale.</p></section><section class="chapter"><h4 id="l-affichage-et-le-traitement-du-formulaire" data-toc="l-affichage-et-le-traitement-du-formulaire">L'affichage et le traitement du formulaire</h4><div class="code-block" data-lang="php">
+// Dans src/Controller/SecurityController
+
+    #[Route(path: '/register', name: 'app_register')]
+    public function register(
+        Request $request,
+        EntityManagerInterface $manager,
+        UserRepository $repository,
+        UserPasswordHasherInterface $passwordHasher
+    ): Response
+    {
+        $user = new User();
+
+        $form = $this-&gt;createForm(RegisterType::class, $user);
+        $form-&gt;add('Valider', SubmitType::class);
+
+        $form-&gt;handleRequest($request);
+
+        if($form-&gt;isSubmitted() &amp;&amp; $form-&gt;isValid()){
+
+            // Test de l'existence d'un utilisateur avec le même username
+            if($repository-&gt;findOneBy(['username' =&gt; $user-&gt;getUsername()])){
+                $form-&gt;addError(
+                    new FormError(
+                        &quot;Cet utilisateur {$user-&gt;getUsername()} existe déjà&quot;
+                    )
+                );
+            } else{
+                // Hachage du mot de passe
+                $user-&gt;setPassword(
+                    $passwordHasher-&gt;hashPassword(
+                        $user, $user-&gt;getPlainPassword()
+                    )
+                );
+                
+                // Persistance de l'entité
+                $manager-&gt;persist($user);
+                $manager-&gt;flush();
+
+                // Message flash et redirection
+                $this-&gt;addFlash('success', 'Vous êtes inscrit');
+                return $this-&gt;redirectToRoute('app_login');
+            }
+        }
+
+        return $this-&gt;render('security/register.html.twig', [
+            'registerForm' =&gt; $form-&gt;createView(),
+        ]);
+    }
+</div></section><section class="chapter"><h4 id="factorisation" data-toc="factorisation">Factorisation</h4><p id="-63zf8f_123">Essayez de d&eacute;porter une partie de la logique dans un service afin de simplifier le contr&ocirc;leur.</p><section class="chapter"><div class="collapse"><div class="collapse__title"><h5 id="correction" data-toc="correction">Correction</h5></div><div class="collapse__content"><div class="code-block" data-lang="php">
+// Dans src/Service
+
+&lt;?php
+
+namespace App\Service;
+
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+
+class UserRegistrationService
+{
+
+    private UserInterface|PasswordAuthenticatedUserInterface $user;
+
+    public function __construct(
+        private UserRepository $userRepository,
+        private EntityManagerInterface $entityManager,
+        private UserPasswordHasherInterface $passwordHasher
+    ) {
+    }
+
+    public function isUserAlreadyRegistered(
+        FormInterface $form
+    )
+    {
+        $foundUser = $this-&gt;userRepository-&gt;findOneBy(
+            ['username' =&gt; $this-&gt;user-&gt;getUserIdentifier()]
+        );
+
+        if($foundUser){
+            $form-&gt;addError(
+                new FormError(
+                    &quot;Cet utilisateur 
+                    {$this-&gt;user-&gt;getUserIdentifier()}
+                     existe déjà&quot;
+                )
+            );
+            return true;
+        }
+
+        return false;
+    }
+
+    private function hashPassword():void{
+        $this-&gt;user-&gt;setPassword(
+            $this-&gt;passwordHasher-&gt;hashPassword(
+                $this-&gt;user, 
+                $this-&gt;user-&gt;getPlainPassword()
+            )
+        );
+    }
+
+    public function register(): void{
+        $this-&gt;hashPassword();
+        $this-&gt;entityManager-&gt;persist($this-&gt;user);
+        $this-&gt;entityManager-&gt;flush();
+    }
+
+    public function setUser(
+        UserInterface|PasswordAuthenticatedUserInterface $user
+    ): void {
+        $this-&gt;user = $user;
+    }
+}
+</div><p id="-63zf8f_126">Et le nouveau contr&ocirc;leur</p><div class="code-block" data-lang="php">
+#[Route(path: '/register', name: 'app_register')]
+    public function register(
+        Request $request,
+        UserRegistrationService $registrationService
+    ): Response
+    {
+        $user = new User();
+
+        $form = $this-&gt;createForm(RegisterType::class, $user);
+        $form-&gt;add('Valider', SubmitType::class);
+
+        $form-&gt;handleRequest($request);
+
+        $registrationService-&gt;setUser($user);
+
+        // Test de l'existence d'un utilisateur avec le même username
+        if($form-&gt;isSubmitted()
+            &amp;&amp; $form-&gt;isValid()
+            &amp;&amp; !$registrationService-&gt;isUserAlreadyRegistered($form))
+        {
+            // Création de l'utilisateur
+            $registrationService-&gt;register();
+
+            // Message flash et redirection
+            $this-&gt;addFlash('success', 'Vous êtes inscrit');
+            return $this-&gt;redirectToRoute('app_login');
+        }
+
+        return $this-&gt;render('security/register.html.twig', [
+            'registerForm' =&gt; $form-&gt;createView(),
+        ]);
+    }
+</div></div></div></section></section></section><section class="chapter"><h3 id="les-autorisations" data-toc="les-autorisations">Les autorisations</h3><p id="-63zf8f_128">Une fois r&eacute;gl&eacute;e la question de l'authentification, il faut se poser celle de l'autorisation. L'id&eacute;e est de restreindre l'acc&egrave;s &agrave; certaines routes aux seuls utilisateurs qui poss&egrave;dent un r&ocirc;le donn&eacute;.</p><section class="chapter"><h4 id="restrictions-sur-un-ensemble-de-routes" data-toc="restrictions-sur-un-ensemble-de-routes">Restrictions sur un ensemble de routes</h4><p id="-63zf8f_131">La clef <code class="code" id="-63zf8f_133">access_control</code> de <code class="code" id="-63zf8f_134">security.yaml</code> permet d'associer un chemin &agrave; un ou plusieurs r&ocirc;les. Ce chemin est une expression r&eacute;guli&egrave;re qui sera test&eacute;e sur la route de la requ&ecirc;te.</p><div class="code-block" data-lang="yaml">
+# dans config/packages/security.yaml
+
+access_control:
+  - { path: ^/admin, roles: ROLE_ADMIN }
+</div></section><section class="chapter"><h4 id="restrictions-sur-une-route" data-toc="restrictions-sur-une-route">Restrictions sur une route</h4><p id="-63zf8f_135">Dans une action de contr&ocirc;leur, nous pouvons restreindre l'acc&egrave;s comme ceci :</p><div class="code-block" data-lang="php">
+$this-&gt;denyAccessUnlessGranted('ROLE_USER');
+</div><p id="-63zf8f_137">Nous pouvons &eacute;galement utiliser un attribut PHP pour faire la m&ecirc;me chose. Un attribut pouvant &ecirc;tre plac&eacute; au-dessus d'une m&eacute;thode ou d'une classe, cette solution nous permet de g&eacute;rer les autorisations sur l'ensemble des routes d'un contr&ocirc;leur.</p><div class="code-block" data-lang="php">
+#[IsGranted('ROLE_USER')]
+</div><section class="chapter"><h5 id="exemple" data-toc="exemple">Exemple</h5><div class="code-block" data-lang="php">
+#[Route('/article/form', name: 'app_article_form')]
+    public function form(): Response
+    {
+        // Seuls les utilisateurs authentifiés
+        // peuvent écrire des articles
+        $this-&gt;denyAccessUnlessGranted('ROLE_USER');
+
+        $article = new Article();
+        // L'auteur de l'article est l'utilisateur authentifié
+        $article-&gt;setAuthor($this-&gt;getUser());
+
+
+        $form = $this-&gt;createForm(ArticleType::class, $article);
+
+        return $this-&gt;render('article/form.html.twig', [
+            'articleForm' =&gt; $form-&gt;createView(),
+        ]);
+    }
+</div><p id="-63zf8f_141">Ici, nous avons un probl&egrave;me, car l'entit&eacute; Article attend une instance de Person et non de User. Un solution pourrait consister &agrave; mettre en place une relation d'h&eacute;ritage.</p><p id="-63zf8f_142"><span class="control" id="-63zf8f_158">Dans Person, nous ajoutons les informations concernant l'h&eacute;ritage.</span></p><div class="code-block" data-lang="php">
+#[ORM\InheritanceType(&quot;JOINED&quot;)]
+#[ORM\DiscriminatorColumn(name: &quot;type&quot;, type: &quot;string&quot;)]
+#[ORM\DiscriminatorMap([
+  &quot;user&quot; =&gt; User::class, 
+  &quot;person&quot; =&gt; Person::class]
+ )]
+class Person {
+// code de la classe
+}
+</div><p id="-63zf8f_144"><span class="control" id="-63zf8f_159">Dans User nous supprimons l'attribut id et h&eacute;ritons de Person.</span></p><div class="code-block" data-lang="php">
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Table(name: '`user`')]
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
+class User extends Person implements UserInterface, PasswordAuthenticatedUserInterface
+{
+// cde de la classe sans propriété id ni méthode getId()
+}
+</div><p id="-63zf8f_146"><span class="control" id="-63zf8f_160">Suppression des utilisateurs existants</span></p><p id="-63zf8f_147">Sans cela, il sera impossible d'ex&eacute;cuter la migration, car nos utilisateurs existants ne sont pas li&eacute;s &agrave; une personne.</p><aside class="prompt" data-type="tip" data-title="" id="-63zf8f_148"><p id="-63zf8f_161">Note : Les guillemets autour du nom de la table sont obligatoires avec PostgreSQL.</p></aside><div class="code-block" data-lang="bash">
+symfony console doctrine:query:sql &quot;TRUNCATE TABLE \&quot;user\&quot;&quot;
+</div><p id="-63zf8f_150"><span class="control" id="-63zf8f_162">Cr&eacute;ation et ex&eacute;cution des migrations.</span></p><div class="code-block" data-lang="bash">
+symfony console make:migration
+</div><div class="code-block" data-lang="bash">
+symfony console doctrine:migrations:migrate
+</div><p id="-63zf8f_153"><span class="control" id="-63zf8f_163">Ajout des informations suppl&eacute;mentaires dans les fixtures</span></p><div class="code-block" data-lang="php">
+// Dans src/DataFixtures/UserFixtures.php
+
+public function load(
+        ObjectManager $manager,
+    ): void
+    {
+        // Un admin
+        $user = new User();
+        $user-&gt;setUsername('admin');
+        $user-&gt;setRoles(['ROLE_ADMIN']);
+        $user-&gt;setFirstName('God');
+        $user-&gt;setLastName('Almighty');
+        $user-&gt;setPassword(
+            $this-&gt;passwordHasher-&gt;hashPassword(
+                $user, '123'
+            )
+        );
+        $manager-&gt;persist($user);
+
+        // Un utilisateur lambda
+        $user = new User();
+        $user-&gt;setUsername('user');
+        $user-&gt;setFirstName('Joe');
+        $user-&gt;setLastName('User');
+        $user-&gt;setPassword(
+            $this-&gt;passwordHasher-&gt;hashPassword(
+                $user, '123'
+            )
+        );
+        $manager-&gt;persist($user);
+
+
+        $manager-&gt;flush();
+    }
+</div><div class="code-block" data-lang="bash">
+symfony console doctrine:fixtures:load
+</div><p id="-63zf8f_156"><span class="control" id="-63zf8f_164">Ajout des propri&eacute;t&eacute;s de Person dans le formulaire d'inscription</span></p><div class="code-block" data-lang="php">
+// Dans src/Form/RegisterType.php
+
+public function buildForm(
+  FormBuilderInterface $builder, 
+  array $options
+): void
+{
+   $builder
+       -&gt;add('firstName', TextType::class, [
+           'label' =&gt; 'Prénom'
+       ])
+       -&gt;add('lastName', TextType::class, [
+           'label' =&gt; 'Nom'
+       ])
+       -&gt;add('username', null, [
+           'label' =&gt; 'Nom d\'utilisateur'
+       ])
+       -&gt;add('roles', ChoiceType::class, [
+           'choices' =&gt; [
+               'Utilisateur' =&gt; 'ROLE_USER',
+               'Administrateur' =&gt; 'ROLE_ADMIN']
+           ,
+           'expanded' =&gt; true,
+           'multiple' =&gt; true,
+       ])
+       -&gt;add('plainPassword', PasswordType::class, [
+           'label' =&gt; 'Mot de passe'
+       ])
+   ;
+}
+</div></section></section></section></section><section class="chapter"><h2 id="la-s-curit-dans-twig" data-toc="la-s-curit-dans-twig">La s&eacute;curit&eacute; dans Twig</h2><p id="-63zf8f_165">D&egrave;s lors qu'un utilisateur est authentifi&eacute;, nous pouvons r&eacute;cup&eacute;rer ses informations dans une vue avec le code suivant :</p><div class="code-block" data-lang="twig">
+{{ app.user }}
+</div><p id="-63zf8f_167">Ce qui nous permet de faire ceci par exemple</p><div class="code-block" data-lang="twig">
+{% if app.user %}
+    &lt;h2&gt;Bonjour {{ app.user.useridentifier }}&lt;/h2&gt;
+    &lt;a href=&quot;{{ path('app_logout') }}&quot;&gt;Logout&lt;/a&gt;
+{% else %}
+    &lt;a href=&quot;{{ path('app_login') }}&quot;&gt;Login&lt;/a&gt;
+{% endif %}
+</div><section class="chapter"><h3 id="tester-les-autorisations" data-toc="tester-les-autorisations">Tester les autorisations</h3><p id="-63zf8f_170">La fonction <code class="code" id="-63zf8f_174">is_granted</code> permet de tester le r&ocirc;le de l'utilisateur connect&eacute;</p><div class="code-block" data-lang="twig">
+{% if is_granted('ROLE_ADMIN') %}
+    Liens spécifiques à admin
+{% endif %}
+</div><section class="chapter"><h4 id="etats-de-l-authentification" data-toc="etats-de-l-authentification">Etats de l'authentification</h4><p id="-63zf8f_175">Symfony propose trois &eacute;tats suppl&eacute;mentaires qui peuvent &ecirc;tre test&eacute;s avec <code class="code" id="-63zf8f_177">is_granted</code>.</p><ul class="list _bullet" id="-63zf8f_176"><li class="list__item" id="-63zf8f_178"><p id="-63zf8f_181"><code class="code" id="-63zf8f_182">IS_AUTHENTICATED_ANONYMOUSLY</code>: s'applique &agrave; tous les utilisateurs m&ecirc;me ceux qui ne sont pas authentifi&eacute;s.</p></li><li class="list__item" id="-63zf8f_179"><p id="-63zf8f_183"><code class="code" id="-63zf8f_184">IS_AUTHENTICATED_REMEMBERED</code>: s'applique aux utilisateurs connect&eacute;s automatiquement via un cookie <code class="code" id="-63zf8f_185">remember me</code>.</p></li><li class="list__item" id="-63zf8f_180"><p id="-63zf8f_186"><code class="code" id="-63zf8f_187">IS_AUTHENTICATED_FULLY</code>: s'applique aux utilisateurs qui se sont connect&eacute;s via un <code class="code" id="-63zf8f_188">Authenticator</code>, par exemple en utilisant un formulaire de login.</p></li></ul></section><section class="chapter"><h4 id="connection-automatique" data-toc="connection-automatique">Connection automatique</h4><p id="-63zf8f_189">Pour activer la connection automatique via un cookie, il faut configurer le <code class="code" id="-63zf8f_193">firewall</code> comme ceci :</p><div class="code-block" data-lang="yaml">
+firewalls:
+    main:
+        remember_me:
+            secret: '%kernel.secret%'
+            lifetime: 604800 # 1 semaine
+            path: /
+            always_remember_me: true
+</div><p id="-63zf8f_191">Nous pouvons &eacute;galement donner le choix &agrave; l'utilisateur. Dans ce cas, nous supprimons la clef <code class="code" id="-63zf8f_194">always_remember_me</code> et d&eacute;commentons la section remember me dans <code class="code" id="-63zf8f_195">security/login.html.twig</code>.</p><div class="code-block" data-lang="twig">
+&lt;form method=&quot;post&quot;&gt;
+        {% if error %}
+            &lt;div class=&quot;alert alert-danger&quot;&gt;{{ error.messageKey|trans(error.messageData, 'security') }}&lt;/div&gt;
+        {% endif %}
+
+        {% if app.user %}
+            &lt;div class=&quot;mb-3&quot;&gt;
+                You are logged in as {{ app.user.userIdentifier }}, &lt;a href=&quot;{{ path('app_logout') }}&quot;&gt;Logout&lt;/a&gt;
+            &lt;/div&gt;
+        {% endif %}
+
+        &lt;h1 class=&quot;h3 mb-3 font-weight-normal&quot;&gt;Please sign in&lt;/h1&gt;
+        &lt;label for=&quot;username&quot;&gt;Username&lt;/label&gt;
+        &lt;input type=&quot;text&quot; value=&quot;{{ last_username }}&quot; name=&quot;_username&quot; id=&quot;username&quot; class=&quot;form-control&quot; autocomplete=&quot;username&quot; required autofocus&gt;
+        &lt;label for=&quot;password&quot;&gt;Password&lt;/label&gt;
+        &lt;input type=&quot;password&quot; name=&quot;_password&quot; id=&quot;password&quot; class=&quot;form-control&quot; autocomplete=&quot;current-password&quot; required&gt;
+
+        &lt;input type=&quot;hidden&quot; name=&quot;_csrf_token&quot;
+               value=&quot;{{ csrf_token('authenticate') }}&quot;
+        &gt;
+
+        {#
+            Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+            See https://symfony.com/doc/current/security/remember_me.html
+
+            &lt;div class=&quot;checkbox mb-3&quot;&gt;
+                &lt;input type=&quot;checkbox&quot; name=&quot;_remember_me&quot; id=&quot;_remember_me&quot;&gt;
+                &lt;label for=&quot;_remember_me&quot;&gt;Remember me&lt;/label&gt;
+            &lt;/div&gt;
+        #}
+
+        &lt;button class=&quot;btn btn-lg btn-primary&quot; type=&quot;submit&quot;&gt;
+            Sign in
+        &lt;/button&gt;
+    &lt;/form&gt;
+</div></section></section></section><div class="last-modified">Last modified: 01 février 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="005-06-datatransformer.html" class="navigation-links__prev">DataTransformer</a><a href="006-01-custom-authenticator.html" class="navigation-links__next">Custom Authenticator</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.js"></script></body></html>

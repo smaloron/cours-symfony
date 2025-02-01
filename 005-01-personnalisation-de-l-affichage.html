@@ -1,0 +1,150 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-02-01T11:39:32.222886"><title>Personnalisation de l'affichage | Symfony support</title><script type="application/json" id="virtual-toc-data">[{"id":"objectifs","level":0,"title":"Objectifs","anchor":"#objectifs"},{"id":"les-fonctions-twig","level":0,"title":"Les fonctions Twig","anchor":"#les-fonctions-twig"},{"id":"utiliser-bootstrap","level":0,"title":"Utiliser Bootstrap","anchor":"#utiliser-bootstrap"},{"id":"cr-er-un-th-me-personnalis","level":0,"title":"Créer un thème personnalisé","anchor":"#cr-er-un-th-me-personnalis"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.css" rel="stylesheet"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Personnalisation de l'affichage | Symfony support"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Symfony support Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation//version 1/005-01-personnalisation-de-l-affichage.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Personnalisation de l'affichage | Symfony support"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation//version 1/005-01-personnalisation-de-l-affichage.html#webpage",
+    "url": "writerside-documentation//version 1/005-01-personnalisation-de-l-affichage.html",
+    "name": "Personnalisation de l'affichage | Symfony support",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Symfony support Help"
+}</script><!-- End Schema.org --></head><body data-id="005-01-Personnalisation-de-l-affichage" data-main-title="Personnalisation de l'affichage" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="005-00-formulaires.md|Formulaires"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Symfony support version 1 Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="005-01-Personnalisation-de-l-affichage" id="005-01-Personnalisation-de-l-affichage.md">Personnalisation de l'affichage</h1><section class="chapter"><h2 id="objectifs" data-toc="objectifs">Objectifs</h2><ul class="list _bullet" id="z3q31f4_7"><li class="list__item" id="z3q31f4_8"><p>Identifier les options d'affichage des formulaires</p></li><li class="list__item" id="z3q31f4_9"><p>Styler les formulaires</p></li></ul></section><section class="chapter"><h2 id="les-fonctions-twig" data-toc="les-fonctions-twig">Les fonctions Twig</h2><p id="z3q31f4_10">Les fonctions Twig g&egrave;rent l'affichage du formulaire dans une vue.</p><div class="table-wrapper"><table class="wide" id="z3q31f4_11"><thead><tr class="ijRowHead" id="z3q31f4_13"><th id="z3q31f4_22"><p>fonction</p></th><th id="z3q31f4_23"><p>description</p></th></tr></thead><tbody><tr id="z3q31f4_14"><td id="z3q31f4_24"><p><code class="code" id="z3q31f4_26">{{ form }}</code></p></td><td id="z3q31f4_25"><p>affiche tout le formulaire</p></td></tr><tr id="z3q31f4_15"><td id="z3q31f4_27"><p><code class="code" id="z3q31f4_29">{{ form_start }}</code></p></td><td id="z3q31f4_28"><p>g&eacute;n&egrave;re la balise <code class="code" id="z3q31f4_30">&lt;form&gt;</code> avec les diff&eacute;rents attributs</p></td></tr><tr id="z3q31f4_16"><td id="z3q31f4_31"><p><code class="code" id="z3q31f4_33">{{ form_end }}</code></p></td><td id="z3q31f4_32"><p>g&eacute;n&egrave;re la fermeture de <code class="code" id="z3q31f4_34">&lt;form&gt;</code> avec les diff&eacute;rents champs restants non affich&eacute;s</p></td></tr><tr id="z3q31f4_17"><td id="z3q31f4_35"><p><code class="code" id="z3q31f4_37">{{ form_errors }}</code></p></td><td id="z3q31f4_36"><p>affiche les erreurs &eacute;ventuelles du formulaire</p></td></tr><tr id="z3q31f4_18"><td id="z3q31f4_38"><p><code class="code" id="z3q31f4_40">{{ form_widget(form.field) }}</code></p></td><td id="z3q31f4_39"><p>affiche le champs</p></td></tr><tr id="z3q31f4_19"><td id="z3q31f4_41"><p><code class="code" id="z3q31f4_43">{{ form_label(form.field) }}</code></p></td><td id="z3q31f4_42"><p>affiche le label du champs</p></td></tr><tr id="z3q31f4_20"><td id="z3q31f4_44"><p><code class="code" id="z3q31f4_46">{{ form_row(form.field) }}</code></p></td><td id="z3q31f4_45"><p>affiche le form_widget et form_label</p></td></tr><tr id="z3q31f4_21"><td id="z3q31f4_47"><p><code class="code" id="z3q31f4_49">{{ form_rest }}</code></p></td><td id="z3q31f4_48"><p>affiche les champs restants non r&eacute;cup&eacute;r&eacute; pr&eacute;c&eacute;demment (token de v&eacute;rification par exemple)</p></td></tr></tbody></table></div><section class="chapter"><h3 id="exemple" data-toc="exemple">Exemple</h3><p id="z3q31f4_50">Soit le formulaire suivant :</p><div class="code-block" data-lang="php">
+&lt;?php
+
+namespace App\Form;
+
+use App\Entity\Address;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+class AddressType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            -&gt;add('city')
+            -&gt;add('zipCode')
+            -&gt;add('street')
+            -&gt;add('Valider', SubmitType::class)
+        ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver-&gt;setDefaults([
+            'data_class' =&gt; Address::class,
+        ]);
+    }
+}
+</div><p id="z3q31f4_52">et le contr&ocirc;leur suivant :</p><div class="code-block" data-lang="php">
+&lt;?php
+
+namespace App\Controller;
+
+use App\Entity\Address;
+use App\Form\AddressType;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+
+final class AddressController extends AbstractController
+{
+    #[Route('/address/form', name: 'address_form')]
+    public function addEdit(): Response
+    {
+        $address = new Address();
+
+        $form = $this-&gt;createForm(AddressType::class, $address);
+
+
+        return $this-&gt;render('address/form.html.twig', [
+            'addressForm' =&gt; $form-&gt;createView(),
+        ]);
+    }
+}
+</div><p id="z3q31f4_54">Imaginons que nous souhaitions obtenir le r&eacute;sultat ci-dessous. Dans ce cas, il nous faut afficher chaque champ de formulaire individuellement.</p><figure id="z3q31f4_55"><img alt="CleanShot 2025-01-23 at 13.18.47@2x.png" src="images/CleanShot%202025-01-23%20at%2013.18.47%402x.png" title="CleanShot 2025-01-23 at 13.18.47@2x.png" width="1372" height="836"></figure><p id="z3q31f4_56">Voici la vue</p><div class="code-block" data-lang="twig">
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des adresses{% endblock %}
+
+{% block stylesheets %}
+    &lt;style&gt;
+        body {
+            padding: 20px;
+        }
+        .two-rows {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        label {
+            display: block !important;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+        }
+
+        button {
+            width: 100%;
+        }
+    &lt;/style&gt;
+{% endblock %}
+
+{% block body %}
+
+    {{ form_start(addressForm) }}
+
+
+        {{ form_row(addressForm.street) }}
+
+
+        &lt;div class=&quot;two-rows&quot;&gt;
+            {{ form_row(addressForm.city) }}
+            {{ form_row(addressForm.zipCode) }}
+        &lt;/div&gt;
+
+    {{ form_end(addressForm) }}
+
+{% endblock %}
+</div><aside class="prompt" data-type="tip" data-title="" id="z3q31f4_58"><p id="z3q31f4_59">notons que le champ correspondant au bouton &quot;valider&quot;, qui est absent du code de notre vue, est tout de m&ecirc;me affich&eacute;. Lorsqu'il manque des champs Twig les ajoute automatiquement &agrave; la fin du formulaire.</p></aside></section></section><section class="chapter"><h2 id="utiliser-bootstrap" data-toc="utiliser-bootstrap">Utiliser Bootstrap</h2><p id="z3q31f4_60">Plut&ocirc;t que de g&eacute;rer nous-m&ecirc;mes la mise en forme des formulaires, nous pouvons utiliser Bootstrap. Symfony int&egrave;gre cette biblioth&egrave;que et nous n'avons qu'&agrave; indiquer que nous voulons styler les formulaires avec Bootstrap.</p><p id="z3q31f4_61">Dans le fichier <code class="code" id="z3q31f4_64">config/packages/twig.yaml</code> nous ajoutons un th&egrave;me pour nos formulaires</p><div class="code-block" data-lang="yaml">
+twig:
+    form_themes:
+        - 'bootstrap_5_layout.html.twig'
+</div><figure id="z3q31f4_63"><img alt="CleanShot 2025-01-23 at 13.32.14@2x.png" src="images/CleanShot%202025-01-23%20at%2013.32.14%402x.png" title="CleanShot 2025-01-23 at 13.32.14@2x.png" width="1372" height="926"></figure></section><section class="chapter"><h2 id="cr-er-un-th-me-personnalis" data-toc="cr-er-un-th-me-personnalis">Cr&eacute;er un th&egrave;me personnalis&eacute;</h2><section class="chapter"><h3 id="cr-er-le-fichier-du-th-me" data-toc="cr-er-le-fichier-du-th-me">Cr&eacute;er le fichier du th&egrave;me</h3><p id="z3q31f4_68">Il s'agit d'un fichier <code class="code" id="z3q31f4_70">Twig</code> que nous pla&ccedil;ons par convention dans le dossier <code class="code" id="z3q31f4_71">templates/form</code>. Nous le nommerons <code class="code" id="z3q31f4_72">custom_form_theme.html.twig</code>.</p><p id="z3q31f4_69">Ce fichier viendra surcharger le th&egrave;me par d&eacute;faut fournit pas <code class="code" id="z3q31f4_73">Twig</code>.</p></section><section class="chapter"><h3 id="surcharge-des-blocs" data-toc="surcharge-des-blocs">Surcharge des blocs</h3><p id="z3q31f4_74">Ici, nous surchargeons le mod&egrave;le utilis&eacute; par la fonction <code class="code" id="z3q31f4_78">form_row</code>.</p><div class="code-block" data-lang="twig">
+{% block form_row %}
+    &lt;div class=&quot;two-rows&quot;&gt;
+        {{ form_label(form) }}
+        &lt;div&gt;
+            {{ form_widget(form) }}
+            {{ form_errors(form) }}
+        &lt;/div&gt;
+    &lt;/div&gt;
+{% endblock %}
+</div><p id="z3q31f4_76">Il est &eacute;galement possible de surcharger les mod&egrave;les suivants&nbsp;:</p><ul class="list _bullet" id="z3q31f4_77"><li class="list__item" id="z3q31f4_79"><p>form_widget</p></li><li class="list__item" id="z3q31f4_80"><p>form_errors</p></li><li class="list__item" id="z3q31f4_81"><p>form_label</p></li><li class="list__item" id="z3q31f4_82"><p>form_help</p></li></ul></section><section class="chapter"><h3 id="appliquer-le-th-me" data-toc="appliquer-le-th-me">Appliquer le th&egrave;me</h3><section class="chapter"><h4 id="application-globale" data-toc="application-globale">Application globale</h4><p id="z3q31f4_85">Comme nous avons pu le faire pour Bootstrap, nous modifions le fchier <code class="code" id="z3q31f4_87">config/packages/twig.yaml</code>.</p><div class="code-block" data-lang="yaml">
+twig:
+    form_themes:
+        - 'bootstrap_5_layout.html.twig'
+        - 'form/custom_form_theme.html.twig'
+</div></section><section class="chapter"><h4 id="application-locale" data-toc="application-locale">Application locale</h4><p id="z3q31f4_88">En passant un tableau d'options en troisi&egrave;me argument de la m&eacute;thode <code class="code" id="z3q31f4_92">render</code>. Attention la clef <code class="code" id="z3q31f4_93">form_theme</code> attend un tableau de th&egrave;mes, m&ecirc;me s'il n'y en a qu'un.</p><div class="code-block" data-lang="php">
+
+return $this-&gt;render(
+    'address/form.html.twig', 
+     ['addressForm' =&gt; $form-&gt;createView()],
+     [
+        'form_theme' =&gt; 
+        ['form/custom_form_theme.html.twig']
+     ]
+ );
+</div><figure id="z3q31f4_90"><img alt="CleanShot 2025-01-23 at 14.36.43@2x.png" src="images/CleanShot%202025-01-23%20at%2014.36.43%402x.png" title="CleanShot 2025-01-23 at 14.36.43@2x.png" width="1372" height="926"></figure><aside class="prompt" data-type="tip" data-title="" id="z3q31f4_91"><p id="z3q31f4_94">Nous pouvons d&eacute;sormais placer le code <code class="code" id="z3q31f4_95">CSS</code> dans <code class="code" id="z3q31f4_96">assets/styles/app.css</code> de sorte qu'il soit disponible pour toutes les pages.</p></aside></section></section></section><div class="last-modified">Last modified: 01 février 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="005-00-formulaires.html" class="navigation-links__prev">Formulaires</a><a href="005-02-personnalisation-du-formulaire.html" class="navigation-links__next">Personnalisation du formulaire</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.js"></script></body></html>

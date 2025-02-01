@@ -1,0 +1,342 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-02-01T11:39:32.222605"><title>Les associations | Symfony support</title><script type="application/json" id="virtual-toc-data">[{"id":"objectifs","level":0,"title":"Objectifs","anchor":"#objectifs"},{"id":"le-principe","level":0,"title":"Le principe","anchor":"#le-principe"},{"id":"ajout-des-associations","level":0,"title":"Ajout des associations","anchor":"#ajout-des-associations"},{"id":"onetoone","level":0,"title":"OneToOne","anchor":"#onetoone"},{"id":"g-n-ration-des-m-thodes","level":0,"title":"Génération des méthodes","anchor":"#g-n-ration-des-m-thodes"},{"id":"manytoone","level":0,"title":"ManyToOne","anchor":"#manytoone"},{"id":"onetomany","level":0,"title":"OneToMany","anchor":"#onetomany"},{"id":"manytomany","level":0,"title":"ManyToMany","anchor":"#manytomany"},{"id":"assistance-avec-maker","level":0,"title":"Assistance avec Maker","anchor":"#assistance-avec-maker"},{"id":"exercices","level":0,"title":"Exercices","anchor":"#exercices"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.css" rel="stylesheet"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Les associations | Symfony support"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Symfony support Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation//version 1/004-02-associations.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Les associations | Symfony support"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation//version 1/004-02-associations.html#webpage",
+    "url": "writerside-documentation//version 1/004-02-associations.html",
+    "name": "Les associations | Symfony support",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Symfony support Help"
+}</script><!-- End Schema.org --></head><body data-id="004-02-associations" data-main-title="Les associations" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="004-00-doctrine.md|Doctrine"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Symfony support version 1 Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="004-02-associations" id="004-02-associations.md">Les associations</h1><section class="chapter"><h2 id="objectifs" data-toc="objectifs">Objectifs</h2><ul class="list _bullet" id="x25bz3_13"><li class="list__item" id="x25bz3_14"><p>Identifier les diff&eacute;rents types d&rsquo;associations dans Doctrine.</p></li><li class="list__item" id="x25bz3_15"><p>Impl&eacute;menter ces associations dans Symfony.</p></li></ul></section><section class="chapter"><h2 id="le-principe" data-toc="le-principe">Le principe</h2><p id="x25bz3_16">Les objets sont li&eacute;s entre eux par des agr&eacute;gations. Une ou plusieurs instances d'un objet sont stock&eacute;s dans un autre objet.</p><div class="code-block" data-lang="php">
+class Address {
+
+    private string $city;
+
+    private string $zipCode;
+
+    public function getCity(): string
+    {
+        return $this-&gt;city;
+    }
+
+    public function setCity(string $city): Address
+    {
+        $this-&gt;city = $city;
+        return $this;
+    }
+
+    public function getZipCode(): string
+    {
+        return $this-&gt;zipCode;
+    }
+
+    public function setZipCode(string $zipCode): Address
+    {
+        $this-&gt;zipCode = $zipCode;
+        return $this;
+    }
+}
+
+class Person {
+
+    private string $name;
+
+    private Address $address;
+
+    private array $friends;
+
+    public function getName(): string
+    {
+        return $this-&gt;name;
+    }
+
+    public function setName(string $name): Person
+    {
+        $this-&gt;name = $name;
+        return $this;
+    }
+
+    public function getAddress(): Address
+    {
+        return $this-&gt;address;
+    }
+
+    public function setAddress(Address $address): Person
+    {
+        $this-&gt;address = $address;
+        return $this;
+    }
+
+    public function getFriends(): array
+    {
+        return $this-&gt;friends;
+    }
+
+    public function addFriend(Person $friends): Person
+    {
+        $this-&gt;friends[] = $friends;
+        return $this;
+    }
+}
+</div><p id="x25bz3_18">Dans l'exemple ci-dessus la classe <code class="code" id="x25bz3_22">Person</code> r&eacute;f&eacute;rence une instance de la classe <code class="code" id="x25bz3_23">Address</code> et une liste d'instances de la classe <code class="code" id="x25bz3_24">Person</code>.</p><p id="x25bz3_19">Par le biais des associations, Doctrine propose de convertir ces agr&eacute;gations dans le monde relationnel. Cela passera par la cr&eacute;ation de clefs &eacute;trang&egrave;res et &eacute;ventuellement de tables interm&eacute;diaires.</p><p id="x25bz3_20">Les r&egrave;gles de conversion sont indiqu&eacute;es dans les attributs PHP des entit&eacute;s.</p><section class="chapter"><h3 id="les-types-d-assocations" data-toc="les-types-d-assocations">Les types d'assocations</h3><ul class="list _bullet" id="x25bz3_25"><li class="list__item" id="x25bz3_26"><p id="x25bz3_30">OneToOne (&laquo;&nbsp;Un &agrave; un&nbsp;&raquo;)</p></li><li class="list__item" id="x25bz3_27"><p id="x25bz3_31">ManyToOne (&laquo; Plusieurs &agrave; un &raquo;)</p></li><li class="list__item" id="x25bz3_28"><p id="x25bz3_32">OneToMany (&laquo; Un &agrave; plusieurs &raquo;)</p></li><li class="list__item" id="x25bz3_29"><p id="x25bz3_33">ManyToMany (&laquo; Plusieurs &agrave; plusieurs &raquo;)</p></li></ul></section></section><section class="chapter"><h2 id="ajout-des-associations" data-toc="ajout-des-associations">Ajout des associations</h2></section><section class="chapter"><h2 id="onetoone" data-toc="onetoone">OneToOne</h2><p id="x25bz3_34">L'association est assez rare. Elle fait correspondre une instance avec une et une seule autre et implique donc que les propri&eacute;t&eacute;s de la classe associ&eacute;e pourraient &ecirc;tre int&eacute;gr&eacute;es dans la classe h&ocirc;te.</p><p id="x25bz3_35">Dans le monde relationnel, ce d&eacute;coupage a du sens quand la table associ&eacute;e contient des informations facultatives, cela &eacute;vite la prolif&eacute;ration des colonnes nulles.</p><div class="code-block" data-lang="php">
+namespace App\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity]
+class Photo
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private $id;
+    
+    #[ORM\Column(length: 255)]
+    private ?string $fileName = null;;
+
+    #[ORM\OneToOne(mappedBy: 'photo', 
+    targetEntity: Person::class)]
+    private Person $person;
+
+    // Getters et setters...
+}
+
+</div><div class="code-block" data-lang="php">
+namespace App\Entity;
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity]
+class Person
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private $id;
+    
+    #[ORM\Column(length: 50)]
+    private ?string $name = null;
+
+    #[ORM\OneToOne( targetEntity: Photo::class, 
+                    cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: true)]
+    private Photo $photo;
+
+    // Getters et setters...
+}
+</div><p id="x25bz3_38"><span class="control" id="x25bz3_49">Sur <code class="code" id="x25bz3_50">Person</code></span></p><ul class="list _bullet" id="x25bz3_39"><li class="list__item" id="x25bz3_51"><p>La classe <code class="code" id="x25bz3_55">Person</code> poss&egrave;de une propri&eacute;t&eacute; <code class="code" id="x25bz3_56">$photo</code> qui d&eacute;finit l'association.</p></li><li class="list__item" id="x25bz3_52"><p>L'attribut <code class="code" id="x25bz3_57">ORM\OneToOne</code> poss&egrave;de un param&egrave;tre <code class="code" id="x25bz3_58">targetEntity</code>qui indique la classe li&eacute;e.</p></li><li class="list__item" id="x25bz3_53"><p>Le param&egrave;tre <code class="code" id="x25bz3_59">cascade</code> indique que l'entit&eacute; <code class="code" id="x25bz3_60">Photo</code> sera persist&eacute;e ou supprim&eacute;e en m&ecirc;me temps que son entit&eacute; h&ocirc;te.</p></li><li class="list__item" id="x25bz3_54"><p>L'attribut <code class="code" id="x25bz3_61">ORM\JoinColumn(nullable:true)</code> indique que l'association est facultative.</p></li></ul><p id="x25bz3_40"><span class="control" id="x25bz3_62">sur <code class="code" id="x25bz3_63">Photo</code></span></p><ul class="list _bullet" id="x25bz3_41"><li class="list__item" id="x25bz3_64"><p>L'association inverse (facultative) est stock&eacute;e dans une propri&eacute;t&eacute; <code class="code" id="x25bz3_67">$person</code>.</p></li><li class="list__item" id="x25bz3_65"><p>On retrouve le param&egrave;tre <code class="code" id="x25bz3_68">targetEntity</code> qui pointe ici vers la classe <code class="code" id="x25bz3_69">Person</code>.</p></li><li class="list__item" id="x25bz3_66"><p>Le param&egrave;tre <code class="code" id="x25bz3_70">mappedBy</code> indique que la propri&eacute;t&eacute; repr&eacute;sente le c&ocirc;t&eacute; inverse d'une association bidirectionnelle. L'autre c&ocirc;t&eacute; est dit <span class="control" id="x25bz3_71">propri&eacute;taire</span> de l'association. C'est lui qui portera la clef &eacute;trang&egrave;re et qui contr&ocirc;lera la persistance.</p></li></ul><aside class="prompt" data-type="tip" data-title="" id="x25bz3_42"><p id="x25bz3_72">Dans la configuration actuelle, il sera possible de cr&eacute;er une photo &agrave; partir d'une personne, mais pas l'inverse puisque c'est la classe <code class="code" id="x25bz3_73">Person</code> qui est propri&eacute;taire de l'association.</p></aside><p id="x25bz3_43">Il ne reste plus qu'&agrave; cr&eacute;er la migration et l'ex&eacute;cuter pour synchroniser les entit&eacute;s avec la base de donn&eacute;es.</p><div class="code-block" data-lang="none">
+symfony console make:migration
+</div><p id="x25bz3_45">Voici le code de la migration, on constate qu'une clef &eacute;trang&egrave;re a &eacute;t&eacute; ajout&eacute;e &agrave; la table <code class="code" id="x25bz3_74">person</code>.</p><div class="code-block" data-lang="php">
+    public function up(Schema $schema): void
+    {
+        $this-&gt;addSql('CREATE TABLE person (id SERIAL NOT NULL, photo_id INT DEFAULT NULL, first_name VARCHAR(50) DEFAULT NULL, last_name VARCHAR(50) NOT NULL, PRIMARY KEY(id))');
+        $this-&gt;addSql('CREATE UNIQUE INDEX UNIQ_34DCD1767E9E4C8C ON person (photo_id)');
+        $this-&gt;addSql('CREATE TABLE photo (id SERIAL NOT NULL, file_name VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
+        $this-&gt;addSql('ALTER TABLE person ADD CONSTRAINT FK_34DCD1767E9E4C8C FOREIGN KEY (photo_id) REFERENCES photo (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+    }
+</div><p id="x25bz3_47"><span class="control" id="x25bz3_75">Ex&eacute;cution de la migration</span></p><div class="code-block" data-lang="none">
+symfony console doctrine:migrations:migrate
+</div></section><section class="chapter"><h2 id="g-n-ration-des-m-thodes" data-toc="g-n-ration-des-m-thodes">G&eacute;n&eacute;ration des m&eacute;thodes</h2><p id="x25bz3_76">Quand on ajoute des propri&eacute;t&eacute;s &agrave; une entit&eacute;, il faut &eacute;galement penser &agrave; &eacute;crire le code des m&eacute;thodes getter et setter ce qui devient vite fastidieux. Heureusement, la commande suivante peut le faire &agrave; notre place. Elle ajoutera uniquement le code qui manque et ne touchera pas aux getters et setters d&eacute;j&agrave; existants.</p><aside class="prompt" data-type="tip" data-title="" id="x25bz3_77"><p id="x25bz3_79">Cette commande travaille sur toutes les entit&eacute;s d'un namespace</p></aside><div class="code-block" data-lang="none">
+symfony console make:entity --regenerate
+</div></section><section class="chapter"><h2 id="manytoone" data-toc="manytoone">ManyToOne</h2><p id="x25bz3_80">Sans doute l'association la plus fr&eacute;quente, elle fait correspondre une instance d'une entit&eacute; avec une collection d'entit&eacute; cibles. Elle se traduira par une clef &eacute;trang&egrave;re sur le c&ocirc;t&eacute; propri&eacute;taire.</p><div class="code-block" data-lang="php">
+#[ORM\Entity(repositoryClass: PersonRepository::class)]
+class Person
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $firstName = null;
+
+    #[ORM\Column(length: 50)]
+    private ?string $lastName = null;
+
+    #[ORM\ManyToOne(inversedBy: 'people')]
+    private ?Address $address = null;
+
+    // getters et setters
+
+}
+</div><p id="x25bz3_82">Ici la classe <code class="code" id="x25bz3_85">Person</code> poss&egrave;de une propri&eacute;t&eacute; <code class="code" id="x25bz3_86">$address</code> de type <code class="code" id="x25bz3_87">Address</code>.</p><p id="x25bz3_83">La classe qui poss&egrave;de une association <code class="code" id="x25bz3_88">ManyToOne</code> est dite propri&eacute;taire de l'association.</p><p id="x25bz3_84">L'association inverse sur la classe <code class="code" id="x25bz3_89">Address</code> est facultative. Cette derni&egrave;re n'aura de sens que pour Doctrine et ne changera pas le code <code class="code" id="x25bz3_90">SQL</code> g&eacute;n&eacute;r&eacute;.</p></section><section class="chapter"><h2 id="onetomany" data-toc="onetomany">OneToMany</h2><p id="x25bz3_91">Cette association ne peut exister seule, elle est l'inversion d'une association <code class="code" id="x25bz3_97">ManyToOne</code> sur une classe propri&eacute;taire de l'association.</p><p id="x25bz3_92">Une telle association est stock&eacute;e dans une propri&eacute;t&eacute; de type <code class="code" id="x25bz3_98">ArrayCollection</code> qui impl&eacute;mente l'interface <code class="code" id="x25bz3_99">Collection</code>.</p><div class="code-block" data-lang="php">
+#[ORM\Entity(repositoryClass: AddressRepository::class)]
+class Address
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
+    #[ORM\Column(length: 50)]
+    private ?string $city = null;
+
+    #[ORM\Column(length: 5)]
+    private ?string $zipCode = null;
+
+    #[ORM\Column(length: 50)]
+    private ?string $street = null;
+
+    /**
+     * @var Collection&lt;int, Person&gt;
+     */
+    #[ORM\OneToMany(targetEntity: Person::class, mappedBy: 'address')]
+    private Collection $people;
+
+    public function __construct()
+    {
+        $this-&gt;people = new ArrayCollection();
+    }
+
+    // getters et setters
+
+}
+</div><p id="x25bz3_94">Pour ajouter ou supprimer des &eacute;l&eacute;ments &agrave; la collection Doctrine a besoin de deux m&eacute;thodes suppl&eacute;mentaires.</p><aside class="prompt" data-type="tip" data-title="" id="x25bz3_95"><p id="x25bz3_100"><code class="code" id="x25bz3_101">symfony console make:entity --regenerate</code> peut g&eacute;n&eacute;rer ce code pour nous.</p></aside><div class="code-block" data-lang="php">
+    public function addPerson(Person $person): static
+    {
+        if (!$this-&gt;people-&gt;contains($person)) {
+            $this-&gt;people-&gt;add($person);
+            $person-&gt;setAddress($this);
+        }
+
+        return $this;
+    }
+
+    public function removePerson(Person $person): static
+    {
+        if ($this-&gt;people-&gt;removeElement($person)) {
+            // set the owning side to null (unless already changed)
+            if ($person-&gt;getAddress() === $this) {
+                $person-&gt;setAddress(null);
+            }
+        }
+
+        return $this;
+    }
+
+</div></section><section class="chapter"><h2 id="manytomany" data-toc="manytomany">ManyToMany</h2><p id="x25bz3_102">Cette association fait correspondre plusieurs entit&eacute;s cibles avec l'entit&eacute; propri&eacute;taire. Dans le monde relationnel, cela se traduit par l'ajout d'une table interm&eacute;diaire qui contient deux clefs &eacute;trang&egrave;res.</p><div class="code-block" data-lang="php">
+#[ORM\Entity(repositoryClass: PizzaRepository::class)]
+class Pizza
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
+    #[ORM\Column(length: 50)]
+    private ?string $name = null;
+
+    /**
+     * @var Collection&lt;int, Ingredient&gt;
+     */
+    #[ORM\ManyToMany(targetEntity: Ingredient::class, 
+                    inversedBy: 'pizzas')]
+    private Collection $ingredients;
+
+    public function __construct()
+    {
+        $this-&gt;ingredients = new ArrayCollection();
+    }
+    
+    // getters et setters
+</div><div class="code-block" data-lang="php">
+#[ORM\Entity(repositoryClass: IngredientRepository::class)]
+class Ingredient
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
+    #[ORM\Column(length: 50)]
+    private ?string $label = null;
+
+    #[ORM\Column]
+    private ?int $price = null;
+
+    /**
+     * @var Collection&lt;int, Pizza&gt;
+     */
+    #[ORM\ManyToMany(targetEntity: Pizza::class, 
+                    mappedBy: 'ingredients')]
+    private Collection $pizzas;
+
+    public function __construct()
+    {
+        $this-&gt;pizzas = new ArrayCollection();
+    }
+</div><p id="x25bz3_105">Ici il faut d&eacute;cider o&ugrave; placer le c&ocirc;t&eacute; propri&eacute;taire de l'association (celui qui portera l'attribut <code class="code" id="x25bz3_107">inversedBy</code>).</p><p id="x25bz3_106">Avec la commande <code class="code" id="x25bz3_108">make:entity --regenerate</code> nous pouvons ajouter les m&eacute;thodes <code class="code" id="x25bz3_109">add</code> et <code class="code" id="x25bz3_110">remove</code>, n&eacute;cessaires pour le bon fonctionnement de Doctrine.</p></section><section class="chapter"><h2 id="assistance-avec-maker" data-toc="assistance-avec-maker">Assistance avec Maker</h2><p id="x25bz3_111">L'outil <code class="code" id="x25bz3_118">Maker</code> peut nous aider &agrave; &eacute;crire le code des associations.</p><p id="x25bz3_112">Pour cela, il suffit de modifier une entit&eacute; avec <code class="code" id="x25bz3_119">make:entity</code> et de cr&eacute;er la propri&eacute;t&eacute; qui portera l'association.</p><p id="x25bz3_113">Ensuite quand <code class="code" id="x25bz3_120">Maker</code> demandera le type de donn&eacute;es il faudra choisir un type d'association parmi les options suivantes :</p><ul class="list _bullet" id="x25bz3_114"><li class="list__item" id="x25bz3_121"><p>OneToOne</p></li><li class="list__item" id="x25bz3_122"><p>ManyToOne</p></li><li class="list__item" id="x25bz3_123"><p>ManyToMany</p></li><li class="list__item" id="x25bz3_124"><p>relation</p></li></ul><p id="x25bz3_115">La derni&egrave;re option offre une assistance pour le choix du type d'association sous la forme d'un wizard.</p><p id="x25bz3_116"><span class="control" id="x25bz3_125">Exemple</span></p><div class="code-block" data-lang="bash">
+
+`seb@mac sf-playground % symfony console make:entity Person
+Your entity already exists! So let's add some new fields!
+
+New property name (press &lt;return&gt; to stop adding fields):
+&gt; address
+
+Field type (enter ? to see all types) [string]:
+&gt; relation
+
+What class should this entity be related to?:
+&gt; Address
+
+What type of relationship is this?
+ ------------ ---------------------------------------------------------------------- 
+Type         Description
+ ------------ ---------------------------------------------------------------------- 
+ManyToOne    Each Person relates to (has) one Address.                             
+Each Address can relate to (can have) many Person objects.
+
+OneToMany    Each Person can relate to (can have) many Address objects.            
+Each Address relates to (has) one Person.
+
+ManyToMany   Each Person can relate to (can have) many Address objects.            
+Each Address can also relate to (can also have) many Person objects.
+
+OneToOne     Each Person relates to (has) exactly one Address.                     
+Each Address also relates to (has) exactly one Person.
+ ------------ ---------------------------------------------------------------------- 
+
+Relation type? [ManyToOne, OneToMany, ManyToMany, OneToOne]:
+&gt; ManyToOne
+
+Is the Person.address property allowed to be null (nullable)? (yes/no) [yes]:
+&gt; no
+
+Do you want to add a new property to Address 
+so that you cannaccess/update Person objects from it 
+- e.g. $address-&gt;getPeople()? (yes/no) [yes]:
+&gt; yes
+
+A new property will also be added to the Address class 
+so that you can access the related Person objects from it.
+
+New field name inside Address [people]:
+&gt; people
+
+Do you want to activate orphanRemoval 
+on your relationship?
+A Person is &quot;orphaned&quot; when it is removed 
+from its related Address.
+e.g. $address-&gt;removePerson($person)
+
+NOTE: If a Person may *change* 
+from one Address to another, 
+answer &quot;no&quot;.
+
+Do you want to automatically delete 
+orphaned App\Entity\Person objects 
+(orphanRemoval)? (yes/no) [no]:
+&gt; no
+
+updated: src/Entity/Person.php
+updated: src/Entity/Address.php
+
+Add another property? Enter the property name 
+(or press &lt;return&gt; to stop adding fields):
+&gt;
+</div></section><section class="chapter"><h2 id="exercices" data-toc="exercices">Exercices</h2><section class="chapter"><h3 id="association-onetoone" data-toc="association-onetoone">Association OneToOne</h3><p id="x25bz3_130">Cr&eacute;ez une entit&eacute; Profile associ&eacute;e &agrave; une entit&eacute; User avec une relation &laquo; un &agrave; un &raquo;.</p><p id="x25bz3_131"><span class="control" id="x25bz3_133">Objectif :</span></p><p id="x25bz3_132">Chaque utilisateur doit avoir un seul profil.</p></section><section class="chapter"><h3 id="association-manytoone" data-toc="association-manytoone">Association ManyToOne</h3><p id="x25bz3_134">Cr&eacute;ez une entit&eacute; Article li&eacute;e aux entit&eacute;s suivantes :</p><ul class="list _bullet" id="x25bz3_135"><li class="list__item" id="x25bz3_138"><p>une entit&eacute; Category avec une relation &laquo; plusieurs &agrave; un &raquo;.</p></li><li class="list__item" id="x25bz3_139"><p>une entit&eacute; Person (l'auteur de l'article) avec une relation &laquo; plusieurs &agrave; un &raquo;.</p></li></ul><p id="x25bz3_136"><span class="control" id="x25bz3_140">Objectif :</span></p><p id="x25bz3_137">Plusieurs articles peuvent appartenir &agrave; une seule cat&eacute;gorie.</p></section><section class="chapter"><h3 id="association-manytomany" data-toc="association-manytomany">Association ManyToMany</h3><p id="x25bz3_141">Cr&eacute;ez une entit&eacute; Project li&eacute;e &agrave; une entit&eacute; Developer avec une relation &laquo; plusieurs &agrave; plusieurs &raquo;.</p><p id="x25bz3_142"><span class="control" id="x25bz3_144">Objectif :</span></p><p id="x25bz3_143">Un d&eacute;veloppeur peut participer &agrave; plusieurs projets, et chaque projet peut inclure plusieurs d&eacute;veloppeurs.</p></section><section class="chapter"><h3 id="a-faire-pour-chaque-exercice" data-toc="a-faire-pour-chaque-exercice">A faire pour chaque exercice :</h3><ul class="list _bullet" id="x25bz3_145"><li class="list__item" id="x25bz3_146"><p id="x25bz3_150">Cr&eacute;ez les entit&eacute;s.</p></li><li class="list__item" id="x25bz3_147"><p id="x25bz3_151">Impl&eacute;mentez la relation.</p></li><li class="list__item" id="x25bz3_148"><p id="x25bz3_152">G&eacute;n&eacute;rez et appliquez la migration avec Doctrine.</p></li><li class="list__item" id="x25bz3_149"><p id="x25bz3_153">Faire un commit avec Git</p></li></ul></section></section><div class="last-modified">Last modified: 01 février 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="004-00-doctrine.html" class="navigation-links__prev">Doctrine</a><a href="004-002-utilisation-des-associations.html" class="navigation-links__next">Utilisation des associations</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.js"></script></body></html>

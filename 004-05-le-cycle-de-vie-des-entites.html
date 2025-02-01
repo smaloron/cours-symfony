@@ -1,0 +1,58 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-02-01T11:39:32.225752"><title>Le cycle de vie des entit&eacute;s | Symfony support</title><script type="application/json" id="virtual-toc-data">[{"id":"objectifs","level":0,"title":"Objectifs","anchor":"#objectifs"},{"id":"lifecyclecallbacks","level":0,"title":"LifecycleCallbacks","anchor":"#lifecyclecallbacks"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.css" rel="stylesheet"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Le cycle de vie des entit&eacute;s | Symfony support"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Symfony support Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation//version 1/004-05-le-cycle-de-vie-des-entites.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Le cycle de vie des entit&eacute;s | Symfony support"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation//version 1/004-05-le-cycle-de-vie-des-entites.html#webpage",
+    "url": "writerside-documentation//version 1/004-05-le-cycle-de-vie-des-entites.html",
+    "name": "Le cycle de vie des entit&eacute;s | Symfony support",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Symfony support Help"
+}</script><!-- End Schema.org --></head><body data-id="004-05-Le-cycle-de-vie-des-entites" data-main-title="Le cycle de vie des entités" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="004-00-doctrine.md|Doctrine"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Symfony support version 1 Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="004-05-Le-cycle-de-vie-des-entites" id="004-05-Le-cycle-de-vie-des-entites.md">Le cycle de vie des entités</h1><section class="chapter"><h2 id="objectifs" data-toc="objectifs">Objectifs</h2><ul class="list _bullet" id="azs109_5"><li class="list__item" id="azs109_6"><p>Identifier le r&ocirc;le des <code class="code" id="azs109_8">LifecycleCallbacks</code></p></li><li class="list__item" id="azs109_7"><p>Capturer les &eacute;v&eacute;nements du cycle de vie</p></li></ul></section><section class="chapter"><h2 id="lifecyclecallbacks" data-toc="lifecyclecallbacks">LifecycleCallbacks</h2><p id="azs109_9">Doctrine propose un syst&egrave;me d&rsquo;&eacute;v&egrave;nements qui permet d&rsquo;interagir &agrave; chaque &eacute;tape du cycle de vie des entit&eacute;s. Voici les principaux &eacute;v&egrave;nements disponibles.</p><dl id="azs109_10" data-style="title-top"><dt id="azs109_13" data-expandable="false">PrePersist</dt><dd><p id="azs109_22">Avant qu&rsquo;une entit&eacute; soit persist&eacute;e dans la base de donn&eacute;es.</p><p id="azs109_23">Utile pour initialiser des valeurs ou effectuer une validation.</p></dd><dt id="azs109_14" data-expandable="false">PostPersist</dt><dd><p id="azs109_25">Apr&egrave;s qu&rsquo;une entit&eacute; a &eacute;t&eacute; persist&eacute;e.</p><p id="azs109_26">Utile pour des actions n&eacute;cessitant que l'entit&eacute; ait d&eacute;j&agrave; un identifiant (ex. : journalisation, notifications).</p></dd><dt id="azs109_15" data-expandable="false">PreUpdate</dt><dd><p id="azs109_28">Avant qu&rsquo;une entit&eacute; soit mise &agrave; jour.</p><p id="azs109_29">Utile pour modifier des champs calcul&eacute;s ou mettre &agrave; jour des m&eacute;tadonn&eacute;es avant la sauvegarde.</p></dd><dt id="azs109_16" data-expandable="false">PostUpdate</dt><dd><p id="azs109_31">Apr&egrave;s qu&rsquo;une entit&eacute; a &eacute;t&eacute; mise &agrave; jour.</p><p id="azs109_32">Utile pour effectuer des actions apr&egrave;s que les donn&eacute;es ont &eacute;t&eacute; enregistr&eacute;es (ex. : mise en cache, journalisation).</p></dd><dt id="azs109_17" data-expandable="false">PreRemove</dt><dd><p id="azs109_34">Avant qu&rsquo;une entit&eacute; soit supprim&eacute;e.</p><p id="azs109_35">Utile pour effectuer des validations ou sauvegarder des donn&eacute;es avant suppression.</p></dd><dt id="azs109_18" data-expandable="false">PostRemove</dt><dd><p id="azs109_37">Apr&egrave;s qu&rsquo;une entit&eacute; a &eacute;t&eacute; supprim&eacute;e.</p><p id="azs109_38">Utile pour effectuer des actions comme la suppression de fichiers associ&eacute;s.</p></dd><dt id="azs109_19" data-expandable="false">PostLoad</dt><dd><p id="azs109_40">Apr&egrave;s qu&rsquo;une entit&eacute; a &eacute;t&eacute; charg&eacute;e depuis la base de donn&eacute;es.</p><p id="azs109_41">Utile pour initialiser des propri&eacute;t&eacute;s calcul&eacute;es ou effectuer des transformations non persist&eacute;es.</p></dd><dt id="azs109_20" data-expandable="false">PreFlush</dt><dd><p id="azs109_43">Avant que l'EntityManager ex&eacute;cute le flush().</p><p id="azs109_44">Utile pour valider ou synchroniser des entit&eacute;s avant leur &eacute;criture.</p></dd></dl><section class="chapter"><h3 id="un-exemple" data-toc="un-exemple">Un exemple</h3><div class="code-block" data-lang="php">
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
+class Product
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private $id;
+
+    #[ORM\Column(type: 'string')]
+    private $name;
+
+    #[ORM\Column(type: 'datetime')]
+    private $createdAt;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private $updatedAt;
+
+    // Méthode déclenchée avant la persistance
+    #[ORM\PrePersist]
+    public function setCreatedAt(): void
+    {
+        $this-&gt;createdAt = new \DateTimeImmutable();
+    }
+
+    // Méthode déclenchée avant la mise à jour
+    #[ORM\PreUpdate]
+    public function setUpdatedAt(): void
+    {
+        $this-&gt;updatedAt = new \DateTimeImmutable();
+    }
+
+    // Méthode déclenchée après le chargement
+    #[ORM\PostLoad]
+    public function initialize(): void
+    {
+        // Exemple : initialisation d’une propriété non persistée
+    }
+}
+</div></section><section class="chapter"><h3 id="bonnes-pratiques" data-toc="bonnes-pratiques">Bonnes pratiques</h3><ol class="list _decimal" id="azs109_46" type="1"><li class="list__item" id="azs109_48"><p id="azs109_51">Utiliser les callbacks pour des op&eacute;rations sp&eacute;cifiques : &Eacute;viter de placer trop de logique dans les callbacks afin de garder le code lisible et maintenable.</p></li><li class="list__item" id="azs109_49"><p id="azs109_52">Ne pas modifier pas directement les relations dans <code class="code" id="azs109_53">PostLoad</code>: Cela peut perturber Doctrine et g&eacute;n&eacute;rer des erreurs.</p></li><li class="list__item" id="azs109_50"><p id="azs109_54">Valider les donn&eacute;es en dehors des callbacks : Les callbacks ne doivent pas remplacer une bonne validation dans les formulaires ou services.</p></li></ol><p id="azs109_47">Les Lifecycle Callbacks sont tr&egrave;s utiles dans les cas o&ugrave; des actions doivent &ecirc;tre d&eacute;clench&eacute;es automatiquement en r&eacute;ponse aux changements du cycle de vie des entit&eacute;s. Cependant, pour des t&acirc;ches complexes, il convient de privil&eacute;gier les event listeners ou les event subscribers pour maintenir un code propre et d&eacute;coupl&eacute;.</p></section></section><div class="last-modified">Last modified: 01 février 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="004-04-la-classe-repository.html" class="navigation-links__prev">La classe Repository</a><a href="004-06-querybuilder.html" class="navigation-links__next">La classe QueryBuilder</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.js"></script></body></html>

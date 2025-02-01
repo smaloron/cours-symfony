@@ -1,0 +1,151 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-02-01T11:39:32.215007"><title>Les voters | Symfony support</title><script type="application/json" id="virtual-toc-data">[{"id":"objectifs","level":0,"title":"Objectifs","anchor":"#objectifs"},{"id":"le-principe","level":0,"title":"Le principe","anchor":"#le-principe"},{"id":"mise-en-place","level":0,"title":"Mise en place","anchor":"#mise-en-place"},{"id":"quelques-cas-d-utilisation-des-voters","level":0,"title":"Quelques Cas d\u0027utilisation des voters","anchor":"#quelques-cas-d-utilisation-des-voters"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.css" rel="stylesheet"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Les voters | Symfony support"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Symfony support Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation//version 1/006-02-les-voters.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Les voters | Symfony support"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation//version 1/006-02-les-voters.html#webpage",
+    "url": "writerside-documentation//version 1/006-02-les-voters.html",
+    "name": "Les voters | Symfony support",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Symfony support Help"
+}</script><!-- End Schema.org --></head><body data-id="006-02-Les-voters" data-main-title="Les voters" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="006-00-Securite.md|Sécurité"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Symfony support version 1 Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="006-02-Les-voters" id="006-02-Les-voters.md">Les voters</h1><section class="chapter"><h2 id="objectifs" data-toc="objectifs">Objectifs</h2><ul class="list _bullet" id="-909q27_7"><li class="list__item" id="-909q27_8"><p>Utiliser les voters pour d&eacute;finir des autorisations contextuelles</p></li></ul></section><section class="chapter"><h2 id="le-principe" data-toc="le-principe">Le principe</h2><p id="-909q27_9">Parfois l'autorisation d'acc&egrave;s &agrave; une ressource d&eacute;pend du contexte. Nous ne pouvons alors, nous contenter de tester le r&ocirc;le de l'utilisateur.</p><p id="-909q27_10">Par exemple, dans le cas d'une application o&ugrave; les auteurs &eacute;crivent des articles, l'autorisation de modification de l'article pourrait d&eacute;pendre du fait que l'utilisateur authentifi&eacute; soit l'auteur de cet article. Il ne suffit donc pas de tester que l'utilisateur poss&egrave;de un r&ocirc;le particulier.</p><p id="-909q27_11">Pour traiter cette question Symfony utilise des classes Voters.</p></section><section class="chapter"><h2 id="mise-en-place" data-toc="mise-en-place">Mise en place</h2><section class="chapter"><h3 id="cr-ation-du-voter" data-toc="cr-ation-du-voter">Cr&eacute;ation du voter</h3><p id="-909q27_14">Nous disposons d'une commande console pour cr&eacute;er le code des voters.</p><div class="code-block" data-lang="none">
+symfony console make:voter
+</div><div class="code-block" data-lang="php">
+&lt;?php
+namespace App\Security\Voter;
+
+use App\Entity\Article;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+use Symfony\Component\Security\Core\User\UserInterface;
+
+class ArticleVoter extends Voter
+{
+    // Définition des actions possibles sur l'entité Article
+    public const EDIT = 'ARTICLE_EDIT';
+    public const DELETE = 'ARTICLE_DELETE';
+
+    // Injection du service Security dans le constructeur
+    public function __construct(private Security $security) {}
+
+    /**
+     * Vérifie si ce Voter doit être appliqué au cas donné.
+     *
+     * @param string $attribute L'action demandée (ex: ARTICLE_EDIT, ARTICLE_DELETE)
+     * @param mixed $subject L'objet sur lequel on veut appliquer l'autorisation (ici un Article)
+     * @return bool True si le Voter doit gérer cette vérification, sinon False
+     */
+    protected function supports(string $attribute, mixed $subject): bool
+    {
+        return in_array($attribute, [self::EDIT, self::DELETE]) 
+                        &amp;&amp; $subject instanceof Article;
+    }
+
+    /**
+     * Vérifie si l'utilisateur a l'autorisation pour effectuer l'action donnée sur le Post
+     *
+     * @param string $attribute L'action demandée (POST_EDIT ou POST_DELETE)
+     * @param mixed $subject L'objet concerné (ici un Post)
+     * @param TokenInterface $token Le token de l'utilisateur connecté
+     * @return bool True si l'utilisateur a l'autorisation, sinon False
+     */
+    protected function voteOnAttribute(
+        string $attribute, 
+        mixed $subject, 
+        TokenInterface $token
+    ): bool
+    {
+        $user = $token-&gt;getUser();
+
+        // Si l'utilisateur n'est pas connecté, il n'a pas d'autorisation
+        if (!$user instanceof UserInterface) {
+            return false;
+        }
+
+        /** @var Article $article */
+        $article = $subject;
+
+        // L'administrateur a toujours tous les droits
+        if ($this-&gt;security-&gt;isGranted('ROLE_ADMIN')) {
+            return true;
+        }
+
+        // Vérification spécifique selon l'action demandée
+        return match ($attribute) {
+            self::EDIT =&gt; $this-&gt;canEdit($article, $user),
+            self::DELETE =&gt; $this-&gt;canDelete($article, $user),
+            default =&gt; false,
+        };
+    }
+
+    /**
+     * Vérifie si l'utilisateur peut modifier un Article
+     *
+     * @param Article $article L'article à modifier
+     * @param UserInterface $user L'utilisateur en cours
+     * @return bool True si l'utilisateur est l'auteur de l'article, sinon False
+     */
+    private function canEdit(
+        Article $article, 
+        UserInterface $user
+    ): bool
+    {
+        return $article-&gt;getAuthor() === $user;
+    }
+
+    /**
+     * Vérifie si l'utilisateur peut supprimer un Post
+     *
+     * @param Article $article L'article à supprimer
+     * @param UserInterface $user L'utilisateur en cours
+     * @return bool True si l'utilisateur est l'auteur du Post ou a le rôle &quot;MODERATOR&quot;
+     */
+    private function canDelete(
+        Article $article, 
+        UserInterface $user
+    ): bool
+    {
+        return $article-&gt;getAuthor() === $user || $this-&gt;security-&gt;isGranted('ROLE_MODERATOR');
+    }
+}
+</div></section><section class="chapter"><h3 id="utilisation-du-voter" data-toc="utilisation-du-voter">Utilisation du voter</h3><section class="chapter"><h4 id="dans-un-contr-leur" data-toc="dans-un-contr-leur">Dans un contr&ocirc;leur</h4><div class="code-block" data-lang="php">
+$this-&gt;denyAccessUnlessGranted('ARTICLE_EDIT', $article);
+</div><p id="-909q27_20">ou</p><div class="code-block" data-lang="none">
+#[IsGranted('ARTICLE_DELETE', 'article')]
+</div><section class="chapter"><h5 id="exemple" data-toc="exemple">Exemple</h5><div class="code-block" data-lang="php">
+class ArticleController extends AbstractController
+{
+    #[Route('/article/{id}/edit', name: 'article_edit')]
+    public function edit(Article $article): Response
+    {
+        $this-&gt;denyAccessUnlessGranted('ARTICLE_EDIT', $article);
+
+        // Si on arrive ici, c'est que l'utilisateur a la permission
+        return new Response('Formulaire d\'édition');
+    }
+
+    #[Route('/post/{id}/delete', name: 'post_delete')]
+    #[IsGranted('POST_DELETE', 'article')]
+    // le deuxième argument de IsGranted fait référence
+    // à l'argument $article passé à la méthode delete
+    public function delete(Article $article): Response
+    {
+        // L'utilisateur a la permission de supprimer
+        return new Response('Post supprimé !');
+    }
+}
+</div></section></section><section class="chapter"><h4 id="dans-une-vue" data-toc="dans-une-vue">Dans une vue</h4><div class="code-block" data-lang="twig">
+{% if is_granted('ARTICLE_EDIT', article) %}
+    &lt;a href=&quot;{{ path('article_edit', { id: article.id }) }}&quot;&gt;Modifier&lt;/a&gt;
+{% endif %}
+
+{% if is_granted('ARTICLE_DELETE', article) %}
+    &lt;a href=&quot;{{ path('article_delete', { id: article.id }) }}&quot;&gt;Supprimer&lt;/a&gt;
+{% endif %}
+</div></section></section></section><section class="chapter"><h2 id="quelques-cas-d-utilisation-des-voters" data-toc="quelques-cas-d-utilisation-des-voters">Quelques Cas d'utilisation des voters</h2><dl id="-909q27_25" data-style="title-top"><dt id="-909q27_26" data-expandable="false">Contr&ocirc;ler l'acc&egrave;s &agrave; l'&eacute;dition et la suppression d'une entit&eacute;.</dt><dd><p id="-909q27_33">Seul le cr&eacute;ateur peut modifier ou supprimer.</p></dd><dt id="-909q27_27" data-expandable="false">Autoriser l'acc&egrave;s &agrave; une ressource uniquement pendant une p&eacute;riode donn&eacute;e.</dt><dd><p id="-909q27_35">Un utilisateur ne peut modifier un document qu'avant la deadline.</p></dd><dt id="-909q27_28" data-expandable="false">Restreindre l'acc&egrave;s en fonction du statut d'une entit&eacute;.</dt><dd><p id="-909q27_37">Un utilisateur ne peut modifier un ticket si celui-ci a &eacute;t&eacute; cl&ocirc;tur&eacute;.</p></dd><dt id="-909q27_29" data-expandable="false">Autoriser l'acc&egrave;s en fonction d'un groupe ou d'une &eacute;quipe</dt><dd><p id="-909q27_39">Un utilisateur peut voir un projet uniquement s'il fait partie de l'&eacute;quipe.</p></dd><dt id="-909q27_30" data-expandable="false">V&eacute;rifier si l'utilisateur a d&eacute;j&agrave; effectu&eacute; une action sur une ressource.</dt><dd><p id="-909q27_41">Un utilisateur ne peut &quot;liker&quot; qu'une seule fois.</p></dd><dt id="-909q27_31" data-expandable="false">Restreindre l'acc&egrave;s en fonction du nombre de ressources poss&eacute;d&eacute;es.</dt><dd><p id="-909q27_43">Un utilisateur ne peut cr&eacute;er que 5 articles maximum, sauf s'il a un r&ocirc;le ROLE_PREMIUM.</p></dd></dl></section><div class="last-modified">Last modified: 01 février 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="006-01-custom-authenticator.html" class="navigation-links__prev">Custom Authenticator</a><a href="006-03-userchecker.html" class="navigation-links__next">UserChecker</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.js"></script></body></html>

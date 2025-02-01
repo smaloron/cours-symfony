@@ -1,0 +1,186 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-02-01T11:39:32.214869"><title>Variables globales | Symfony support</title><script type="application/json" id="virtual-toc-data">[{"id":"objectifs","level":0,"title":"Objectifs","anchor":"#objectifs"},{"id":"les-variables-du-framework","level":0,"title":"Les variables du framework","anchor":"#les-variables-du-framework"},{"id":"variables-globales-personnalis-es","level":0,"title":"Variables globales personnalisées","anchor":"#variables-globales-personnalis-es"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.css" rel="stylesheet"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Variables globales | Symfony support"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Symfony support Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation//version 1/002-03-variables-globales.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Variables globales | Symfony support"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation//version 1/002-03-variables-globales.html#webpage",
+    "url": "writerside-documentation//version 1/002-03-variables-globales.html",
+    "name": "Variables globales | Symfony support",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Symfony support Help"
+}</script><!-- End Schema.org --></head><body data-id="002-03-Variables-globales" data-main-title="Variables globales" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="002-00-twig.md|Twig"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Symfony support version 1 Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="002-03-Variables-globales" id="002-03-Variables-globales.md">Variables globales</h1><section class="chapter"><h2 id="objectifs" data-toc="objectifs">Objectifs</h2><ul class="list _bullet" id="-6bc8z7_6"><li class="list__item" id="-6bc8z7_7"><p>Identifier les variables du framework disponibles dans les vues</p></li><li class="list__item" id="-6bc8z7_8"><p>Lister les solutions pour cr&eacute;er nos propres variables globales</p></li></ul></section><section class="chapter"><h2 id="les-variables-du-framework" data-toc="les-variables-du-framework">Les variables du framework</h2><p id="-6bc8z7_9">Symfony injecte automatiquement une variable app dans tous les templates Twig. Cette variable donne acc&egrave;s &agrave; diverses informations de l'application :</p><ul class="list _bullet" id="-6bc8z7_10"><li class="list__item" id="-6bc8z7_12"><p><code class="code" id="-6bc8z7_17">app.user</code>: L'utilisateur courant ou null si non authentifi&eacute;</p></li><li class="list__item" id="-6bc8z7_13"><p><code class="code" id="-6bc8z7_18">app.request</code>: L'objet Request courant</p></li><li class="list__item" id="-6bc8z7_14"><p><code class="code" id="-6bc8z7_19">app.session</code>: L'objet Session courant</p></li><li class="list__item" id="-6bc8z7_15"><p><code class="code" id="-6bc8z7_20">app.flashes</code>: Les messages flash stock&eacute;s en session</p></li><li class="list__item" id="-6bc8z7_16"><p><code class="code" id="-6bc8z7_21">app.environment</code>: L'environnement courant (dev, prod, etc.)</p></li></ul><div class="code-block" data-lang="twig">
+
+&lt;p&gt; 
+Votre adresse IP est : 
+{{ app.request.clientIP }}
+&lt;/p&gt;
+
+&lt;p&gt; 
+La route Symfony est : 
+{{ app.request.attributes.get('_route') }}
+&lt;/p&gt;
+
+&lt;p&gt;
+L'URL est : 
+La route Symfony est : 
+{{ app.request.requesturi }}
+&lt;/p&gt;
+
+&lt;p&gt;
+Votre user agent est : 
+{{ app.request.headers.get('User-Agent') }}
+&lt;/p&gt;
+</div></section><section class="chapter"><h2 id="variables-globales-personnalis-es" data-toc="variables-globales-personnalis-es">Variables globales personnalis&eacute;es</h2><section class="chapter"><h3 id="la-configuration-twig" data-toc="la-configuration-twig">La configuration Twig</h3><p id="-6bc8z7_24">Si notre &quot;variable&quot; est en fait une constante, le plus simple est de la d&eacute;clarer dans la configuration de Twig.</p><div class="code-block" data-lang="yaml">
+# config/packages/twig.yaml
+twig:
+    globals:
+        site_name: 'Mon Site Web'
+        contact_email: 'contact@monsite.com'
+</div><div class="code-block" data-lang="twig">
+&lt;h1&gt;Vous êtes sur {{ site_name }}&lt;/h1&gt;
+
+vous pouvez me contacter à {{ contact_email }}
+</div><p id="-6bc8z7_27">Tr&egrave;s simple, mais les valeurs sont statiques.</p><p id="-6bc8z7_28">Si les variables doivent &eacute;galement &ecirc;tre disponibles pour les classes et pas seulement pour les vues, il sera judicieux de d&eacute;clarer ces variables dans la clef <code class="code" id="-6bc8z7_33">parameters</code> de <code class="code" id="-6bc8z7_34">services.yaml</code>.</p><div class="code-block" data-lang="yaml">
+# config/services.yaml
+parameters:
+    app.siteName: 'Mon Site Web'
+    app.contactEmail: 'contact@monsite.com'
+</div><p id="-6bc8z7_30">Et d'y faire ensuite r&eacute;f&eacute;rence dans la configuration de Twig</p><div class="code-block" data-lang="yaml">
+# config/packages/twig.yaml
+twig:
+    globals:
+        site_name: '%app.siteName%'
+        contact_email: '%app.contactEmail'
+</div><aside class="prompt" data-type="tip" data-title="" id="-6bc8z7_32"><p id="-6bc8z7_35">Notons que le nom des param&egrave;tres est arbitraire, nous aurions pu utiliser les m&ecirc;mes noms que pour les variables Twig</p></aside></section><section class="chapter"><h3 id="les-extensions-twig" data-toc="les-extensions-twig">Les extensions Twig</h3><p id="-6bc8z7_36">Si l'information que nous souhaitons partager est dynamique, la solution pr&eacute;c&eacute;dente ne sera pas satisfaisante. Pour g&eacute;rer ce cas, nous utiliserons une extension Twig.</p><p id="-6bc8z7_37">l'attribut PHP <code class="code" id="-6bc8z7_42">#[AsTaggedItem('twig.extension')]</code> marque ce service comme une extension Twig et le rend disponible pour toutes les vues.</p><p id="-6bc8z7_38">La m&eacute;thode <code class="code" id="-6bc8z7_43">getGlobals</code> retourne un tableau de toutes les variables que nous souhaitons rendre disponible pour nos vues.</p><div class="code-block" data-lang="php">
+// src/Twig/AppContextExtension
+
+namespace App\Twig;
+
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
+use Twig\Extension\AbstractExtension;
+use Twig\Extension\GlobalsInterface;
+
+#[AsTaggedItem('twig.extension')]
+class AppContextExtension extends AbstractExtension implements GlobalsInterface
+{
+    public function getGlobals(): array
+    {
+        return [
+            'currentYear' =&gt; date('Y'),
+        ];
+    }
+}
+</div><section class="chapter"><h4 id="fonctions-twig" data-toc="fonctions-twig">Fonctions Twig</h4><p id="-6bc8z7_44">Nous pouvons &eacute;galement exposer des fonctions avec la m&eacute;thode <code class="code" id="-6bc8z7_51">getFunctions</code>.</p><p id="-6bc8z7_45">Imaginons un service m&eacute;t&eacute;o</p><div class="code-block" data-lang="php">
+// src/Service/WeatherService.php
+
+namespace App\Service;
+
+class WeatherService
+{
+    const array locations = [
+        'Paris' =&gt; 'Temps couvert',
+        'Madrid' =&gt; 'Il fait beau',
+        'Vladivostok' =&gt; 'On se pèle'
+    ];
+    public function getWeather(string $location): string
+    {
+        return self::locations[$location] 
+                    ?? &quot;Pas d'infos pour cette ville&quot;;
+    }
+}
+</div><p id="-6bc8z7_47">Nous ajoutons la m&eacute;thode <code class="code" id="-6bc8z7_52">getFunctions</code> &agrave; notre extension et nous injectons &eacute;galement le service dans le constructeur.</p><div class="code-block" data-lang="php">
+// src/Twig/AppContextExtension.php
+
+#[AsTaggedItem('twig.extension')]
+class AppContextExtension extends AbstractExtension implements GlobalsInterface
+{
+
+
+    public function __construct(
+        private WeatherService $weatherService
+    ) {}
+
+    public function getGlobals(): array
+    {
+        return [
+            'currentYear' =&gt; date('Y'),
+        ];
+    }
+
+    public function getFunctions()
+    {
+        return [
+            new TwigFunction('get_weather', [
+                $this-&gt;weatherService,
+                'getWeather'
+            ]),
+        ];
+    }
+}
+</div><p id="-6bc8z7_49">Nous pouvons ensuite utiliser le service dans les vues comme ceci :</p><div class="code-block" data-lang="twig">
+{{ get_weather('Paris') }}
+</div></section><section class="chapter"><h4 id="filtre-twig" data-toc="filtre-twig">Filtre Twig</h4><p id="-6bc8z7_53">Les extensions Twig peuvent &eacute;galement d&eacute;finir de nouveaux filtres. Imaginons un service qui expose une fonction de r&eacute;duction de texte.</p><div class="code-block" data-lang="php">
+// src/Service/TextUtils.php
+
+namespace App\Service;
+
+class TextUtils
+{
+
+    public function truncateText(
+        string $text,
+        int $maxLength = 50): string
+    {
+        if (strlen($text) &lt;= $maxLength) {
+            return $text;
+        }
+
+        return substr($text, 0, $maxLength) . '...';
+    }
+}
+</div><div class="code-block" data-lang="php">
+// src/Twig/AppContextExtension.php
+
+#[AsTaggedItem('twig.extension')]
+class AppContextExtension extends AbstractExtension implements GlobalsInterface
+{
+
+    public function __construct(
+        private WeatherService $weatherService,
+        private TextUtils $textUtils
+    ) {}
+
+    public function getGlobals(): array
+    {
+        return [
+            'currentYear' =&gt; date('Y'),
+        ];
+    }
+
+    public function getFunctions(): array
+    {
+        return [
+            new TwigFunction('get_weather', [
+                $this-&gt;weatherService,
+                'getWeather'
+            ]),
+        ];
+    }
+
+    public function getFilters(): array {
+        return [
+            new TwigFilter('truncate', [
+                $this-&gt;textUtils,
+                'truncateText'
+            ]),
+        ];
+    }
+}
+</div><div class="code-block" data-lang="twig">
+{{ 'Il était une fois dans un pays' | truncate(20) }}
+</div></section></section></section><div class="last-modified">Last modified: 01 février 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="002-02-assetmapper.html" class="navigation-links__prev">AssetMapper</a><a href="002-04-messages-flash.html" class="navigation-links__next">Messages Flash</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.js"></script></body></html>

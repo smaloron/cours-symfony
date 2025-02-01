@@ -1,0 +1,208 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-02-01T11:39:32.215033"><title>DataTransformer | Symfony support</title><script type="application/json" id="virtual-toc-data">[{"id":"objectifs","level":0,"title":"Objectifs","anchor":"#objectifs"},{"id":"principe","level":0,"title":"Principe","anchor":"#principe"},{"id":"exemple-conversion-de-prix-en-centimes","level":0,"title":"Exemple, conversion de prix en centimes","anchor":"#exemple-conversion-de-prix-en-centimes"},{"id":"un-autre-exemple-plus-complexe","level":0,"title":"Un autre exemple plus complexe","anchor":"#un-autre-exemple-plus-complexe"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.css" rel="stylesheet"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="DataTransformer | Symfony support"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Symfony support Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation//version 1/005-06-datatransformer.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="DataTransformer | Symfony support"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation//version 1/005-06-datatransformer.html#webpage",
+    "url": "writerside-documentation//version 1/005-06-datatransformer.html",
+    "name": "DataTransformer | Symfony support",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Symfony support Help"
+}</script><!-- End Schema.org --></head><body data-id="005-06-DataTransformer" data-main-title="DataTransformer" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="005-00-formulaires.md|Formulaires"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Symfony support version 1 Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="005-06-DataTransformer" id="005-06-DataTransformer.md">DataTransformer</h1><section class="chapter"><h2 id="objectifs" data-toc="objectifs">Objectifs</h2><ul class="list _bullet" id="z4tmb7r_7"><li class="list__item" id="z4tmb7r_8"><p>Identifier le r&ocirc;le des DataTransformer.</p></li><li class="list__item" id="z4tmb7r_9"><p>&Eacute;tudier des exemples de cas d'utilisation.</p></li></ul></section><section class="chapter"><h2 id="principe" data-toc="principe">Principe</h2><p id="z4tmb7r_10">Les DataTransformers dans Symfony sont des classes qui permettent de convertir des donn&eacute;es d'un format &agrave; un autre, notamment entre :</p><ul class="list _bullet" id="z4tmb7r_11"><li class="list__item" id="z4tmb7r_14"><p id="z4tmb7r_17">Le mod&egrave;le (donn&eacute;es utilis&eacute;es par l&rsquo;application, souvent des objets)</p></li><li class="list__item" id="z4tmb7r_15"><p id="z4tmb7r_18">Le formulaire (valeurs affich&eacute;es et soumises par l&rsquo;utilisateur)</p></li><li class="list__item" id="z4tmb7r_16"><p id="z4tmb7r_19">Ils sont souvent utilis&eacute;s pour des formulaires qui n&eacute;cessitent un format sp&eacute;cifique pour l'affichage ou l'enregistrement.</p></li></ul><p id="z4tmb7r_12">Symfony utilise d&eacute;j&agrave; des transformateurs en interne pour convertir certaines valeurs comme les entit&eacute;s dans un EntityType ou les valeurs bool&eacute;ennes.</p><section class="chapter"><h3 id="fonctionnement" data-toc="fonctionnement">Fonctionnement</h3><p id="z4tmb7r_20">Un <code class="code" id="z4tmb7r_22">DataTransformer</code> est une classe qui impl&eacute;mente <code class="code" id="z4tmb7r_23">DataTransformerInterface</code>, cette interface expose deux m&eacute;thodes :</p><ul class="list _bullet" id="z4tmb7r_21"><li class="list__item" id="z4tmb7r_24"><p><code class="code" id="z4tmb7r_26">transform</code> pour g&eacute;rer le passage du mod&egrave;le au formulaire.</p></li><li class="list__item" id="z4tmb7r_25"><p><code class="code" id="z4tmb7r_27">reverseTransform</code> pour g&eacute;rer le passage du formulaire au mod&egrave;le.</p></li></ul></section></section><section class="chapter"><h2 id="exemple-conversion-de-prix-en-centimes" data-toc="exemple-conversion-de-prix-en-centimes">Exemple, conversion de prix en centimes</h2><p id="z4tmb7r_28">Les applications de gestion et de comptabilit&eacute; stockent souvent les valeurs mon&eacute;taires en centimes dans une colonne de type <code class="code" id="z4tmb7r_32">integer</code>. Cela &eacute;vite les probl&egrave;mes de pr&eacute;cision caus&eacute;s par les calculs sur des nombres &agrave; virgule flottante.</p><p id="z4tmb7r_29">Cependant, nous n'allons pas demander aux utilisateurs de notre application de saisir les montants en centimes.</p><div class="code-block" data-lang="php">
+namespace App\Form\DataTransformer;
+
+use Symfony\Component\Form\DataTransformerInterface;
+
+class PriceToCentsTransformer implements DataTransformerInterface
+{
+    public function transform(mixed $value): ?float
+    {
+
+        return (float) number_format($value / 100, 2, '.', '');
+    }
+
+    public function reverseTransform(mixed $value): ?int
+    {
+        if (!$value) {
+            return null;
+        }
+        $price = (float)str_replace(',', '.', $value);
+        return (int) ($price * 100);
+    }
+}
+</div><section class="chapter"><h3 id="conversion-du-prix-dans-un-formulaire" data-toc="conversion-du-prix-dans-un-formulaire">Conversion du prix dans un formulaire</h3><p id="z4tmb7r_33">Nous injectons le <code class="code" id="z4tmb7r_35">DataTransformer</code> et utilisons la m&eacute;thode <code class="code" id="z4tmb7r_36">addModelTransformer</code> pour lier cette classe &agrave; un champ du formulaire.</p><div class="code-block" data-lang="php">
+use App\Form\DataTransformer\PriceTransformer;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+
+class ProductType extends AbstractType
+{
+    public function __construct(
+        private PriceToCentsTransformer $priceTransformer
+    ){}
+
+    public function buildForm(
+        FormBuilderInterface $builder, 
+        array $options
+    )
+    {
+        $builder-&gt;add('price', MoneyType::class);
+        $builder-&gt;get('price')
+                -&gt;addModelTransformer(
+                    $this-&gt;priceTransformer
+                );
+    }
+}
+</div></section></section><section class="chapter"><h2 id="un-autre-exemple-plus-complexe" data-toc="un-autre-exemple-plus-complexe">Un autre exemple plus complexe</h2><p id="z4tmb7r_37">Imaginons une entit&eacute; Post qui stocke un <code class="code" id="z4tmb7r_43">ArrayCollection</code> d'entit&eacute;s Tag au sein d'une association <code class="code" id="z4tmb7r_44">ManyToMany</code>.</p><p id="z4tmb7r_38">Le formulaire propose la saisie sous la forme d'un champ texte ou les tags sont s&eacute;par&eacute;s par une virgule.</p><p id="z4tmb7r_39">A l'affichage du formulaire, il faut donc Convertir l'objet <code class="code" id="z4tmb7r_45">ArrayCollection</code> en une chaine de caract&egrave;res.</p><p id="z4tmb7r_40">Au traitement du formulaire les op&eacute;rations sont plus compliqu&eacute;es, car il faut :</p><ul class="list _bullet" id="z4tmb7r_41"><li class="list__item" id="z4tmb7r_46"><p>Convertir la cha&icirc;ne de caract&egrave;re en tableau ordinal</p></li><li class="list__item" id="z4tmb7r_47"><p>D&eacute;dupliquer le tableau (pour &eacute;viter les tags en double) et &eacute;liminer les espaces aux extr&eacute;mit&eacute;s des tags (trim).</p></li><li class="list__item" id="z4tmb7r_48"><p>V&eacute;rifier si chaque tag existe dans la base de donn&eacute;es et le cr&eacute;er s'il n'existe pas.</p></li><li class="list__item" id="z4tmb7r_49"><p>Retourner un objet ArrayCollection qui pourra &ecirc;tre persist&eacute;.</p></li></ul><section class="chapter"><div class="collapse"><div class="collapse__title"><h3 id="le-code" data-toc="le-code">Le code</h3></div><div class="collapse__content"><section class="chapter"><h4 id="le-datatransformer" data-toc="le-datatransformer">Le DataTransformer</h4><div class="code-block" data-lang="php">
+// src/Form\DataTransformer/TagsTransformer.php
+
+namespace App\Form\DataTransformer;
+
+use App\Entity\Tag;
+use App\Repository\TagRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\Form\Exception\TransformationFailedException;
+use Doctrine\Common\Collections\Collection;
+
+class TagsTransformer implements DataTransformerInterface
+{
+    
+
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+        private TagRepository $tagRepository
+    ) {}
+
+    /**
+     * Transforme une collection de Tag en une chaîne de texte.
+     * Ex: Collection[Tag(&quot;Symfony&quot;), Tag(&quot;API&quot;)] → &quot;Symfony, API&quot;
+     */
+    public function transform(mixed $tags): string
+    {
+        if (!$tags instanceof Collection) {
+            return '';
+        }
+
+        // La méthode toArray transforme
+        // un ArrayCollection en un tableau ordinal
+        return implode(
+            ', ',
+            $tags-&gt;map(
+                fn(Tag $tag) =&gt; $tag-&gt;getTagName()
+            )-&gt;toArray()
+        );
+    }
+
+    /**
+     * Transforme une chaîne de tags en une collection d'objets Tag.
+     * Ex: &quot;Symfony, API&quot; → Collection[Tag(&quot;Symfony&quot;), Tag(&quot;API&quot;)]
+     */
+    public function reverseTransform(mixed $value): Collection
+    {
+        if (!$value) {
+            return new ArrayCollection();
+        }
+
+        // Conversion de la chaine en tableau,
+        // nettoyage de la saisie
+        // et déduplication
+        $tagNames = array_unique(
+            //array_filter(
+                array_map(
+                    'trim',
+                    explode(',', $value)
+                )
+            //)
+        );
+        
+        // Recherche de tous les tags existants
+        $existingTags = $this-&gt;tagRepository
+                             -&gt;findBy(['tagName' =&gt; $tagNames]);
+        
+        // Transformation de la collection d'entités 
+        // en un tableau ordinal de chaînes de caractère
+        $existingTagNames = array_map(
+            fn(Tag $tag) =&gt; $tag-&gt;getTagName(), $existingTags
+        );
+
+        // Création des nouveaux tags
+        $newTags = [];
+        foreach ($tagNames as $tagName) {
+            // Si le tag n'existe pas,
+            // il est créé et persisté
+            if (!in_array(
+                $tagName, 
+                $existingTagNames, true)
+            ) {
+                $tag = new Tag();
+                $tag-&gt;setTagName($tagName);
+                $this-&gt;entityManager-&gt;persist($tag);
+                $newTags[] = $tag;
+            }
+        }
+
+        // Fusion des deux tableaux de tags
+        $tags = array_merge($existingTags, $newTags);
+        
+        // Conversion en ArrayCollection
+        return new ArrayCollection($tags);
+    }
+}
+</div></section><section class="chapter"><h4 id="le-formulaire" data-toc="le-formulaire">Le formulaire</h4><div class="code-block" data-lang="php">
+// src/Form/PostType.php
+
+namespace App\Form;
+
+use App\Entity\Post;
+use App\Entity\Tag;
+use App\Form\DataTransformer\TagsTransformer;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+class PostType extends AbstractType
+{
+    public function __construct(
+        private TagsTransformer $tagsTransformer,
+    ) {}
+
+    public function buildForm(
+        FormBuilderInterface $builder, 
+        array $options
+    ): void
+    {
+        $builder
+            -&gt;add('createdAt', null, [
+                'widget' =&gt; 'single_text',
+            ])
+            -&gt;add('title', TextType::class, [])
+            -&gt;add('content', TextareaType::class, [])
+            -&gt;add('tags', TextType::class, [
+                'attr' =&gt; [
+                    'placeholder' =&gt; 'Entrez les tags, séparés par une virgule'
+                ],
+                'required' =&gt; false,
+            ]);
+
+        $builder-&gt;get('tags')
+                -&gt;addModelTransformer($this-&gt;tagsTransformer);
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver-&gt;setDefaults([
+            'data_class' =&gt; Post::class,
+        ]);
+    }
+}
+</div></section></div></div></section></section><div class="last-modified">Last modified: 01 février 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="005-05-upload.html" class="navigation-links__prev">Upload : le t&eacute;l&eacute;versement de fichiers</a><a href="006-00-securite.html" class="navigation-links__next">S&eacute;curit&eacute;</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.js"></script></body></html>

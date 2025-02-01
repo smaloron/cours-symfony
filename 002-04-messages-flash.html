@@ -1,0 +1,127 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-02-01T11:39:32.22107"><title>Messages Flash | Symfony support</title><script type="application/json" id="virtual-toc-data">[{"id":"objectifs","level":0,"title":"Objectifs","anchor":"#objectifs"},{"id":"principe","level":0,"title":"Principe","anchor":"#principe"},{"id":"exemple-d-utilisation","level":0,"title":"Exemple d\u0027utilisation","anchor":"#exemple-d-utilisation"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.css" rel="stylesheet"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Messages Flash | Symfony support"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Symfony support Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation//version 1/002-04-messages-flash.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Messages Flash | Symfony support"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation//version 1/002-04-messages-flash.html#webpage",
+    "url": "writerside-documentation//version 1/002-04-messages-flash.html",
+    "name": "Messages Flash | Symfony support",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Symfony support Help"
+}</script><!-- End Schema.org --></head><body data-id="002-04-Messages-Flash" data-main-title="Messages Flash" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="002-00-twig.md|Twig"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Symfony support version 1 Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="002-04-Messages-Flash" id="002-04-Messages-Flash.md">Messages Flash</h1><section class="chapter"><h2 id="objectifs" data-toc="objectifs">Objectifs</h2><ul class="list _bullet" id="iuikti_6"><li class="list__item" id="iuikti_7"><p>Identifier le r&ocirc;le des messages Flash.</p></li><li class="list__item" id="iuikti_8"><p>Cr&eacute;er et consommer des messages Flash.</p></li></ul></section><section class="chapter"><h2 id="principe" data-toc="principe">Principe</h2><p id="iuikti_9">Un message Flash est une information temporaire stock&eacute;e dans la session, mais qui dispara&icirc;t apr&egrave;s avoir &eacute;t&eacute; affich&eacute;e une seule fois. Il est principalement utilis&eacute; pour les notifications dans les applications web.</p><p id="iuikti_10">Exemple d'utilisation typique :</p><ul class="list _bullet" id="iuikti_11"><li class="list__item" id="iuikti_12"><p>Un utilisateur soumet un formulaire.</p></li><li class="list__item" id="iuikti_13"><p>L'application traite les donn&eacute;es et enregistre un message de succ&egrave;s en session.</p></li><li class="list__item" id="iuikti_14"><p>Apr&egrave;s la redirection, le message est affich&eacute; &agrave; l&rsquo;utilisateur.</p></li><li class="list__item" id="iuikti_15"><p>Le message est supprim&eacute; automatiquement apr&egrave;s affichage.</p></li></ul></section><section class="chapter"><h2 id="exemple-d-utilisation" data-toc="exemple-d-utilisation">Exemple d'utilisation</h2><p id="iuikti_16">Dans un contr&ocirc;leur h&eacute;ritant de <code class="code" id="iuikti_21">AbstractConroller</code>, nous utilisons la m&eacute;thode <code class="code" id="iuikti_22">addFlash</code> en passant deux arguments :</p><ul class="list _bullet" id="iuikti_17"><li class="list__item" id="iuikti_23"><p>Le type de message.</p></li><li class="list__item" id="iuikti_24"><p>Le message.</p></li></ul><div class="code-block" data-lang="php">
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Routing\Annotation\Route;
+
+class DemoController extends AbstractController
+{
+    #[Route('/flash-message', name: 'flash_message')]
+    public function flashMessage(SessionInterface $session)
+    {
+        $this-&gt;addFlash(
+            'success', 
+            'Votre action a été réalisée avec succès !'
+        );
+
+        // Rediection
+        return $this-&gt;redirectToRoute('app_home'); 
+    }
+}
+</div><section class="chapter"><h3 id="affichage-du-message-flash" data-toc="affichage-du-message-flash">Affichage du message Flash</h3><p id="iuikti_25">Dans une vue, nous pouvons boucler sur les messages de type &quot;success&quot;.</p><div class="code-block" data-lang="twig">
+{% for message in app.flashes('success') %}
+    &lt;div class=&quot;alert alert-success&quot;&gt;
+        {{ message }}
+    &lt;/div&gt;
+{% endfor %}
+</div><p id="iuikti_27">Ou mieux encore, boucler sur l'ensemble des types de messages</p><div class="code-block" data-lang="twig">
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        &lt;div class=&quot;alert alert-{{ label }}&quot;&gt;
+            {{ message }}
+        &lt;/div&gt;
+    {% endfor %}
+{% endfor %}
+</div><aside class="prompt" data-type="tip" data-title="" id="iuikti_29"><p id="iuikti_30">Ce dernier code pourrait r&eacute;sider dans un gabarit (layout) afin que chaque vue h&eacute;ritant de ce gabarit puisse afficher les messages Flash.</p></aside></section><section class="chapter"><h3 id="message-flash-dans-les-services" data-toc="message-flash-dans-les-services">Message Flash dans les services</h3><p id="iuikti_31">Si nous souhaitons d&eacute;finir un message Flash dans un service, il nous faut injecter la session et r&eacute;cup&eacute;rer le <code class="code" id="iuikti_34">FlashBag</code> depuis cette session.</p><div class="code-block" data-lang="php">
+namespace App\Service;
+
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
+class MyService
+{
+    private FlashBagInterface $flashBag;
+
+    public function __construct(SessionInterface $session)
+    {
+        $this-&gt;flashBag = $session-&gt;getFlashBag();
+    }
+
+    public function doStuff(): void
+    {
+        $this-&gt;flashBag-&gt;add(
+            'success', 
+            'MyService a fait son job'
+        );
+    }
+}
+</div><section class="chapter"><h4 id="factorisation-dans-un-service" data-toc="factorisation-dans-un-service">Factorisation dans un service</h4><p id="iuikti_35">Il serait &eacute;galement possible de factoriser tout cela dans un service qui pourrait &ecirc;tre inject&eacute; partout o&ugrave; nous en avons besoin.</p><div class="code-block" data-lang="php">
+
+namespace App\Service;
+
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
+class FlashMessageService
+{
+private FlashBagInterface $flashBag;
+
+    public function __construct(SessionInterface $session)
+    {
+        $this-&gt;flashBag = $session-&gt;getFlashBag();
+    }
+
+    public function addSuccess(string $message): void
+    {
+        $this-&gt;flashBag-&gt;add('success', $message);
+    }
+
+    public function addError(string $message): void
+    {
+        $this-&gt;flashBag-&gt;add('error', $message);
+    }
+
+    public function addWarning(string $message): void
+    {
+        $this-&gt;flashBag-&gt;add('warning', $message);
+    }
+
+    public function addInfo(string $message): void
+    {
+        $this-&gt;flashBag-&gt;add('info', $message);
+    }
+}
+</div><p id="iuikti_37">Ce qui nous permettrait de simplifier le code de <code class="code" id="iuikti_39">MyService</code>.</p><div class="code-block" data-lang="php">
+namespace App\Service;
+
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
+class MyService
+{
+    public function __construct(
+    FlashMessageService $flashService){}
+
+    public function doStuff(): void
+    {
+        $this-&gt;flashService-&gt;addSuccess(
+            'MyService a fait son job'
+        );
+    }
+}
+</div></section></section></section><div class="last-modified">Last modified: 01 février 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="002-03-variables-globales.html" class="navigation-links__prev">Variables globales</a><a href="003-00profilage-et-automatisation.html" class="navigation-links__next">Profilage et automatisation</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.js"></script></body></html>

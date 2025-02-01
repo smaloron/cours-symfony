@@ -1,0 +1,116 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-02-01T11:39:32.227563"><title>Entit&eacute;s et h&eacute;ritage | Symfony support</title><script type="application/json" id="virtual-toc-data">[{"id":"objectifs","level":0,"title":"Objectifs","anchor":"#objectifs"},{"id":"le-principe","level":0,"title":"Le principe","anchor":"#le-principe"},{"id":"quelle-strat-gie-choisir","level":0,"title":"Quelle stratégie choisir ?","anchor":"#quelle-strat-gie-choisir"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.css" rel="stylesheet"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Entit&eacute;s et h&eacute;ritage | Symfony support"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Symfony support Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation//version 1/004-07-entites-et-heritage.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Entit&eacute;s et h&eacute;ritage | Symfony support"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation//version 1/004-07-entites-et-heritage.html#webpage",
+    "url": "writerside-documentation//version 1/004-07-entites-et-heritage.html",
+    "name": "Entit&eacute;s et h&eacute;ritage | Symfony support",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Symfony support Help"
+}</script><!-- End Schema.org --></head><body data-id="004-07-Entites-et-heritage" data-main-title="Entités et héritage" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="004-00-doctrine.md|Doctrine"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Symfony support version 1 Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="004-07-Entites-et-heritage" id="004-07-Entites-et-heritage.md">Entités et héritage</h1><section class="chapter"><h2 id="objectifs" data-toc="objectifs">Objectifs</h2><ul class="list _bullet" id="-yhk1j4_6"><li class="list__item" id="-yhk1j4_7"><p>Identifier les strat&eacute;gies d'h&eacute;ritage propos&eacute;es par Doctrine.</p></li></ul></section><section class="chapter"><h2 id="le-principe" data-toc="le-principe">Le principe</h2><p id="-yhk1j4_8">L&rsquo;h&eacute;ritage dans Doctrine ORM permet aux entit&eacute;s de partager des propri&eacute;t&eacute;s et des comportements tout en &eacute;tant mapp&eacute;es efficacement &agrave; une base de donn&eacute;es. Doctrine propose plusieurs strat&eacute;gies pour impl&eacute;menter l&rsquo;h&eacute;ritage dans les classes d&rsquo;entit&eacute;s.</p><section class="chapter"><h3 id="h-ritage-par-table-unique-single-table-inheritance-sti" data-toc="h-ritage-par-table-unique-single-table-inheritance-sti">H&eacute;ritage par table unique (Single Table Inheritance - STI)</h3><p id="-yhk1j4_12">Dans cette approche :</p><ul class="list _bullet" id="-yhk1j4_13"><li class="list__item" id="-yhk1j4_20"><p>Toutes les entit&eacute;s de la hi&eacute;rarchie partagent une seule table.</p></li><li class="list__item" id="-yhk1j4_21"><p>Une colonne discriminante permet d&rsquo;identifier le type d&rsquo;entit&eacute;.</p></li></ul><p id="-yhk1j4_14"><span class="control" id="-yhk1j4_22">Exemple concret : Utilisateurs et Administrateurs</span></p><p id="-yhk1j4_15">Un site e-commerce a des clients et des administrateurs. Les administrateurs ont un r&ocirc;le suppl&eacute;mentaire, mais partagent certaines informations avec les clients.</p><div class="code-block" data-lang="php">
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity]
+#[ORM\Table(name: &quot;users&quot;)]
+#[ORM\InheritanceType(&quot;SINGLE_TABLE&quot;)]
+#[ORM\DiscriminatorColumn(name: &quot;type&quot;, type: &quot;string&quot;)]
+#[ORM\DiscriminatorMap(
+    [
+        &quot;client&quot; =&gt; Client::class, 
+        &quot;admin&quot; =&gt; Admin::class
+    ]
+)]
+class User {
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: &quot;integer&quot;)]
+    private int $id;
+
+    #[ORM\Column(type: &quot;string&quot;)]
+    private string name;
+
+    #[ORM\Column(type: &quot;string&quot;, unique: true)]
+    private string $email;
+
+    // Getters et Setters...
+}
+
+#[ORM\Entity]
+class Client extends User {
+    #[ORM\Column(type: &quot;datetime&quot;)]
+    private \DateTime enrolledAt;
+}
+
+#[ORM\Entity]
+class Admin extends User {
+    #[ORM\Column(type: &quot;string&quot;)]
+    private string $role;
+}
+</div><figure id="-yhk1j4_17"><img alt="CleanShot 2025-01-29 at 16.45.28@2x.png" src="images/CleanShot%202025-01-29%20at%2016.45.28%402x.png" title="CleanShot 2025-01-29 at 16.45.28@2x.png" width="1470" height="240"></figure><section class="chapter"><h4 id="avantages" data-toc="avantages">✅ Avantages :</h4><ul class="list _bullet" id="-yhk1j4_23"><li class="list__item" id="-yhk1j4_24"><p>Simple &agrave; interroger (une seule table).</p></li><li class="list__item" id="-yhk1j4_25"><p>Pas de jointures complexes.</p></li></ul></section><section class="chapter"><h4 id="inconvenients_2" data-toc="inconvenients_2">❌ Inconv&eacute;nients :</h4><ul class="list _bullet" id="-yhk1j4_26"><li class="list__item" id="-yhk1j4_27"><p>Certaines colonnes ne sont pas utilis&eacute;es pour certains types d'entit&eacute;s (ex : date_inscription n'a pas de sens pour un Admin).</p></li><li class="list__item" id="-yhk1j4_28"><p>Peut poser des probl&egrave;mes de performance si trop d'entit&eacute;s diff&eacute;rentes sont stock&eacute;es dans la m&ecirc;me table.</p></li></ul></section></section><section class="chapter"><h3 id="h-ritage-par-table-de-classe-class-table-inheritance-cti" data-toc="h-ritage-par-table-de-classe-class-table-inheritance-cti">H&eacute;ritage par table de classe (Class Table Inheritance - CTI)</h3><p id="-yhk1j4_29">Dans cette approche :</p><ul class="list _bullet" id="-yhk1j4_30"><li class="list__item" id="-yhk1j4_37"><p>Chaque classe d&rsquo;entit&eacute; a sa propre table.</p></li><li class="list__item" id="-yhk1j4_38"><p>Les tables enfants contiennent uniquement les champs sp&eacute;cifiques, tout en r&eacute;f&eacute;ren&ccedil;ant la table parent via une cl&eacute; primaire.</p></li></ul><p id="-yhk1j4_31"><span class="control" id="-yhk1j4_39">Exemple : V&eacute;hicules (voitures, camions)</span></p><p id="-yhk1j4_32">Une application de location de v&eacute;hicules distingue les voitures et les camions, qui partagent certains attributs communs.</p><div class="code-block" data-lang="php">
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity]
+#[ORM\Table(name: &quot;vehicules&quot;)]
+#[ORM\InheritanceType(&quot;JOINED&quot;)]
+#[ORM\DiscriminatorColumn(name: &quot;type&quot;, type: &quot;string&quot;)]
+#[ORM\DiscriminatorMap([&quot;car&quot; =&gt; Car::class, &quot;truck&quot; =&gt; Truck::class])]
+class Vehicule {
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: &quot;integer&quot;)]
+    protected int $id;
+
+    #[ORM\Column(type: &quot;string&quot;)]
+    protected string $brand;
+
+    #[ORM\Column(type: &quot;integer&quot;)]
+    protected int $year;
+}
+
+#[ORM\Entity]
+#[ORM\Table(name: &quot;cars&quot;)]
+class Car extends Vehicule {
+    #[ORM\Column(type: &quot;integer&quot;)]
+    private int $numberOfDoors;
+}
+
+#[ORM\Entity]
+#[ORM\Table(name: &quot;trucks&quot;)]
+class Truck extends Vehicule {
+    #[ORM\Column(type: &quot;float&quot;)]
+    private float $loadCapacity;
+}
+</div><figure id="-yhk1j4_34"><img alt="CleanShot 2025-01-29 at 16.58.09@2x.png" src="images/CleanShot%202025-01-29%20at%2016.58.09%402x.png" title="CleanShot 2025-01-29 at 16.58.09@2x.png" width="1476" height="758"></figure><section class="chapter"><h4 id="avantages_1" data-toc="avantages_1">✅ Avantages :</h4><ul class="list _bullet" id="-yhk1j4_40"><li class="list__item" id="-yhk1j4_41"><p>Structure normalis&eacute;e et efficace.</p></li><li class="list__item" id="-yhk1j4_42"><p>Pas de colonnes inutilis&eacute;es.</p></li></ul></section><section class="chapter"><h4 id="inconv-nients" data-toc="inconv-nients">❌ Inconv&eacute;nients :</h4><ul class="list _bullet" id="-yhk1j4_43"><li class="list__item" id="-yhk1j4_44"><p>Requ&ecirc;tes plus complexes car n&eacute;cessitent des jointures pour r&eacute;cup&eacute;rer toutes les donn&eacute;es.</p></li><li class="list__item" id="-yhk1j4_45"><p>Performance potentiellement affect&eacute;e sur de gros volumes.</p></li></ul></section></section><section class="chapter"><h3 id="mapped-superclass-classe-mapp-e-mais-non-entit" data-toc="mapped-superclass-classe-mapp-e-mais-non-entit">Mapped Superclass (Classe Mapp&eacute;e mais Non Entit&eacute;)</h3><p id="-yhk1j4_46">Dans cette approche :</p><ul class="list _bullet" id="-yhk1j4_47"><li class="list__item" id="-yhk1j4_53"><p>La classe parent n&rsquo;a pas de table propre.</p></li><li class="list__item" id="-yhk1j4_54"><p>Seules les classes filles sont stock&eacute;es en base de donn&eacute;es.</p></li><li class="list__item" id="-yhk1j4_55"><p>Id&eacute;al pour &eacute;viter la duplication de code sans imposer une hi&eacute;rarchie stricte.</p></li></ul><p id="-yhk1j4_48"><span class="control" id="-yhk1j4_56">Exemple concret : Audit des entit&eacute;s</span> On veut ajouter un champ createdAt et updatedAt &agrave; plusieurs entit&eacute;s sans cr&eacute;er une hi&eacute;rarchie compl&egrave;te.</p><div class="code-block" data-lang="php">
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\MappedSuperclass]
+class Timestampable {
+    #[ORM\Column(type: &quot;datetime&quot;)]
+    protected \DateTime $createdAt;
+
+    #[ORM\Column(type: &quot;datetime&quot;, nullable: true)]
+    protected ?\DateTime $updatedAt;
+}
+
+#[ORM\Entity]
+#[ORM\Table(name: &quot;products&quot;)]
+class Product extends Timestampable {
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: &quot;integer&quot;)]
+    private int $id;
+
+    #[ORM\Column(type: &quot;string&quot;)]
+    private string $name;
+}
+
+#[ORM\Entity]
+#[ORM\Table(name: &quot;orders&quot;)]
+class Order extends Timestampable {
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: &quot;integer&quot;)]
+    private int $id;
+
+    #[ORM\Column(type: &quot;integer&quot;)]
+    private int $quantity;
+}
+</div><figure id="-yhk1j4_50"><img alt="CleanShot 2025-01-29 at 16.57.26@2x.png" src="images/CleanShot%202025-01-29%20at%2016.57.26%402x.png" title="CleanShot 2025-01-29 at 16.57.26@2x.png" width="1496" height="460"></figure><section class="chapter"><h4 id="avantages_2" data-toc="avantages_2">✅ Avantages :</h4><ul class="list _bullet" id="-yhk1j4_57"><li class="list__item" id="-yhk1j4_58"><p>R&eacute;utilisation facile des propri&eacute;t&eacute;s sans cr&eacute;er de relation d&rsquo;h&eacute;ritage.</p></li><li class="list__item" id="-yhk1j4_59"><p>Plus performant que STI ou CTI.</p></li></ul></section><section class="chapter"><h4 id="inconv-nients_1" data-toc="inconv-nients_1">❌ Inconv&eacute;nients :</h4><ul class="list _bullet" id="-yhk1j4_60"><li class="list__item" id="-yhk1j4_61"><p>Pas de requ&ecirc;tes polymorphiques (Doctrine ne reconna&icirc;t pas Timestampable comme une entit&eacute;).</p></li></ul></section></section></section><section class="chapter"><h2 id="quelle-strat-gie-choisir" data-toc="quelle-strat-gie-choisir">Quelle strat&eacute;gie choisir ?</h2><div class="table-wrapper"><table class="wide" id="-yhk1j4_62"><thead><tr class="ijRowHead" id="-yhk1j4_63"><th id="-yhk1j4_67"><p>Strat&eacute;gie</p></th><th id="-yhk1j4_68"><p>Avantages</p></th><th id="-yhk1j4_69"><p>Inconv&eacute;nients</p></th><th id="-yhk1j4_70"><p>Meilleur cas d'utilisation</p></th></tr></thead><tbody><tr id="-yhk1j4_64"><td id="-yhk1j4_71"><p><span class="control" id="-yhk1j4_75">STI (Single Table Inheritance)</span></p></td><td id="-yhk1j4_72"><p>Simple, pas de jointures</p></td><td id="-yhk1j4_73"><p>Colonnes inutilis&eacute;es, moins optimis&eacute;</p></td><td id="-yhk1j4_74"><p>Peu de diff&eacute;rences entre les sous-classes</p></td></tr><tr id="-yhk1j4_65"><td id="-yhk1j4_76"><p><span class="control" id="-yhk1j4_80">CTI (Class Table Inheritance)</span></p></td><td id="-yhk1j4_77"><p>Bien structur&eacute;, performant</p></td><td id="-yhk1j4_78"><p>Requ&ecirc;tes complexes</p></td><td id="-yhk1j4_79"><p>Diff&eacute;rences majeures entre entit&eacute;s</p></td></tr><tr id="-yhk1j4_66"><td id="-yhk1j4_81"><p><span class="control" id="-yhk1j4_85">Mapped Superclass</span></p></td><td id="-yhk1j4_82"><p>R&eacute;utilisable, l&eacute;ger</p></td><td id="-yhk1j4_83"><p>Pas de polymorphisme</p></td><td id="-yhk1j4_84"><p>Partage de champs sans cr&eacute;er de hi&eacute;rarchie</p></td></tr></tbody></table></div></section><div class="last-modified">Last modified: 01 février 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="004-06-querybuilder.html" class="navigation-links__prev">La classe QueryBuilder</a><a href="004-08-event-listener.html" class="navigation-links__next">Event Listener</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.js"></script></body></html>

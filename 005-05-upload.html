@@ -1,0 +1,154 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-02-01T11:39:32.226654"><title>Upload : le t&eacute;l&eacute;versement de fichiers | Symfony support</title><script type="application/json" id="virtual-toc-data">[{"id":"objectifs","level":0,"title":"Objectifs","anchor":"#objectifs"},{"id":"principe","level":0,"title":"Principe","anchor":"#principe"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.css" rel="stylesheet"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Upload : le t&eacute;l&eacute;versement de fichiers | Symfony support"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Symfony support Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation//version 1/005-05-upload.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Upload : le t&eacute;l&eacute;versement de fichiers | Symfony support"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation//version 1/005-05-upload.html#webpage",
+    "url": "writerside-documentation//version 1/005-05-upload.html",
+    "name": "Upload : le t&eacute;l&eacute;versement de fichiers | Symfony support",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Symfony support Help"
+}</script><!-- End Schema.org --></head><body data-id="005-05-upload" data-main-title="Upload : le téléversement de fichiers" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="005-00-formulaires.md|Formulaires"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Symfony support version 1 Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="005-05-upload" id="005-05-upload.md">Upload : le téléversement de fichiers</h1><section class="chapter"><h2 id="objectifs" data-toc="objectifs">Objectifs</h2><ul class="list _bullet" id="-3wjrta_5"><li class="list__item" id="-3wjrta_6"><p>Mettre en place le t&eacute;l&eacute;versement de fichiers</p></li><li class="list__item" id="-3wjrta_7"><p>Valider les fichiers t&eacute;l&eacute;vers&eacute;s</p></li></ul></section><section class="chapter"><h2 id="principe" data-toc="principe">Principe</h2><section class="chapter"><h3 id="mise-en-place" data-toc="mise-en-place">Mise en place</h3><p id="-3wjrta_12">Tout d'abord, il faut cr&eacute;er le dossier qui va recevoir les fichiers. Il est ensuite conseiller de d&eacute;finir le chemin vers ce fichier dans un param&egrave;tre de fa&ccedil;on &agrave; pouvoir le r&eacute;cup&eacute;rer &agrave; diff&eacute;rents endroits de notre code.</p><div class="code-block" data-lang="bash">
+mkdir public/uploads
+</div><div class="code-block" data-lang="yaml">
+parameters:
+    upload_dir: '%kernel.project_dir%/public/uploads'
+</div><p id="-3wjrta_15">Il nous faudra &eacute;galement installer le composant suivant pour que Symfony soit capable de lire le mime type des fichiers.</p><div class="code-block" data-lang="bash">
+composer require symfony/mime
+</div></section><section class="chapter"><h3 id="l-entit" data-toc="l-entit">L'entit&eacute;</h3><p id="-3wjrta_17">Il faut ajouter une nouvelle propri&eacute;t&eacute; pous stocker le nom de l'image dans l'entit&eacute;.</p><div class="code-block" data-lang="bash">
+symfony console make:entity Ingredient
+</div><ul class="list _bullet" id="-3wjrta_19"><li class="list__item" id="-3wjrta_22"><p>name : photoFileName</p></li><li class="list__item" id="-3wjrta_23"><p>type : string</p></li><li class="list__item" id="-3wjrta_24"><p>size : 255</p></li><li class="list__item" id="-3wjrta_25"><p>nullable : yes</p></li></ul><div class="code-block" data-lang="bash">
+symfony console make:migration
+</div><div class="code-block" data-lang="bash">
+symfony console doctrine:migrations:migrate
+</div></section><section class="chapter"><h3 id="le-formulaire" data-toc="le-formulaire">Le formulaire</h3><p id="-3wjrta_26">Nous souhaitons ajouter une photo aux ingr&eacute;dients des pizzas.</p><p id="-3wjrta_27">Pour ce faire, nous ajoutons un champ <code class="code" id="-3wjrta_32">FileType</code> qui ne sera pas li&eacute; &agrave; une propri&eacute;t&eacute;.</p><p id="-3wjrta_28">Sur ce champ, nous pla&ccedil;ons une contrainte de type <code class="code" id="-3wjrta_33">File</code> afin de limiter le type et la taille du fichier. Nous en profitons pour ajouter nos propres messages d'erreur.</p><aside class="prompt" data-type="tip" data-title="" id="-3wjrta_29"><p id="-3wjrta_34">Note : l'objet <code class="code" id="-3wjrta_35">File</code> que l'on doit utiliser est le suivant : <code class="code" id="-3wjrta_36">Symfony\Component\Validator\Constraints\File</code></p></aside><aside class="prompt" data-type="tip" data-title="" id="-3wjrta_30"><p id="-3wjrta_37">Concernant la limite de taille de fichier, il peut y en avoir trois :</p><ul class="list _bullet" id="-3wjrta_38"><li class="list__item" id="-3wjrta_39"><p>dans la contrainte <code class="code" id="-3wjrta_42">maxSize</code></p></li><li class="list__item" id="-3wjrta_40"><p>dans le fichier php.ini du serveur (upload_max_filesize)</p></li><li class="list__item" id="-3wjrta_41"><p>dans le formulaire HTML (attribut MAX_FILE_SIZE)</p></li></ul></aside><div class="code-block" data-lang="php">
+class IngredientType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            -&gt;add('label', TextType::class, ['label' =&gt; 'Nom'])
+            -&gt;add('price', MoneyType::class, ['label' =&gt; 'prix'])
+            -&gt;add('image', FileType::class, [
+                'label' =&gt; 'Photo du produit',
+                'mapped' =&gt; false,
+                'required' =&gt; false,
+                'constraints' =&gt; [
+                    new File([
+                        'maxSize' =&gt; '2M',
+                        'mimeTypes' =&gt; [
+                            'image/jpeg',
+                            'image/png'
+                        ],
+                        'mimeTypesMessage' =&gt; 'seuls les fichiers {{ types }} sont autorisés',
+                        'maxSizeMessage' =&gt; 'Le fichier est trop volumineux {{ limit }} {{ suffix }} maximum.',
+                        'notReadableMessage' =&gt; 'Le fichier n\'est pas accessible en lecture.',
+                        'uploadIniSizeErrorMessage' =&gt; 'Le fichier est trop volumineux.',
+                        'uploadFormSizeErrorMessage' =&gt; 'Le fichier est trop volumineux.',
+                        'uploadErrorMessage' =&gt; 'Erreur dans le téléversement du fichier.'
+                    ]),
+                ]
+            ])
+        ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver-&gt;setDefaults([
+            'data_class' =&gt; Ingredient::class,
+        ]);
+    }
+}
+</div></section><section class="chapter"><h3 id="le-contr-leur" data-toc="le-contr-leur">Le contr&ocirc;leur</h3><p id="-3wjrta_43">Pour traiter le formulaire, il faut d'abord r&eacute;cup&eacute;rer le choix du fichier. Nous obtenons ici un objet de classe UploadedFile. Si un fichier a &eacute;t&eacute; t&eacute;l&eacute;transmis, nous devons ensuite d&eacute;finir non unique pour ce fichier. Enfin nos d&eacute;pla&ccedil;ons le fichier t&eacute;l&eacute;transmis dans son dossier de destination en le renommant avec le nom unique que nous avons d&eacute;fini.</p><p id="-3wjrta_44">Tout ceci est tr&egrave;s similaire &agrave; ce que nous avons fait avec PHP. Symfony cependant nous offre une assistance pour la d&eacute;termination par exemple de l'extension du fichier en fonction du type de ce fichier.</p><div class="code-block" data-lang="php">
+&lt;?php
+
+namespace App\Controller;
+
+use App\Entity\Ingredient;
+use App\Form\IngredientType;
+use App\Repository\IngredientRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+
+#[Route('/ingredient', name: 'app_ingredient')]
+final class IngredientController extends AbstractController
+{
+    #[Route('/', name: '_index')]
+    public function index(
+        IngredientRepository $repository,
+    ): Response
+    {
+
+        return $this-&gt;render('ingredient/index.html.twig', [
+            'ingredientList' =&gt; $repository-&gt;findAll(),
+        ]);
+    }
+
+    #[Route('/form', name: '_form')]
+    public function form(
+        Request $request,
+        EntityManagerInterface $entityManager,
+    ): Response
+    {
+        $ingredient = new Ingredient();
+
+        $form = $this-&gt;createForm(IngredientType::class, $ingredient);
+        $form-&gt;add('Valider', SubmitType::class, []);
+
+        $form-&gt;handleRequest($request);
+
+        if($form-&gt;isSubmitted() &amp;&amp; $form-&gt;isValid()){
+            // récupération du fichier
+            $uploadedFile = $form-&gt;get('image')-&gt;getData();
+
+            if($uploadedFile){
+                // Définition d'un nom unique
+                $newFilename = uniqid('ingredient-', true) . '.' . $uploadedFile-&gt;guessExtension();
+
+                // Déplacement du fichier
+                $uploadDir = $this-&gt;getParameter('upload_dir');
+                $uploadedFile-&gt;move($uploadDir, $newFilename);
+
+                // Persistance de l'entité
+                $ingredient-&gt;setPhotoFileName($newFilename);
+                $entityManager-&gt;persist($ingredient);
+                $entityManager-&gt;flush();
+
+                return $this-&gt;redirectToRoute('app_ingredient_index');
+            }
+
+        }
+
+        return $this-&gt;render('ingredient/form.html.twig', [
+            'ingredientForm' =&gt; $form-&gt;createView(),
+        ]);
+    }
+}
+</div><p id="-3wjrta_46"><span class="control" id="-3wjrta_48">La vue index</span></p><div class="code-block" data-lang="twig">
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello IngredientController!{% endblock %}
+
+{% block body %}
+
+    {% for ingredient in ingredientList %}
+        &lt;div&gt;
+            &lt;h3&gt;{{ ingredient.label }}&lt;/h3&gt;
+            {% if ingredient.photoFileName %}
+                &lt;img src=&quot;/uploads/{{ ingredient.photoFileName }}&quot; alt=&quot;Photo&quot;
+                style=&quot;width: 300px&quot;&gt;
+            {% endif %}
+        &lt;/div&gt;
+    {% endfor %}
+
+{% endblock %}
+</div></section></section><div class="last-modified">Last modified: 01 février 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="005-04-validation.html" class="navigation-links__prev">Validation</a><a href="005-06-datatransformer.html" class="navigation-links__next">DataTransformer</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.js"></script></body></html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-02-01T11:39:32.224858"><title>Profilage et automatisation | Symfony support</title><script type="application/json" id="virtual-toc-data">[{"id":"objectifs","level":0,"title":"Objectifs","anchor":"#objectifs"},{"id":"la-g-n-ration-de-code","level":0,"title":"La génération de code","anchor":"#la-g-n-ration-de-code"},{"id":"les-outils-de-profilage-et-de-debug","level":0,"title":"Les outils de profilage et de debug","anchor":"#les-outils-de-profilage-et-de-debug"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.css" rel="stylesheet"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Profilage et automatisation | Symfony support"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Symfony support Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation//version 1/003-00profilage-et-automatisation.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Profilage et automatisation | Symfony support"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation//version 1/003-00profilage-et-automatisation.html#webpage",
+    "url": "writerside-documentation//version 1/003-00profilage-et-automatisation.html",
+    "name": "Profilage et automatisation | Symfony support",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Symfony support Help"
+}</script><!-- End Schema.org --></head><body data-id="003-00profilage-et-automatisation" data-main-title="Profilage et automatisation" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs=""><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Symfony support version 1 Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="003-00profilage-et-automatisation" id="003-00profilage-et-automatisation.md">Profilage et automatisation</h1><section class="chapter"><h2 id="objectifs" data-toc="objectifs">Objectifs</h2><p id="fkdje7_6">L&rsquo;objectif de ce document est d&rsquo;identifier en quoi Symfony peut rendre le d&eacute;veloppement plus facile.</p></section><section class="chapter"><h2 id="la-g-n-ration-de-code" data-toc="la-g-n-ration-de-code">La g&eacute;n&eacute;ration de code</h2><p id="fkdje7_7">Symfony propose un outil de g&eacute;n&eacute;ration de code qui facilite grandement le d&eacute;veloppement.</p><section class="chapter"><h3 id="installation" data-toc="installation">Installation</h3><div class="code-block" data-lang="none">
+composer require maker --dev
+</div><p id="fkdje7_11">L&rsquo;option <code class="code" id="fkdje7_12">--dev</code> indique que la d&eacute;pendance ne sera pas t&eacute;l&eacute;charg&eacute;e lors du d&eacute;ploiement dans un environnement de production. Il est inutile en effet de rendre disponible la g&eacute;n&eacute;ration de code dans ce contexte.</p></section><section class="chapter"><h3 id="creation-d-un-contr-leur" data-toc="creation-d-un-contr-leur">Creation d'un contr&ocirc;leur</h3><div class="code-block" data-lang="none">
+symfony console make:controler
+</div><p id="fkdje7_14">G&eacute;n&egrave;re un fichier contr&ocirc;leur avec une m&eacute;thode, une route et m&ecirc;me un mod&egrave;le Twig. C'est assez simple, mais cela fait quand m&ecirc;me gagner du temps et nous verrons plus tard que la g&eacute;n&eacute;ration de code peut aller bien plus loin.</p></section></section><section class="chapter"><h2 id="les-outils-de-profilage-et-de-debug" data-toc="les-outils-de-profilage-et-de-debug">Les outils de profilage et de debug</h2><p id="fkdje7_15">On installe ces outils avec la commande suivante :</p><div class="code-block" data-lang="none">
+composer require debug
+</div><aside class="prompt" data-type="tip" data-title="" id="fkdje7_17"><p id="fkdje7_21">Note : Il ne faut pas ici utiliser l'option <code class="code" id="fkdje7_22">--dev</code> car un des composants (monolog) est utile en mode production. Les autres seront automatiquement plac&eacute;s dans les d&eacute;pendances de d&eacute;veloppement.</p></aside><section class="chapter"><h3 id="la-debug-bar" data-toc="la-debug-bar">La debug bar</h3><p id="fkdje7_23">L'effet imm&eacute;diatement visible de cette installation consiste en l'apparition d'une barre en bas de nos &eacute;crans. Cette debugbar contient de nombreuses informations utiles sur le contexte d'ex&eacute;cution de notre application.</p><figure id="fkdje7_24"><img alt="004-debugbar.png" src="images/004-debugbar.png" title="004-debugbar.png" width="2610" height="1146"></figure><p id="fkdje7_25">Encore mieux ! En cliquant sur la barre, nous ouvrons une page qui regroupe des informations plus amples et pr&eacute;cises.</p><figure id="fkdje7_26"><img alt="004-debug-details.png" src="images/004-debug-details.png" title="004-debug-details.png" width="2610" height="2258"></figure><p id="fkdje7_27">Le menu &quot;performance&quot; regroupe des informations sur la consommation de m&eacute;moire et surtout un graphique indiquant le temps d'ex&eacute;cution de chaque composant ayant particip&eacute; au traitement de la requ&ecirc;te. Avec un tel outil, rep&eacute;rer les goulets d'&eacute;tranglement devient bien plus facile.</p><figure id="fkdje7_28"><img alt="004-debug-profiler.png" src="images/004-debug-profiler.png" title="004-debug-profiler.png" width="2522" height="2222"></figure></section><section class="chapter"><h3 id="dump" data-toc="dump">Dump</h3><p id="fkdje7_29">Pour corriger les erreurs, il est essentiel de pouvoir afficher la valeur de nos variables. PHP propose pour cela une fonction <code class="code" id="fkdje7_33">var_dump</code>.</p><section class="chapter"><h4 id="un-exemple" data-toc="un-exemple">Un  exemple</h4><div class="code-block" data-lang="php">
+#[Route('/recette')]
+    public function index(): Response
+    {
+        // dump de la liste des recettes
+        var_dump($this-&gt;getRecipeList());
+
+        return $this-&gt;render(&quot;recipe/list.html.twig&quot;, [
+            &quot;recipeList&quot; =&gt; $this-&gt;getRecipeList(),
+            &quot;pageTitle&quot; =&gt; &quot;Liste de toutes les recettes&quot;
+        ]);
+    }
+</div><p id="fkdje7_35">Ce qui donne ceci dans le navigateur web :</p><figure id="fkdje7_36"><img alt="CleanShot_2024-03-28_at_10.50.25@2x.png" src="images/CleanShot_2024-03-28_at_10.50.25%402x.png" title="CleanShot_2024-03-28_at_10.50.25@2x.png" width="1940" height="1822"></figure></section><section class="chapter"><h4 id="un-meilleur-dump-avec-symfony" data-toc="un-meilleur-dump-avec-symfony">Un meilleur dump avec Symfony</h4><p id="fkdje7_37">Plut&ocirc;t que <code class="code" id="fkdje7_40">var_dump</code>, si nous utilisons la fonction <code class="code" id="fkdje7_41">dump</code> de Symfony, nous obtenons un affichage plus lisible. Les donn&eacute;es sont regroup&eacute;es dans la debug bar et ne polluent plus l'affichage de notre page.</p><div class="code-block" data-lang="php">
+#[Route('/recette')]
+    public function index(): Response
+    {
+        // dump de la liste des recettes avec la fonction de Symfony
+        dump($this-&gt;getRecipeList());
+
+        return $this-&gt;render(&quot;recipe/list.html.twig&quot;, [
+            &quot;recipeList&quot; =&gt; $this-&gt;getRecipeList(),
+            &quot;pageTitle&quot; =&gt; &quot;Liste de toutes les recettes&quot;
+        ]);
+    }
+</div><figure id="fkdje7_39"><img alt="CleanShot_2024-03-28_at_10.53.53@2x.png" src="images/CleanShot_2024-03-28_at_10.53.53%402x.png" title="CleanShot_2024-03-28_at_10.53.53@2x.png" width="2084" height="1822"></figure></section><section class="chapter"><h4 id="dump-dans-twig" data-toc="dump-dans-twig">Dump dans Twig</h4><p id="fkdje7_42">Nous pouvons &eacute;galement obtenir la m&ecirc;me information int&eacute;gr&eacute;e dans Twig avec la m&ecirc;me fonction.</p><div class="code-block" data-lang="markup">
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    &lt;h1&gt;{{ pageTitle }}&lt;/h1&gt;
+
+    {# fonction dump dans Twig #}
+    {{ dump(recipeList) }}
+
+    &lt;ul&gt;
+        {% for recipe in recipeList %}
+            &lt;li&gt;
+                &lt;a href=&quot;{{ path('app_recipe_details', {'id': recipe.id}) }}&quot;&gt;
+                {{ recipe.title }}
+                &lt;/a&gt;
+                ( &lt;a href=&quot;{{ path('app_recipe_bykind', {'kind': recipe.kind}) }}&quot;&gt;
+                    {{ recipe.kind }}
+                &lt;/a&gt; )
+                - {{ recipe.ingredients | length }} ingrédients
+            &lt;/li&gt;
+        {% endfor %}
+    &lt;/ul&gt;
+
+{% endblock %}
+
+{% block title %}
+</div><figure id="fkdje7_44"><img alt="CleanShot_2024-03-28_at_10.58.34@2x.png" src="images/CleanShot_2024-03-28_at_10.58.34%402x.png" title="CleanShot_2024-03-28_at_10.58.34@2x.png" width="2084" height="1822"></figure></section></section><section class="chapter"><h3 id="les-logs" data-toc="les-logs">Les logs</h3><p id="fkdje7_45">Les logs sont des fichiers texte qui capturent les &eacute;v&eacute;nements du cycle de vie de notre application.</p><div class="code-block" data-lang="none">
+[2024-03-28T10:04:03.165367+00:00] request.INFO: Matched route &quot;app_recipe_index&quot;. {&quot;route&quot;:&quot;app_recipe_index&quot;,&quot;route_parameters&quot;:{&quot;_route&quot;:&quot;app_recipe_index&quot;,&quot;_controller&quot;:&quot;App\\Controller\\RecipeController::index&quot;},&quot;request_uri&quot;:&quot;http://localhost:8000/recette&quot;,&quot;method&quot;:&quot;GET&quot;} []
+[2024-03-28T10:04:03.168125+00:00] app.INFO: Affichage de la liste des recettes [] []
+</div></section></section><div class="last-modified">Last modified: 01 février 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="002-04-messages-flash.html" class="navigation-links__prev">Messages Flash</a><a href="004-00-doctrine.html" class="navigation-links__next">Doctrine</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.js"></script></body></html>

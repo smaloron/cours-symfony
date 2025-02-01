@@ -1,0 +1,307 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-02-01T11:39:32.214789"><title>Doctrine | Symfony support</title><script type="application/json" id="virtual-toc-data">[{"id":"objectif","level":0,"title":"Objectif","anchor":"#objectif"},{"id":"intro","level":0,"title":"Intro","anchor":"#intro"},{"id":"les-entit-s","level":0,"title":"Les entités","anchor":"#les-entit-s"},{"id":"la-persistance-des-entit-s","level":0,"title":"La Persistance des entités","anchor":"#la-persistance-des-entit-s"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.css" rel="stylesheet"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Doctrine | Symfony support"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Symfony support Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation//version 1/004-00-doctrine.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Doctrine | Symfony support"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation//version 1/004-00-doctrine.html#webpage",
+    "url": "writerside-documentation//version 1/004-00-doctrine.html",
+    "name": "Doctrine | Symfony support",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Symfony support Help"
+}</script><!-- End Schema.org --></head><body data-id="004-00-doctrine" data-main-title="Doctrine" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs=""><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Symfony support version 1 Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="004-00-doctrine" id="004-00-doctrine.md">Doctrine</h1><section class="chapter"><h2 id="objectif" data-toc="objectif">Objectif</h2><p id="cebs79_7">L&rsquo;objectif de ce document est d&rsquo;apprendre &agrave; utiliser Doctrine pour cr&eacute;er des entit&eacute;s et les persister dans une base de donn&eacute;es.</p></section><section class="chapter"><h2 id="intro" data-toc="intro">Intro</h2><p id="cebs79_8">Doctrine est un ORM (Object Relational Mapper). Son travail consiste &agrave; r&eacute;concilier la logique objet avec la logique de la base de donn&eacute;e relationnelle.</p><section class="chapter"><h3 id="installation" data-toc="installation">Installation</h3><div class="code-block" data-lang="none">
+composer require symfony/orm-pack
+composer require --dev symfony/maker-bundle
+</div><p id="cebs79_11">Support Docker</p><figure id="cebs79_12"><img alt="CleanShot 2025-01-20 at 16.53.55@2x.png" src="images/CleanShot%202025-01-20%20at%2016.53.55%402x.png" title="CleanShot 2025-01-20 at 16.53.55@2x.png" width="1878" height="552"></figure><section class="chapter"><h4 id="environnement" data-toc="environnement">Environnement</h4><p id="cebs79_16">Le fichier <code class="code" id="cebs79_17">.env</code> contient d&eacute;sormais la configuration de la connexion &agrave; la base de donn&eacute;es en mode d&eacute;veloppement. En production, ces informations seront r&eacute;cup&eacute;r&eacute;es depuis les vraies variables d&rsquo;environnement du serveur. L&rsquo;ORM Doctrine peut fonctionner avec de nombreux SGBDR, le fichier de configuration ne propose que des options gratuites (SQLite, MariaDB, MySQL et PostgreSQL) mais libre &agrave; vous d&rsquo;utiliser Oracle ou MS SQL Server.</p></section><section class="chapter"><h4 id="docker-compose" data-toc="docker-compose">Docker compose</h4><p id="cebs79_18">Le fichier <code class="code" id="cebs79_21">compose.yaml</code> d&eacute;crit la configuration d&rsquo;un conteneur Docker pour la base de donn&eacute;es. Il s&rsquo;agit par d&eacute;faut d&rsquo;un serveur PostgreSQL.</p><p id="cebs79_19">Si le support Docker est install&eacute;, on peut instancier le conteneur</p><div class="code-block" data-lang="none">
+docker compose up -d
+</div></section><section class="chapter"><h4 id="cr-ation-de-la-base-de-donn-es" data-toc="cr-ation-de-la-base-de-donn-es">Cr&eacute;ation de la base de donn&eacute;es</h4><p id="cebs79_22">Cette &eacute;tape est inutile si nous utilisons Docker, car en ce cas la base de donn&eacute;es est d&eacute;j&agrave; cr&eacute;&eacute;e.</p><div class="code-block" data-lang="none">
+symfony console doctrine:database:create
+</div></section></section></section><section class="chapter"><h2 id="les-entit-s" data-toc="les-entit-s">Les entit&eacute;s</h2><p id="cebs79_24">Une entit&eacute; est une classe charg&eacute;e de mod&eacute;liser des donn&eacute;es qui seront persist&eacute;es en base de donn&eacute;es. Pour sp&eacute;cifier la correspondance entre les propri&eacute;t&eacute;s de cet objet et la base de donn&eacute;es Doctrine utilise des attributs PHP.</p><p id="cebs79_25">Le composant Maker propose un outil en ligne de commande pour nous aider &agrave; g&eacute;n&eacute;rer les entit&eacute;s.</p><div class="code-block" data-lang="none">
+symfony console make:entity
+</div><p id="cebs79_27">Il suffit de se laisser guider et de r&eacute;pondre aux questions. Inutile de d&eacute;finir une propri&eacute;t&eacute; id, celle-ci est automatiquement g&eacute;n&eacute;r&eacute;e.</p><div class="code-block" data-lang="none">
+seb@mac sf-playground % symfony console make:entity                
+
+ Class name of the entity to create or update (e.g. GentlePuppy):
+ &gt; Pizza
+
+ created: src/Entity/Pizza.php
+ created: src/Repository/PizzaRepository.php
+ 
+ Entity generated! Now let's add some fields!
+ You can always add more fields later manually or by re-running this command.
+
+ New property name (press &lt;return&gt; to stop adding fields):
+ &gt; name
+
+ Field type (enter ? to see all types) [string]:
+ &gt; 
+
+ Field length [255]:
+ &gt; 50
+
+ Can this field be null in the database (nullable) (yes/no) [no]:
+ &gt; 
+
+ updated: src/Entity/Pizza.php
+
+ Add another property? Enter the property name (or press &lt;return&gt; to stop adding fields):
+ &gt; 
+</div><aside class="prompt" data-type="tip" data-title="" id="cebs79_29"><p id="cebs79_39">Il est toujours possible de revenir sur une entit&eacute; d&eacute;j&agrave; cr&eacute;&eacute;e afin d&rsquo;ajouter de nouvelles propri&eacute;t&eacute;s</p></aside><div class="code-block" data-lang="none">
+symfony console make:entity Pizza
+</div><p id="cebs79_31"><span class="control" id="cebs79_40">Le code de l&rsquo;entit&eacute; g&eacute;n&eacute;r&eacute;e</span></p><div class="code-block" data-lang="php">
+&lt;?php
+
+namespace App\Entity;
+
+use App\Repository\PizzaRepository;
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity(repositoryClass: PizzaRepository::class)]
+class Pizza
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
+    #[ORM\Column(length: 50)]
+    private ?string $name = null;
+
+    public function getId(): ?int
+    {
+        return $this-&gt;id;
+    }
+
+    public function getName(): ?string
+    {
+        return $this-&gt;name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this-&gt;name = $name;
+        return $this;
+    }
+}
+</div><p id="cebs79_33">Une classe tr&egrave;s simple, uniquement compos&eacute;e de propri&eacute;t&eacute;s et de m&eacute;thodes getters et setters. La sp&eacute;cificit&eacute; r&eacute;side dans les attributs qui g&egrave;rent la correspondance avec la base de donn&eacute;es.</p><p id="cebs79_34">Ajoutons le nom de la table dans l&rsquo;attribut de la classe</p><div class="code-block" data-lang="php">
+#[
+    ORM\Entity(repositoryClass: PizzaRepository::class), 
+    ORM\Table(name: 'pizzas')
+]
+</div><section class="chapter"><h3 id="les-types-de-donn-es" data-toc="les-types-de-donn-es">Les types de donn&eacute;es</h3><p id="cebs79_41">Dans l&rsquo;outil Maker, au moment du choix d&rsquo;un type de donn&eacute;es, nous obtenons la liste des types disponible si nous tapons ? puis validons avec ENTER.</p><div class="code-block" data-lang="none">
+Main Types
+  * string or ascii_string
+  * text
+  * boolean
+  * integer or smallint or bigint
+  * float
+
+Relationships/Associations
+  * relation a wizard 🧙 will help you build the relation
+  * ManyToOne
+  * OneToMany
+  * ManyToMany
+  * OneToOne
+
+Array/Object Types
+  * array or simple_array
+  * json
+  * object
+  * binary
+  * blob
+
+Date/Time Types
+  * datetime or datetime_immutable
+  * datetimetz or datetimetz_immutable
+  * date or date_immutable
+  * time or time_immutable
+  * dateinterval
+
+Other Types
+  * enum
+  * decimal
+  * guid
+
+</div></section><section class="chapter"><h3 id="la-migration" data-toc="la-migration">La migration</h3><p id="cebs79_43">Pour l&rsquo;heure, nous n&rsquo;avons qu'une classe, mais &agrave; partir de celle-ci, nous pouvons demander &agrave; Doctrine de cr&eacute;er la table dans la base de donn&eacute;es. C&rsquo;est l&agrave; le c&ocirc;t&eacute; magique de l&rsquo;ORM, la base de donn&eacute;es devient un service de persistance dont le d&eacute;veloppeur ne se pr&eacute;occupe plus. Ce principe n&rsquo;est pas sans limites, mais force est de constater que dans bien des cas, il est tr&egrave;s efficace.</p><div class="code-block" data-lang="none">
+symfony console make:migration
+</div><p id="cebs79_45">Cette derni&egrave;re commande compare l&rsquo;&eacute;tat de la base de donn&eacute;es avec celui des entit&eacute;s. Elle g&eacute;n&egrave;re un fichier de migration contenant le code SQL n&eacute;cessaire pour synchroniser la base de donn&eacute;es avec les entit&eacute;s.</p><p id="cebs79_46"><span class="control" id="cebs79_52">Le fichier de migration</span></p><div class="code-block" data-lang="php">
+&lt;?php
+
+declare(strict_types=1);
+
+namespace DoctrineMigrations;
+
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
+
+/**
+ * Auto-generated Migration: Please modify to your needs!
+ */
+final class Version20250120212924 extends AbstractMigration
+{
+    public function getDescription(): string
+    {
+        return '';
+    }
+
+    public function up(Schema $schema): void
+    {
+        // this up() migration is auto-generated, please modify it to your needs
+        $this-&gt;addSql('CREATE TABLE pizzas (id SERIAL NOT NULL, name VARCHAR(50) NOT NULL, PRIMARY KEY(id))');
+    }
+
+    public function down(Schema $schema): void
+    {
+        // this down() migration is auto-generated, please modify it to your needs
+        $this-&gt;addSql('CREATE SCHEMA public');
+        $this-&gt;addSql('DROP TABLE pizzas');
+    }
+}
+</div><p id="cebs79_48"><span class="control" id="cebs79_53">Pour obtenir la liste des migrations avec leurs statuts</span></p><div class="code-block" data-lang="none">
+symfony console doctrine:migrations:list
+</div><figure id="cebs79_50"><img alt="CleanShot 2025-01-21 at 07.17.20@2x.png" src="images/CleanShot%202025-01-21%20at%2007.17.20%402x.png" title="CleanShot 2025-01-21 at 07.17.20@2x.png" width="2526" height="432"></figure><section class="chapter"><h4 id="ex-cuter-les-migrations-en-suspend" data-toc="ex-cuter-les-migrations-en-suspend">Ex&eacute;cuter les migrations en suspend</h4><div class="code-block" data-lang="none">
+symfony console doctrine:migrations:migrate
+</div><p id="cebs79_55">Cette commande ex&eacute;cute les fichiers de migrations pour synchroniser la base de donne&eacute;s avec les entit&eacute;s. Afin d&rsquo;&eacute;viter d&rsquo;ex&eacute;cuter plusieurs fois la m&ecirc;me migration, la commande enregistre les op&eacute;rations effectu&eacute;es dans une table des migrations sur la base de donn&eacute;es.</p><figure id="cebs79_56"><img alt="CleanShot 2025-01-21 at 07.35.51@2x.png" src="images/CleanShot%202025-01-21%20at%2007.35.51%402x.png" title="CleanShot 2025-01-21 at 07.35.51@2x.png" width="804" height="464"></figure><figure id="cebs79_57"><img alt="CleanShot 2025-01-21 at 07.37.02@2x.png" src="images/CleanShot%202025-01-21%20at%2007.37.02%402x.png" title="CleanShot 2025-01-21 at 07.37.02@2x.png" width="2664" height="504"></figure><p id="cebs79_58">Doctrine offre une commande qui ex&eacute;cute des requ&ecirc;tes sql depuis la console. Usons de cet outil pour Afficher le contenu de la table de migrations.</p><div class="code-block" data-lang="none">
+symfony console doctrine:query:sql 'select * from doctrine_migration_versions'
+</div><figure id="cebs79_60"><img alt="CleanShot 2025-01-21 at 07.44.20@2x.png" src="images/CleanShot%202025-01-21%20at%2007.44.20%402x.png" title="CleanShot 2025-01-21 at 07.44.20@2x.png" width="2550" height="422"></figure></section></section><section class="chapter"><h3 id="exercice" data-toc="exercice">Exercice</h3><p id="cebs79_61">Cr&eacute;er les entit&eacute;s suivantes&nbsp;:</p><p id="cebs79_62"><span class="control" id="cebs79_69">Book</span></p><ul class="list _bullet" id="cebs79_63"><li class="list__item" id="cebs79_70"><p>title : string not nullable</p></li><li class="list__item" id="cebs79_71"><p>publishedAt : date not nullable</p></li><li class="list__item" id="cebs79_72"><p>language : string not nullable</p></li></ul><p id="cebs79_64"><span class="control" id="cebs79_73">Author</span></p><ul class="list _bullet" id="cebs79_65"><li class="list__item" id="cebs79_74"><p>firstName : string nullable</p></li><li class="list__item" id="cebs79_75"><p>lastName : string not nullable</p></li><li class="list__item" id="cebs79_76"><p>nationality : string not nullable</p></li></ul><p id="cebs79_66"><span class="control" id="cebs79_77">Ingredient</span></p><ul class="list _bullet" id="cebs79_67"><li class="list__item" id="cebs79_78"><p>label : string not nullable</p></li><li class="list__item" id="cebs79_79"><p>price : integer not nullable</p></li></ul><p id="cebs79_68">G&eacute;n&eacute;rer, puis ex&eacute;cuter les migrations</p></section></section><section class="chapter"><h2 id="la-persistance-des-entit-s" data-toc="la-persistance-des-entit-s">La Persistance des entit&eacute;s</h2><p id="cebs79_80">Pour tester la persistance, il nous faut un contr&ocirc;leur et une vue.</p><div class="code-block" data-lang="php">
+&lt;?php
+
+namespace App\Controller;
+
+use App\Entity\Pizza;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+
+
+final class PizzaController extends AbstractController
+{
+    #[Route('/pizza/insert', name: 'pizza_insert')]
+    public function index(): Response
+    {
+        // Instanciation de l'entité
+        $pizza = new Pizza();
+        $pizza-&gt;setName('Calzone');
+
+        return $this-&gt;render('pizza/index.html.twig', [
+            'pizza' =&gt; $pizza,
+        ]);
+    }
+}
+</div><div class="code-block" data-lang="twig">
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PizzaController!{% endblock %}
+
+{% block body %}
+    &lt;h1&gt;Pizza&lt;/h1&gt;
+    
+    {{ dump(pizza) }}
+    
+{% endblock %}
+</div><figure id="cebs79_83"><img alt="CleanShot 2025-01-21 at 08.15.41@2x.png" src="images/CleanShot%202025-01-21%20at%2008.15.41%402x.png" title="CleanShot 2025-01-21 at 08.15.41@2x.png" width="1446" height="840"></figure><p id="cebs79_84">L&rsquo;entit&eacute; n&rsquo;est pas persist&eacute;e, sa propri&eacute;t&eacute; <code class="code" id="cebs79_92">id</code> est nulle.</p><section class="chapter"><h3 id="mise-en-place-de-la-persistance" data-toc="mise-en-place-de-la-persistance">Mise en place de la persistance</h3><div class="code-block" data-lang="php">
+    #[Route('/pizza/insert', name: 'pizza_insert')]
+    public function insert(
+        // Injection automatique de l'EntityManager
+        EntityManagerInterface $entityManager
+    ): Response
+    {
+        $pizza = new Pizza();
+        $pizza-&gt;setName('Calzone');
+
+        // Persistance de l'entité
+        $entityManager-&gt;persist($pizza);
+        // Validation des opérations
+        $entityManager-&gt;flush();
+
+        return $this-&gt;render('pizza/index.html.twig', [
+            'pizza' =&gt; $pizza,
+        ]);
+    }
+</div><ol class="list _decimal" id="cebs79_94" type="1"><li class="list__item" id="cebs79_98"><p>L&rsquo;objet <code class="code" id="cebs79_101">EntityManager</code> est charg&eacute; de la gestion des entit&eacute;s (insertion, mise &agrave; jour et suppression).</p></li><li class="list__item" id="cebs79_99"><p>Cette instance est automatiquement inject&eacute;e, il suffit de la d&eacute;clarer dans la signature de la m&eacute;thode et bien entendu de la typer.</p></li><li class="list__item" id="cebs79_100"><p>Toutes les op&eacute;rations de persistance s&rsquo;effectuent au sein d&rsquo;une transaction <code class="code" id="cebs79_102">SQL. La m&eacute;thode</code>flush` valide la transaction et ex&eacute;cute toutes les commandes en attente.</p></li></ol><figure id="cebs79_95"><img alt="CleanShot 2025-01-21 at 08.27.22@2x.png" src="images/CleanShot%202025-01-21%20at%2008.27.22%402x.png" title="CleanShot 2025-01-21 at 08.27.22@2x.png" width="1446" height="840"></figure><p id="cebs79_96">L&rsquo;entit&eacute; est persist&eacute;e, son id n&rsquo;est plus nul. Nous pouvons constater avec une requ&ecirc;te SQL que les donn&eacute;es sont bien enregistr&eacute;es dans la base.</p><figure id="cebs79_97"><img alt="CleanShot 2025-01-21 at 08.28.55@2x.png" src="images/CleanShot%202025-01-21%20at%2008.28.55%402x.png" title="CleanShot 2025-01-21 at 08.28.55@2x.png" width="2034" height="376"></figure></section><section class="chapter"><h3 id="entitymanager-et-repository" data-toc="entitymanager-et-repository">EntityManager et Repository</h3><p id="cebs79_103">Comme son nom l&rsquo;indique, l&rsquo;EntityManager s&rsquo;occupe des entit&eacute;s et communique avec la base de donn&eacute;es pour enregistrer (persister) l&rsquo;&eacute;tat de ces entit&eacute;s.</p><p id="cebs79_104">En simplifiant un peu, on pourrait dire que les classes Repository font l&rsquo;inverse, elles interrogent la base de donn&eacute;es pour hydrater des entit&eacute;s.</p><div class="code-block" data-lang="php">
+#[Route('/pizza/select', name: 'pizza_select')]
+    public function select(
+        // Injection automatique de l'EntityManager
+        PizzaRepository $pizzaRepository
+    ): Response
+    {
+        $pizza = $pizzaRepository-&gt;findOneById(1);
+
+        return $this-&gt;render('pizza/index.html.twig', [
+            'pizza' =&gt; $pizza,
+        ]);
+    }
+</div><figure id="cebs79_106"><img alt="CleanShot 2025-01-21 at 08.41.35@2x.png" src="images/CleanShot%202025-01-21%20at%2008.41.35%402x.png" title="CleanShot 2025-01-21 at 08.41.35@2x.png" width="1446" height="840"></figure><aside class="prompt" data-type="tip" data-title="" id="cebs79_107"><p id="cebs79_108">On obtient les m&ecirc;mes donn&eacute;es qu'avec l&rsquo;insertion, mais l&rsquo;entit&eacute; n&rsquo;est pas la m&ecirc;me (#1531 ici).</p></aside></section><section class="chapter"><h3 id="une-simplification" data-toc="une-simplification">Une simplification</h3><div class="code-block" data-lang="php">
+    #[Route('/pizza/select/{id}',
+        name: 'pizza_select',
+        requirements: ['id' =&gt; Requirement::DIGITS])]
+    public function select(
+        Pizza $pizza
+    ): Response
+    {
+        return $this-&gt;render('pizza/index.html.twig', [
+            'pizza' =&gt; $pizza,
+        ]);
+    }
+</div><p id="cebs79_110">Ici la route demande un param&egrave;tre <code class="code" id="cebs79_111">id</code>, mais c&rsquo;est un objet <code class="code" id="cebs79_112">Pizza</code> qui est pass&eacute; en argument. Symfony effectue automatiquement la requ&ecirc;te et nous retourne une entit&eacute; hydrat&eacute;e. Pour que ce tour de magie fonctionne, il faut que le param&egrave;tre porte le m&ecirc;me nom que la clef primaire de l&rsquo;entit&eacute; (<code class="code" id="cebs79_113">id</code>).</p></section><section class="chapter"><h3 id="am-lioration-de-l-insertion" data-toc="am-lioration-de-l-insertion">Am&eacute;lioration de l&rsquo;insertion</h3><p id="cebs79_114">Ici le nom de la pizza est pass&eacute; en param&egrave;tre ce qui nous &eacute;vitera de cr&eacute;er de multiples calzones.</p><div class="code-block" data-lang="php">
+    #[Route('/pizza/insert/{name}', name: 'pizza_insert')]
+    public function index(
+        // Injection automatique de l'EntityManager
+        EntityManagerInterface $entityManager,
+        string $name
+    ): Response
+    {
+        // Pas d'espace dans les url
+        $name = str_replace(['-', '_'], ' ', $name);
+        $pizza = new Pizza();
+        $pizza-&gt;setName($name);
+
+        // Persistance de l'entité
+        $entityManager-&gt;persist($pizza);
+        // Validation des opérations
+        $entityManager-&gt;flush();
+
+        return $this-&gt;render('pizza/index.html.twig', [
+            'pizza' =&gt; $pizza,
+        ]);
+    }
+</div></section><section class="chapter"><h3 id="la-suppression" data-toc="la-suppression">La suppression</h3><div class="code-block" data-lang="php">
+    #[Route('/pizza/delete/{id}',
+        name: 'pizza_delete',
+        requirements: ['id' =&gt; Requirement::DIGITS])]
+    public function delete(
+        EntityManagerInterface $entityManager,
+        Pizza $pizza
+    ): Response
+    {
+
+        $entityManager-&gt;remove($pizza);
+        $entityManager-&gt;flush();
+
+        return $this-&gt;render('pizza/index.html.twig', [
+            'pizza' =&gt; $pizza,
+        ]);
+    }
+</div><figure id="cebs79_117"><img alt="CleanShot 2025-01-21 at 09.11.06@2x.png" src="images/CleanShot%202025-01-21%20at%2009.11.06%402x.png" title="CleanShot 2025-01-21 at 09.11.06@2x.png" width="1372" height="768"></figure></section><section class="chapter"><h3 id="la-mise-jour" data-toc="la-mise-jour">La mise &agrave; jour</h3><p id="cebs79_118">Ici la seule diff&eacute;rence avec l&rsquo;insertion r&eacute;side dans l&rsquo;entit&eacute; de d&eacute;part qui est nouvelle dans un cas et hydrat&eacute;e par la base de donn&eacute;es dans l&rsquo;autre.</p><div class="code-block" data-lang="php">
+    #[Route('/pizza/update/{id}',
+        name: 'pizza_update',
+        requirements: ['id' =&gt; Requirement::DIGITS])]
+    public function update(
+        EntityManagerInterface $entityManager,
+        Pizza $pizza
+    ): Response
+    {
+
+        $pizza-&gt;setName('Quatre fromages');
+        $entityManager-&gt;persist($pizza);
+        $entityManager-&gt;flush();
+
+        return $this-&gt;render('pizza/index.html.twig', [
+            'pizza' =&gt; $pizza,
+        ]);
+    }
+</div></section><section class="chapter"><h3 id="exercice-sur-la-persistance" data-toc="exercice-sur-la-persistance">Exercice sur la persistance</h3><p id="cebs79_120">R&eacute;aliser les m&ecirc;mes op&eacute;rations (insertion, mise &agrave; jour et suppression) pour l&rsquo;entit&eacute; <code class="code" id="cebs79_121">Author</code> dans un nouveau contr&ocirc;leur</p></section></section><div class="last-modified">Last modified: 01 février 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="003-00profilage-et-automatisation.html" class="navigation-links__prev">Profilage et automatisation</a><a href="004-02-associations.html" class="navigation-links__next">Les associations</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.js"></script></body></html>

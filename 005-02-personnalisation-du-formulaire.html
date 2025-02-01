@@ -1,0 +1,112 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-02-01T11:39:32.231731"><title>Personnalisation du formulaire | Symfony support</title><script type="application/json" id="virtual-toc-data">[{"id":"objectifs","level":0,"title":"Objectifs","anchor":"#objectifs"},{"id":"le-type-des-champs","level":0,"title":"Le type des champs","anchor":"#le-type-des-champs"},{"id":"les-attributs-de-champs","level":0,"title":"Les attributs de champs","anchor":"#les-attributs-de-champs"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.css" rel="stylesheet"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Personnalisation du formulaire | Symfony support"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Symfony support Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation//version 1/005-02-personnalisation-du-formulaire.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Personnalisation du formulaire | Symfony support"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation//version 1/005-02-personnalisation-du-formulaire.html#webpage",
+    "url": "writerside-documentation//version 1/005-02-personnalisation-du-formulaire.html",
+    "name": "Personnalisation du formulaire | Symfony support",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Symfony support Help"
+}</script><!-- End Schema.org --></head><body data-id="005-02-Personnalisation-du-formulaire" data-main-title="Personnalisation du formulaire" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="005-00-formulaires.md|Formulaires"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Symfony support version 1 Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="005-02-Personnalisation-du-formulaire" id="005-02-Personnalisation-du-formulaire.md">Personnalisation du formulaire</h1><section class="chapter"><h2 id="objectifs" data-toc="objectifs">Objectifs</h2><ul class="list _bullet" id="-g63ecc_6"><li class="list__item" id="-g63ecc_7"><p>Forcer le type de champ dans un formulaire</p></li><li class="list__item" id="-g63ecc_8"><p>Identifier quelques attributs optionnels des champs de formulaire</p></li></ul></section><section class="chapter"><h2 id="le-type-des-champs" data-toc="le-type-des-champs">Le type des champs</h2><p id="-g63ecc_9">Par d&eacute;faut, Symfony peut inf&eacute;rer le type des champs en fonction du type de donn&eacute;es de l'entit&eacute; li&eacute;e. Cependant, nous pouvons sp&eacute;cifier un autre type si l'inf&eacute;rence ne correspond pas &agrave; nos besoins.</p><p id="-g63ecc_10">Soit l'entit&eacute; suivante :</p><div class="code-block" data-lang="php">
+#[ORM\Entity(repositoryClass: CommentRepository::class)]
+class Comment
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $content = null;
+
+    #[ORM\Column(length: 80)]
+    private ?string $author = null;
+
+    // getters et setters
+}
+</div><p id="-g63ecc_12">Et le formulaire suivant</p><div class="code-block" data-lang="php">
+class CommentType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            -&gt;add('createdAt', DateType::class)
+            -&gt;add('content', TextareaType::class)
+            -&gt;add('author', EmailType::class)
+        ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver-&gt;setDefaults([
+            'data_class' =&gt; Comment::class,
+        ]);
+    }
+}
+</div><p id="-g63ecc_14">Nous constatons ici qu'en face de chaque champ, nous avons pr&eacute;cis&eacute; le type attendu. Il ne faut pas oublier d'importer les classes demand&eacute;es avec un <code class="code" id="-g63ecc_17">use</code> en d&eacute;but de fichier.</p><p id="-g63ecc_15">Voici la liste des types de champs dans Symfony :</p><p id="-g63ecc_16"><a href="https://symfony.com/doc/current/reference/forms/types.html" id="-g63ecc_18" data-external="true" rel="noopener noreferrer">Liste de types de champs</a></p></section><section class="chapter"><h2 id="les-attributs-de-champs" data-toc="les-attributs-de-champs">Les attributs de champs</h2><p id="-g63ecc_19">La m&eacute;thode <code class="code" id="-g63ecc_26">add</code> du <code class="code" id="-g63ecc_27">FormBuilder</code> admet en troisi&egrave;me argument optionnel un tableau associatif des attributs du champ.</p><section class="chapter"><h3 id="le-lib-ll-du-champ" data-toc="le-lib-ll-du-champ">Le lib&eacute;ll&eacute; du champ</h3><p id="-g63ecc_28">Par d&eacute;faut, le libell&eacute; du champ est le m&ecirc;me que le nom de la propri&eacute;t&eacute; dans l'entit&eacute;. Si nous souhaitons changer cela, nous devrons utiliser l'attribut label.</p><div class="code-block" data-lang="php">
+$builder
+     -&gt;add('createdAt', DateType::class, [
+         'label' =&gt; 'Date de création'
+     ])
+     -&gt;add('content', TextareaType::class, [
+         'label' =&gt; 'Texte du commentaire'
+     ])
+     -&gt;add('author', EmailType::class, [
+         'label' =&gt; 'Adresse email de l\'auteur'
+     ])
+;
+</div></section><section class="chapter"><h3 id="la-date-sur-un-seul-champ" data-toc="la-date-sur-un-seul-champ">La date sur un seul champ</h3><p id="-g63ecc_30">Par d&eacute;faut, un champ <code class="code" id="-g63ecc_32">DateType</code> sera transform&eacute; dans la vue en une s&eacute;rie de listes d&eacute;roulantes pour choisir le jour le mois et l'ann&eacute;e. Si nous souhaitons en avoir qu'un seul champ, en ce cas, il faut ajouter un attribut <code class="code" id="-g63ecc_33">widget</code> avec la valeur <code class="code" id="-g63ecc_34">single_text</code>.</p><div class="code-block" data-lang="php">
+-&gt;add('createdAt', DateType::class, [
+       'label' =&gt; 'Date de création',
+       'widget' =&gt; 'single_text',
+])
+</div></section><section class="chapter"><h3 id="les-attributs-html" data-toc="les-attributs-html">Les attributs HTML</h3><p id="-g63ecc_35">Les attributs HTML du champ sont indiqu&eacute;s dans une clef <code class="code" id="-g63ecc_37">attr</code>, qui elle-m&ecirc;me, admet en valeur un tableau associatif o&ugrave; les clefs sont les noms des attributs.</p><div class="code-block" data-lang="php">
+-&gt;add('content', TextareaType::class, [
+      'label' =&gt; 'Texte du commentaire',
+      'attr' =&gt; ['rows' =&gt; 10]
+])
+-&gt;add('Valider', SubmitType::class, [
+       'label' =&gt; 'Valider le commentaire',
+       'attr' =&gt; ['class' =&gt; 'btn btn-success']
+])
+</div></section><section class="chapter"><h3 id="s-curisation-de-la-saisie" data-toc="s-curisation-de-la-saisie">S&eacute;curisation de la saisie</h3><p id="-g63ecc_38">Pour &eacute;viter les attaques XSS, il est bon de nettoyer la saisie, afin d'&eacute;liminer toute balise qui pourrait poser probl&egrave;me. Nous pouvons faire cela individuellement, champ par champ, mais &eacute;galement d&eacute;finir cette option sur l'ensemble du formulaire.</p><p id="-g63ecc_39">Il faut tout d'abord installer une biblioth&egrave;que suppl&eacute;mentaire comme ceci.</p><div class="code-block" data-lang="none">
+composer require symfony/html-sanitizer
+</div><section class="chapter"><h4 id="s-curisation-d-un-champ" data-toc="s-curisation-d-un-champ">S&eacute;curisation d'un champ</h4><div class="code-block" data-lang="php">
+-&gt;add('content', TextareaType::class, [
+    'label' =&gt; 'Texte du commentaire',
+    'attr' =&gt; ['rows' =&gt; 10],
+    'sanitize_html' =&gt; true,
+])
+</div></section><section class="chapter"><h4 id="s-curisation-de-l-ensemble-des-champs-d-un-formulaire" data-toc="s-curisation-de-l-ensemble-des-champs-d-un-formulaire">S&eacute;curisation de l'ensemble des champs d'un formulaire</h4><div class="code-block" data-lang="php">
+public function configureOptions(
+   OptionsResolver $resolver
+): void
+{
+    $resolver-&gt;setDefaults([
+        'sanitize_html' =&gt; true,
+    ]);
+}
+</div></section><section class="chapter"><h4 id="s-curisation-dans-les-vues" data-toc="s-curisation-dans-les-vues">S&eacute;curisation dans les vues</h4><div class="code-block" data-lang="twig">
+{{ comment.content|sanitize_html }}
+</div></section></section><section class="chapter"><h3 id="champs-non-li-s" data-toc="champs-non-li-s">Champs non li&eacute;s</h3><p id="-g63ecc_47">Parfois, nous souhaitons afficher des champs qui n'on pas vocation &agrave; &ecirc;tre persist&eacute;s, ni m&ecirc;me stock&eacute;s dans une entit&eacute;. Par exemple, une case &agrave; cocher indiquant que le visiteur accepte les conditions g&eacute;n&eacute;rales de vente lors d'une commande.</p><div class="code-block" data-lang="php">
+-&gt;add('cgv', CheckboxType::class, [
+    'mapped' =&gt; false,
+    'label' =&gt; &quot;J'accepte les conditions générales de vente&quot;
+])
+</div></section><section class="chapter"><h3 id="obligation-de-saisie" data-toc="obligation-de-saisie">Obligation de saisie</h3><p id="-g63ecc_49">L'attribut <code class="code" id="-g63ecc_51">required</code> poss&egrave;de une valeur bool&eacute;enne qui indique si la saisie est requise ou facultative. Ce contr&ocirc;le de validit&eacute; est effectu&eacute; c&ocirc;t&eacute; client.</p><div class="code-block" data-lang="php">
+-&gt;add('content', TextareaType::class, [
+    'label' =&gt; 'Texte du commentaire',
+    'attr' =&gt; ['rows' =&gt; 10],
+    'sanitize_html' =&gt; true,
+    'required' =&gt; true
+])
+</div></section></section><div class="last-modified">Last modified: 01 février 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="005-01-personnalisation-de-l-affichage.html" class="navigation-links__prev">Personnalisation de l'affichage</a><a href="005-03-champs-de-formulaire.html" class="navigation-links__next">Champs de formulaire avanc&eacute;s</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.js"></script></body></html>

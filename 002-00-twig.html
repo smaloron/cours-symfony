@@ -1,0 +1,432 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-02-01T11:39:32.216271"><title>Twig | Symfony support</title><script type="application/json" id="virtual-toc-data">[{"id":"objectif","level":0,"title":"Objectif","anchor":"#objectif"},{"id":"a-quoi-a-sert","level":0,"title":"A quoi ça sert","anchor":"#a-quoi-a-sert"},{"id":"installation","level":0,"title":"Installation","anchor":"#installation"},{"id":"premiers-pas-avec-twig","level":0,"title":"Premiers pas avec Twig","anchor":"#premiers-pas-avec-twig"},{"id":"filtres-twig","level":0,"title":"Filtres Twig","anchor":"#filtres-twig"},{"id":"evaluation-des-expressions","level":0,"title":"Evaluation des expressions","anchor":"#evaluation-des-expressions"},{"id":"affichage-des-variables-composites","level":0,"title":"Affichage des variables composites","anchor":"#affichage-des-variables-composites"},{"id":"liens-vers-les-routes","level":0,"title":"Liens vers les routes","anchor":"#liens-vers-les-routes"},{"id":"les-boucles","level":0,"title":"Les boucles","anchor":"#les-boucles"},{"id":"les-conditions","level":0,"title":"Les conditions","anchor":"#les-conditions"},{"id":"exercices","level":0,"title":"Exercices","anchor":"#exercices"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.css" rel="stylesheet"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Twig | Symfony support"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Symfony support Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation//version 1/002-00-twig.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Twig | Symfony support"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation//version 1/002-00-twig.html#webpage",
+    "url": "writerside-documentation//version 1/002-00-twig.html",
+    "name": "Twig | Symfony support",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Symfony support Help"
+}</script><!-- End Schema.org --></head><body data-id="002-00-twig" data-main-title="Twig" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs=""><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Symfony support version 1 Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="002-00-twig" id="002-00-twig.md">Twig</h1><section class="chapter"><h2 id="objectif" data-toc="objectif">Objectif</h2><p id="yd844w_14">L&rsquo;objectif de ce document est d&rsquo;apprendre &agrave; cr&eacute;er des r&eacute;ponses HTTP riches avec le moteur de template <code class="code" id="yd844w_16">Twig</code>.</p><ul class="list _bullet" id="yd844w_15"><li class="list__item" id="yd844w_17"><p>Cr&eacute;er des mod&egrave;les</p></li><li class="list__item" id="yd844w_18"><p>Passer des variables &agrave; un mod&egrave;le</p></li><li class="list__item" id="yd844w_19"><p>G&eacute;rer un affichage conditionnel</p></li><li class="list__item" id="yd844w_20"><p>Modifier l&rsquo;affichage des donn&eacute;es avec des filtres</p></li><li class="list__item" id="yd844w_21"><p>R&eacute;p&eacute;ter des parties d&rsquo;un mod&egrave;le</p></li></ul></section><section class="chapter"><h2 id="a-quoi-a-sert" data-toc="a-quoi-a-sert">A quoi &ccedil;a sert</h2><p id="yd844w_22"><code class="code" id="yd844w_25">Twig</code> est une biblioth&egrave;que &eacute;dit&eacute;e par Sensio Labs qui propose une solution &agrave; la gestion des vues dans une application PHP (le V du pattern MVC).</p><p id="yd844w_23">Plut&ocirc;t que de mettre le code HTML de nos r&eacute;ponses dans les contr&ocirc;leurs, ce qui peut vite devenir ing&eacute;rable. Nous allons d&eacute;finir des mod&egrave;les avec Twig, mod&egrave;les que nous pourrons ensuite utiliser dans les contr&ocirc;leurs. Si Twig est principalement utilis&eacute; pour produire du code html, il peut g&eacute;n&eacute;rer n&rsquo;importe quel contenu texte, json, xml, css et m&ecirc;me javascript.</p><figure id="yd844w_24"><img alt="002-twig-simple.png" src="images/002-twig-simple.png" title="002-twig-simple.png" width="1702" height="850"></figure></section><section class="chapter"><h2 id="installation" data-toc="installation">Installation</h2><p id="yd844w_26">Pour utiliser Twig il nous faut tout d&rsquo;abord l&rsquo;installer. Pour cela Symfony propose un syst&egrave;me de gestion des installations nomm&eacute; <code class="code" id="yd844w_29">Flex</code>. Bas&eacute; sur <code class="code" id="yd844w_30">Composer</code>, cet outil ajoute au simple t&eacute;l&eacute;chargement des librairies externes la cr&eacute;ation de fichiers et le param&eacute;trage qui rendent la ressource imm&eacute;diatement exploitable</p><p id="yd844w_27"><code class="code" id="yd844w_31">composer require twig</code></p><aside class="prompt" data-type="tip" data-title="" id="yd844w_28"><p id="yd844w_32">Note&nbsp;: Twig est d&eacute;j&agrave; install&eacute; si nous avons utilis&eacute; le mod&egrave;le webapp pour g&eacute;n&eacute;rer le projet Symfony</p></aside></section><section class="chapter"><h2 id="premiers-pas-avec-twig" data-toc="premiers-pas-avec-twig">Premiers pas avec Twig</h2><p id="yd844w_33">La premi&egrave;re chose &agrave; faire est de cr&eacute;er un mod&egrave;le (ou template) et de l&rsquo;enregistrer dans le dossier <code class="code" id="yd844w_40">templates</code> cr&eacute;&eacute; lors de l&rsquo;installation de Twig.</p><p id="yd844w_34">La nomenclature sugg&eacute;r&eacute;e est la suivante&nbsp;:</p><p id="yd844w_35"><code class="code" id="yd844w_41">nom du mod&egrave;le.type de sortie.twig</code></p><p id="yd844w_36">Par exemple <code class="code" id="yd844w_42">home.html.twig</code> pour un mod&egrave;le qui contient du code html</p><p id="yd844w_37">Ensuite, il faut un contr&ocirc;leur et une route qui utilise le mod&egrave;le Twig pour constituer la r&eacute;ponse HTTP. Pour nous faciliter la t&acirc;che, nous pouvons &eacute;tendre la classe <code class="code" id="yd844w_43">AbstractController</code> qui offre une m&eacute;thode <code class="code" id="yd844w_44">render</code></p><section class="chapter"><h3 id="un-premier-mod-le" data-toc="un-premier-mod-le">Un premier mod&egrave;le</h3><p id="yd844w_45"><code class="code" id="yd844w_51">home.html.twig</code></p><div class="code-block" data-lang="markup">
+&lt;!doctype html&gt;
+&lt;html lang=&quot;fr&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Premier modèle Twig&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Twig avec Symfony&lt;/h1&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</div><p id="yd844w_47"><code class="code" id="yd844w_52">HomeController.php</code></p><div class="code-block" data-lang="php">
+&lt;?php
+
+namespace App\Controller;
+
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+use Twig\Environment;
+
+class HomeController
+{
+    #[Route('/home')]
+    final public function index(Environment $twig): Response{
+        try{
+            $content = $twig-&gt;render('home.html.twig');
+            return new Response($content);
+        } catch (Error $err){
+            return new Response($err-&gt;getMessage());
+        }
+    }
+}
+</div><p id="yd844w_49"><code class="code" id="yd844w_53">HomeController.php</code> avec AbstractController</p><div class="code-block" data-lang="php">
+&lt;?php
+
+namespace App\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+
+class HomeController extends AbstractController
+{
+    #[Route('/home')]
+    final public function index(): Response{
+        return $this-&gt;render('home.html.twig');
+    }
+}
+</div></section><section class="chapter"><h3 id="affichage-de-variables-scalaires" data-toc="affichage-de-variables-scalaires">Affichage de variables scalaires</h3><p id="yd844w_54">On transmet les variables expos&eacute;es au mod&egrave;le sous la forme d&rsquo;un tableau associatif pass&eacute; en argument de la m&eacute;thode <code class="code" id="yd844w_61">render</code>.</p><p id="yd844w_55">Dans le mod&egrave;le, on peut ensuite afficher la valeur des clefs du tableau associatif avec la syntaxe &quot;moustaches&quot; (double accolades ou curly brackets).</p><p id="yd844w_56">Les variables ainsi affich&eacute;es sont automatiquement &eacute;chapp&eacute;es pour &eacute;viter toute attaque XSS. Essayez de passer du code html dans une clef pour constater l&rsquo;effet de cette s&eacute;curit&eacute;.</p><p id="yd844w_57"><code class="code" id="yd844w_62">HomeController.php</code></p><div class="code-block" data-lang="php">
+&lt;?php
+
+namespace App\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+
+class HomeController extends AbstractController
+{
+    #[Route('/home')]
+    final public function index(): Response{
+        return $this-&gt;render('home.html.twig', ['name'=&gt;'Bob']);
+    }
+}
+</div><p id="yd844w_59"><code class="code" id="yd844w_63">home.html.twig</code></p><div class="code-block" data-lang="markup">
+&lt;!doctype html&gt;
+&lt;html lang=&quot;fr&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Premier modèle Twig&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Hello {{ name }}&lt;/h1&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</div></section></section><section class="chapter"><h2 id="filtres-twig" data-toc="filtres-twig">Filtres Twig</h2><p id="yd844w_64">Les filtres Twig modifie la valeur de la variable affich&eacute;e. Ils n&rsquo;agissent pas sur la variable elle-m&ecirc;me, mais juste sur son affichage. Ce sont en quelque sorte des fonctions de formatage.</p><p id="yd844w_65">Le filtre est d&eacute;clar&eacute; lors de l&rsquo;affichage de la variable (entre les accolades) et s&eacute;par&eacute; du nom de la variable elle-m&ecirc;me par un caract&egrave;re pipe</p><p id="yd844w_66">Par exemple, ci-dessous, le filtre <code class="code" id="yd844w_72">capitalize</code> est appliqu&eacute; &agrave; la variable <code class="code" id="yd844w_73">name</code><br><code class="code" id="yd844w_75">{{ name | capitalize }}</code></p><p id="yd844w_67">On peut combiner plusieurs filtres, comme ci-dessous o&ugrave; on n&rsquo;affiche que le premier caract&egrave;re de la variable <code class="code" id="yd844w_76">name</code> converti en majuscule<br><code class="code" id="yd844w_78">{{ name | first | upper }}</code></p><p id="yd844w_68">Certains filtres admettent des arguments, ci-dessous le filtre date transforme un objet DateTime en string selon un format pass&eacute; en argument<br><code class="code" id="yd844w_80">{{ createdAt | date('d/m/Y') }}</code></p><p id="yd844w_69">Ci-dessous la documentation officielle des filtres Twig</p><p id="yd844w_70"><a href="https://twig.symfony.com/doc/2.x/filters/index.html" id="yd844w_81" data-external="true" rel="noopener noreferrer">filtres Twig</a></p><section class="chapter"><h3 id="exemple-de-l-utilisation-d-un-filtre" data-toc="exemple-de-l-utilisation-d-un-filtre">Exemple de l'utilisation d'un filtre</h3><p id="yd844w_82"><code class="code" id="yd844w_86">HomeController.php</code></p><div class="code-block" data-lang="php">
+&lt;?php
+
+namespace App\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+
+class HomeController extends AbstractController
+{
+    #[Route('/person')]
+    final public function index(): Response{
+        return $this-&gt;render('home.html.twig', [
+        'firstname'=&gt;'Imogen',
+        'name'=&gt; 'Cunningham',
+        'birthDate' =&gt; new \DateTime('1883-04-12'),
+        'friends' =&gt; ['Dorothea Lange', 'Edward Weston', 'Alfred Stieglitz']
+        ]);
+    }
+}
+</div><p id="yd844w_84"><code class="code" id="yd844w_87">home.html.twig</code></p><div class="code-block" data-lang="markup">
+&lt;!doctype html&gt;
+&lt;html lang=&quot;fr&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Premier modèle Twig&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h2&gt;Nom : {{ firstName | first }}. {{ name | upper }}&lt;/h2&gt;
+&lt;p&gt;Né(e) le : {{ birthDate | date('d/m/Y')}}&lt;/p&gt;
+&lt;p&gt;Nombre d'amis {{ friends | length }}&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</div></section></section><section class="chapter"><h2 id="evaluation-des-expressions" data-toc="evaluation-des-expressions">Evaluation des expressions</h2><p id="yd844w_88">Twig &eacute;value les caract&egrave;res entre doubles accolades comme des expressions. On peut donc faire des calculs arithm&eacute;tiques ou m&ecirc;me utiliser des fonctions</p><section class="chapter"><h3 id="quelques-exemples" data-toc="quelques-exemples">Quelques exemples</h3><div class="code-block" data-lang="markup">
+{{ 5 + 3 }}
+{{ random(1, 10) }}
+{{ (bookList | length) * 3 }}
+</div><p id="yd844w_92">Liste des fonctions disponibles dans Twig</p><p id="yd844w_93"><a href="https://twig.symfony.com/doc/2.x/functions/index.html" id="yd844w_94" data-external="true" rel="noopener noreferrer">Fonctions Twig</a></p></section><section class="chapter"><h3 id="ternaires" data-toc="ternaires">Ternaires</h3><p id="yd844w_95">Twig supporte aussi les expressions conditionnelles ternaires avec une syntaxe similaire &agrave; celle de PHP</p><div class="code-block" data-lang="markup">
+{{ age &gt;=18 ? 'majeur' : 'mineur' }}
+</div></section></section><section class="chapter"><h2 id="affichage-des-variables-composites" data-toc="affichage-des-variables-composites">Affichage des variables composites</h2><p id="yd844w_97">Twig propose la m&ecirc;me syntaxe pour l'acc&egrave;s aux cl&eacute;s des variables composites. Que celles-ci, soit des tableaux associatifs ou des objets. En fait cela va m&ecirc;me plus loin, car en pr&eacute;sence d'une clef Twig tentera de trouver la valeur en examinant les valeurs suivantes : pour <code class="code" id="yd844w_100">{{ person.name }}</code></p><ul class="list _bullet" id="yd844w_98"><li class="list__item" id="yd844w_101"><p>Un tableau associatif : <code class="code" id="yd844w_107">$person[&quot;name&quot;]</code></p></li><li class="list__item" id="yd844w_102"><p>Une propri&eacute;t&eacute; publique d'un objet : <code class="code" id="yd844w_108">$person-&gt;name</code></p></li><li class="list__item" id="yd844w_103"><p>Une m&eacute;thode publique d'un objet : <code class="code" id="yd844w_109">$person-&gt;name()</code></p></li><li class="list__item" id="yd844w_104"><p>Une m&eacute;thode getter : <code class="code" id="yd844w_110">$person-&gt;getName()</code></p></li><li class="list__item" id="yd844w_105"><p>Une m&eacute;thode getter pour un bool&eacute;en : <code class="code" id="yd844w_111">$personIsName()</code></p></li><li class="list__item" id="yd844w_106"><p>Une autre m&eacute;thode getter pour un bool&eacute;en : <code class="code" id="yd844w_112">$personHasName()</code></p></li></ul><p id="yd844w_99">Ce n'est que lorsque toutes ces possibilit&eacute;s auront &eacute;t&eacute; tent&eacute;es sans succ&egrave;s que Twig, de guerre lasse, se r&eacute;soudra &agrave; afficher une erreur.</p></section><section class="chapter"><h2 id="liens-vers-les-routes" data-toc="liens-vers-les-routes">Liens vers les routes</h2><p id="yd844w_113">Plut&ocirc;t que de saisir le chemin des routes dans la propri&eacute;t&eacute; href des liens html, il vaut mieux utiliser la fonction path propos&eacute;e par Twig, et ce, pour les raisons suivantes&nbsp;:</p><ul class="list _bullet" id="yd844w_114"><li class="list__item" id="yd844w_117"><p>Cette fonction admet en argument le nom de la route et non son chemin. Cela implique que si le chemin change, il n&rsquo;y aura pas besoin de changer les liens</p></li><li class="list__item" id="yd844w_118"><p>Cette fonction propose un moyen simple et rapide de g&eacute;rer les arguments pass&eacute;s &agrave; une route</p></li><li class="list__item" id="yd844w_119"><p>Avec un IDE tel que PHPStorm, nous pouvons obtenir l&rsquo;auto-compl&eacute;tion des noms de route</p></li></ul><section class="chapter"><h3 id="comment-trouver-le-nom-d-une-route" data-toc="comment-trouver-le-nom-d-une-route">Comment trouver le nom d'une route</h3><p id="yd844w_120">Toutes les routes ont un nom par d&eacute;faut attribu&eacute; par Symfony en fonction du nom du contr&ocirc;leur et de la m&eacute;thode. Toutefois, nous pouvons personnaliser le nom d&rsquo;une route au moyen de la propri&eacute;t&eacute; name dans les attributs PHP 8.</p><p id="yd844w_121"><code class="code" id="yd844w_124">#[Route('/grocery-list', name: 'twig_grocery_list')]</code></p><p id="yd844w_122">Pour obtenir la liste de toutes les routes (avec leur nom) nous utiliserons la commande suivante&nbsp;:</p><p id="yd844w_123"><code class="code" id="yd844w_125">symfony console debug:router</code></p></section><section class="chapter"><h3 id="utilisation-de-la-fonction-path" data-toc="utilisation-de-la-fonction-path">Utilisation de la fonction path</h3><div class="code-block" data-lang="markup">
+&lt;a href=&quot;{{ path('twig_grocery_list') }}&quot;&gt;
+    Liste de courses
+&lt;/a&gt;
+</div><p id="yd844w_127">Ou bien avec un passage de param&egrave;tres</p><div class="code-block" data-lang="markup">
+&lt;a href=&quot;
+    {{ path('twig_hello', 
+    {'age': '25', 'name': 'Alex'}) }}&quot;&gt;
+    hello
+&lt;/a&gt;
+</div></section></section><section class="chapter"><h2 id="les-boucles" data-toc="les-boucles">Les boucles</h2><p id="yd844w_129">La boucle permet de r&eacute;p&eacute;ter un affichage pour l&rsquo;ensemble des valeurs d&rsquo;une variable non-scalaire, c&rsquo;est-&agrave;-dire Multi-valu&eacute;e. L&rsquo;exemple le plus fr&eacute;quent est celui du tableau ordinal, mais la boucle fonctionne &eacute;galement avec des tableaux associatifs et m&ecirc;me avec des objets.</p><p id="yd844w_130">Le fonctionnement est similaire aux boucles <code class="code" id="yd844w_139">foreach</code> pr&eacute;sentent dans bien des langages de programmation.</p><div class="code-block" data-lang="markup">
+{% for item in array %}
+code répété autant de fois que la variable array possède de valeurs
+la variable item représente la valeur en cours à chaque itération,
+elle est affichée comme une variable classique avec des doubles accolades
+{{ item }}
+{% endfor %}
+</div><section class="chapter"><h3 id="exemple-avec-un-tableau-ordinal-simple" data-toc="exemple-avec-un-tableau-ordinal-simple">Exemple avec un tableau ordinal simple</h3><p id="yd844w_140"><code class="code" id="yd844w_144">HomeController.php</code></p><div class="code-block" data-lang="php">
+&lt;?php
+
+namespace App\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+
+class HomeController extends AbstractController
+{
+    #[Route('/fruits')]
+    final public function fruitList(): Response{
+        return $this-&gt;render('fruits.html.twig', [
+            'fruitList' =&gt; ['Pomme', 'Poire', 'Kiwi', 'Orange']
+        ]);
+    }
+}
+</div><p id="yd844w_142"><code class="code" id="yd844w_145">fruits.html.twig</code></p><div class="code-block" data-lang="markup">
+&lt;!doctype html&gt;
+&lt;html lang=&quot;fr&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Premier modèle Twig&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;ol&gt;
+    {% for fruit in fruitList %}
+        &lt;li&gt;{{ item }}&lt;/li&gt;
+    {% endfor %}
+&lt;/ol&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</div></section><section class="chapter"><h3 id="exemple-avec-un-tableau-plus-complexe" data-toc="exemple-avec-un-tableau-plus-complexe">Exemple avec un tableau plus complexe</h3><p id="yd844w_146"><code class="code" id="yd844w_150">HomeController.php</code></p><div class="code-block" data-lang="php">
+&lt;?php
+
+namespace App\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+
+class HomeController extends AbstractController
+{
+    #[Route('/songList')]
+    final public function bookList(): Response{
+        return $this-&gt;render('songs.html.twig', [
+            'songList' =&gt; [
+                ['title' =&gt; 'Anachie Gordon', 'artist'=&gt; 'Loreena McKennit', 'durationInSeconds' =&gt;  505],
+                ['title' =&gt; 'Greensleeves', 'artist'=&gt; 'Loreena McKennit', 'durationInSeconds' =&gt;  265],
+                ['title' =&gt; 'Nothing  2 U', 'artist'=&gt; 'Sinead O\'Connor', 'durationInSeconds' =&gt;  280],
+                ['title' =&gt; 'The green fields of France', 'artist'=&gt; 'Dropkick Murphys', 'durationInSeconds' =&gt;  285],
+                ['title' =&gt; 'Óró sé do bheatha \'bhaile', 'artist'=&gt; 'Sinead O\'Connor', 'durationInSeconds' =&gt;  200],
+            ]   
+        ]);
+    }
+}
+</div><p id="yd844w_148"><code class="code" id="yd844w_151">songs.html.twig</code></p><div class="code-block" data-lang="markup">
+&lt;!doctype html&gt;
+&lt;html lang=&quot;fr&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Premier modèle Twig&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;table&gt;
+    &lt;thead&gt;
+    &lt;tr&gt;
+        &lt;th&gt;Titre&lt;/th&gt;
+        &lt;th&gt;Artiste&lt;/th&gt;
+        &lt;th&gt;Durée&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;/thead&gt;
+    {% for song in songList %}
+    &lt;tr&gt;
+        &lt;td&gt;{{ song.title }}&lt;/td&gt;
+        &lt;td&gt;{{ song.artist }}&lt;/td&gt;
+        &lt;td&gt;{{ song.durationInSeconds }}&lt;/td&gt;
+    &lt;/tr&gt;
+    {% endfor %}
+&lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</div></section><section class="chapter"><h3 id="boucle-conditionnelle" data-toc="boucle-conditionnelle">Boucle conditionnelle</h3><p id="yd844w_152">Il est possible d&rsquo;ajouter un filtre dans la d&eacute;claration de la boucle pour n&rsquo;afficher qu'une partie des &eacute;l&eacute;ments.</p><p id="yd844w_153">Ici seules les chansons dont la dur&eacute;e est sup&eacute;rieure &agrave; 250 secondes seront affich&eacute;es</p><div class="code-block" data-lang="markup">
+{% for song in songList if song.durationInSeconds &gt; 250 %}
+&lt;tr&gt;
+    &lt;td&gt;{{ song.title }}&lt;/td&gt;
+    &lt;td&gt;{{ song.artist }}&lt;/td&gt;
+    &lt;td&gt;{{ song.durationInSeconds }}&lt;/td&gt;
+&lt;/tr&gt;
+{% endfor %}
+</div></section><section class="chapter"><h3 id="boucle-incr-ment-e" data-toc="boucle-incr-ment-e">Boucle incr&eacute;ment&eacute;e</h3><p id="yd844w_155">Twig ne nous propose qu'un seul type de boucles qui, comme on l&rsquo;a d&eacute;j&agrave; dit, correspond &agrave; la boucle foreach de la plupart des langages de programmation. Si nous souhaitons incr&eacute;menter une valeur &agrave; chaque it&eacute;ration de la boucle, nous pouvons cependant d&eacute;finir une s&eacute;quence dans le code m&ecirc;me de la boucle Twig.</p><div class="code-block" data-lang="markup">
+{% for n in 1..3 %}
+{{ n }} &amp;nbsp;
+{% endfor %}
+</div><div class="code-block" data-lang="markup">
+{% for n in 10..1 %}
+{{ n }} &amp;nbsp;
+{% endfor %}
+</div><div class="code-block" data-lang="markup">
+{% for n in 'a'..'d' %}
+{{ n }} &amp;nbsp;
+{% endfor %}
+</div></section><section class="chapter"><h3 id="variables-d-it-ration" data-toc="variables-d-it-ration">Variables d'it&eacute;ration</h3><p id="yd844w_159">&Agrave; chaque it&eacute;ration, Twig expose un certain nombre de variables contextuelles qui donnent des informations sur l&rsquo;&eacute;tat de la boucle.</p><div class="table-wrapper"><table class="wide" id="yd844w_160"><thead><tr class="ijRowHead" id="yd844w_163"><th id="yd844w_172"><p>Variable</p></th><th id="yd844w_173"><p>Description</p></th></tr></thead><tbody><tr id="yd844w_164"><td id="yd844w_174"><p>loop.index</p></td><td id="yd844w_175"><p>Le num&eacute;ro de l'it&eacute;ration en cours (commence par 1)</p></td></tr><tr id="yd844w_165"><td id="yd844w_176"><p>loop.index0</p></td><td id="yd844w_177"><p>Le num&eacute;ro de l'it&eacute;ration en cours (commence par 0)</p></td></tr><tr id="yd844w_166"><td id="yd844w_178"><p>loop.revindex</p></td><td id="yd844w_179"><p>Le nombre d'it&eacute;rations restantes (se termine par 1)</p></td></tr><tr id="yd844w_167"><td id="yd844w_180"><p>loop.revindex0</p></td><td id="yd844w_181"><p>Le nombre d'it&eacute;rations restantes (se termine par 0)</p></td></tr><tr id="yd844w_168"><td id="yd844w_182"><p>loop.first</p></td><td id="yd844w_183"><p>True si l'it&eacute;ration en cours est la premi&egrave;re</p></td></tr><tr id="yd844w_169"><td id="yd844w_184"><p>loop.last</p></td><td id="yd844w_185"><p>True si l'it&eacute;ration en cours est la derni&egrave;re</p></td></tr><tr id="yd844w_170"><td id="yd844w_186"><p>loop.length</p></td><td id="yd844w_187"><p>Le nombre total d'&eacute;l&eacute;ments dans la s&eacute;quence</p></td></tr><tr id="yd844w_171"><td id="yd844w_188"><p>loop.parent</p></td><td id="yd844w_189"><p>Le parent de l'it&eacute;ration en cours (la source de donn&eacute;es de la boucle)</p></td></tr></tbody></table></div><p id="yd844w_161">Dans le code ci-dessous la couleur de fond des lignes est altern&eacute;e par le biais d&rsquo;une propri&eacute;t&eacute; css dont la valeur d&eacute;pend du contexte de la boucle.</p><div class="code-block" data-lang="markup">
+{% for song in songList %}
+    &lt;tr style=&quot;background: {{ loop.index % 2 == 0 ? 'gray' : 'white'}}&quot;&gt;
+        &lt;td&gt;{{ song.title }}&lt;/td&gt;
+        &lt;td&gt;{{ song.artist }}&lt;/td&gt;
+        &lt;td&gt;{{ song.durationInSeconds }}&lt;/td&gt;
+    &lt;/tr&gt;
+{% endfor %}
+</div></section><section class="chapter"><h3 id="clause-else" data-toc="clause-else">Clause Else</h3><p id="yd844w_190">Cette clause offre un la possibilit&eacute; d&rsquo;un affichage alternatif si la source de donn&eacute;es est vide</p><div class="code-block" data-lang="markup">
+{% for song in songList %}
+    &lt;tr&gt;
+        &lt;td&gt;{{ song.title }}&lt;/td&gt;
+        &lt;td&gt;{{ song.artist }}&lt;/td&gt;
+        &lt;td&gt;{{ song.durationInSeconds }}&lt;/td&gt;
+    &lt;/tr&gt;
+{% else %}
+    &lt;h3&gt;Aucune chanson dans la liste&lt;/h3&gt;
+{% endfor %}
+</div></section><section class="chapter"><h3 id="gestion-des-clefs" data-toc="gestion-des-clefs">Gestion des clefs</h3><p id="yd844w_192">La boucle <code class="code" id="yd844w_197">for</code> propos&eacute;e par Twig permet une it&eacute;ration sur les valeurs d&rsquo;une collection. Il existe cependant une m&eacute;thode qui permet de boucler sur les cl&eacute;s d&rsquo;une structure associative et m&ecirc;me sur les propri&eacute;t&eacute;s d&rsquo;un objet.</p><p id="yd844w_193">L&rsquo;exemple ci-dessous utilise le filtre <code class="code" id="yd844w_198">keys</code> pour r&eacute;cup&eacute;rer les clefs d&rsquo;un objet et les afficher en tant que t&ecirc;te de colonne dans un tableau.</p><div class="code-block" data-lang="markup">
+&lt;table&gt;
+    &lt;thead&gt;
+    &lt;tr&gt;
+        {% for colName in songList[0] | keys %}
+            &lt;th&gt;{{ colName | capitalize }}&lt;/th&gt;
+        {% endfor %}
+    &lt;/tr&gt;
+    &lt;/thead&gt;
+    {% for song in songList %}
+    &lt;tr&gt;
+        &lt;td&gt;{{ song.title }}&lt;/td&gt;
+        &lt;td&gt;{{ song.artist }}&lt;/td&gt;
+        &lt;td&gt;{{ song.durationInSeconds }}&lt;/td&gt;
+    &lt;/tr&gt;
+    {% endfor %}
+&lt;/table&gt;
+</div><p id="yd844w_195">Un autre exemple o&ugrave; l&rsquo;on r&eacute;cup&egrave;re &agrave; la fois les clefs et les valeurs. Ici l&rsquo;affichage est pivot&eacute; par rapport &agrave; un tableau classique. Chaque clef est affich&eacute;e &agrave; c&ocirc;t&eacute; de la valeur correspondante.</p><div class="code-block" data-lang="markup">
+&lt;table&gt;
+    {% for song in songList %}
+        {% for colName, value in song %}
+            &lt;tr&gt;
+                &lt;td&gt;{{ colName }}&lt;/td&gt;
+                &lt;td&gt;{{ value }}&lt;/td&gt;
+            &lt;/tr&gt;
+        {% endfor %}
+    {% endfor %}
+&lt;/table&gt;
+</div></section></section><section class="chapter"><h2 id="les-conditions" data-toc="les-conditions">Les conditions</h2><p id="yd844w_199">Twig offre une structure d&rsquo;affichage conditionnelle. Ici encore le fonctionnement est assez similaire &agrave; ce que nous connaissons dans la plupart des langages de programmation.</p><div class="code-block" data-lang="markup">
+    {% if  age &gt;= 18 %}
+        &lt;p&gt;Vous êtes majeur.&lt;/p&gt;
+    {% else %}
+        &lt;p&gt;Vous êtes mineur.&lt;/p&gt;
+    {% endif %}
+</div><p id="yd844w_201">Ci-dessous, la table n&rsquo;est affich&eacute;e que si la variable <code class="code" id="yd844w_206">songList</code> n&rsquo;est &eacute;valu&eacute;e comme <code class="code" id="yd844w_207">false</code></p><div class="code-block" data-lang="markup">
+
+{% if  songList %}
+    &lt;table&gt;
+        {% for song in songList %}
+            {% for colName, value in song %}
+                &lt;tr&gt;
+                    &lt;td&gt;{{ colName }}&lt;/td&gt;
+                    &lt;td&gt;{{ value }}&lt;/td&gt;
+                &lt;/tr&gt;
+            {% endfor %}
+        {% endfor %}
+    &lt;/table&gt;
+{% endif %}
+</div><section class="chapter"><h3 id="evaluation-implicite" data-toc="evaluation-implicite">Evaluation implicite</h3><p id="yd844w_208">Voici les r&egrave;gles d&rsquo;&eacute;valuation implicite des variables dans une structure if sans op&eacute;rateur de comparaison.</p><div class="table-wrapper"><table class="wide" id="yd844w_209"><thead><tr class="ijRowHead" id="yd844w_210"><th id="yd844w_221"><p>Valeur</p></th><th id="yd844w_222"><p>Evaluation bool&eacute;enne</p></th></tr></thead><tbody><tr id="yd844w_211"><td id="yd844w_223"><p>Cha&icirc;ne vide</p></td><td id="yd844w_224"><p>false</p></td></tr><tr id="yd844w_212"><td id="yd844w_225"><p>Z&eacute;ro num&eacute;rique</p></td><td id="yd844w_226"><p>false</p></td></tr><tr id="yd844w_213"><td id="yd844w_227"><p>NAN (Not A Number)</p></td><td id="yd844w_228"><p>true</p></td></tr><tr id="yd844w_214"><td id="yd844w_229"><p>INF (Infinity)</p></td><td id="yd844w_230"><p>true</p></td></tr><tr id="yd844w_215"><td id="yd844w_231"><p>Cha&icirc;ne ne contenant que des espaces</p></td><td id="yd844w_232"><p>true</p></td></tr><tr id="yd844w_216"><td id="yd844w_233"><p>Cha&icirc;ne &quot;0&quot; or '0'</p></td><td id="yd844w_234"><p>false</p></td></tr><tr id="yd844w_217"><td id="yd844w_235"><p>Tableau vide</p></td><td id="yd844w_236"><p>false</p></td></tr><tr id="yd844w_218"><td id="yd844w_237"><p>null</p></td><td id="yd844w_238"><p>false</p></td></tr><tr id="yd844w_219"><td id="yd844w_239"><p>Tableau non vide</p></td><td id="yd844w_240"><p>true</p></td></tr><tr id="yd844w_220"><td id="yd844w_241"><p>Objet</p></td><td id="yd844w_242"><p>true</p></td></tr></tbody></table></div></section><section class="chapter"><h3 id="conditions-multiples" data-toc="conditions-multiples">Conditions multiples</h3><p id="yd844w_243">Au fur et &agrave; mesure de l&rsquo;&eacute;valuation des diff&eacute;rentes conditions, nous accumulons des degr&eacute;s de certitude quant &agrave; la valeur de la variable. &Agrave; la fin pour la clause <code class="code" id="yd844w_245">else</code> nous savons que la quantit&eacute; du stock est inf&eacute;rieure ou &eacute;gale &agrave; z&eacute;ro.</p><div class="code-block" data-lang="markup">
+    {% if  product.stock &gt; 10 %}
+        &lt;p&gt;Produit disponible.&lt;/p&gt;
+    {% elseif product.stock &gt; 0 %}
+        &lt;p&gt;Il ne reste plus que {{ product.stock }} produits.&lt;/p&gt;
+    {% else %}
+        &lt;p&gt;Produit indisponible.&lt;/p&gt;
+    {% endif %}
+</div></section><section class="chapter"><h3 id="tests-et-op-rateurs-de-comparaison" data-toc="tests-et-op-rateurs-de-comparaison">Tests et op&eacute;rateurs de comparaison</h3><p id="yd844w_246">Twig propose des op&eacute;rateurs de comparaison assez classiques&nbsp;: <code class="code" id="yd844w_251">==, !=, &lt;, &gt;, &gt;=, &lt;=</code></p><p id="yd844w_247">En plus de cela, il offre &eacute;galement des op&eacute;rateurs plus explicites <code class="code" id="yd844w_252">starts with, ends with, in, matches</code></p><div class="code-block" data-lang="markup">
+    {% if name starts with 'S' %} ... {% endif %}
+    {% if name ends with 'e' %} ... {% endif %}
+    {% if name in ['Saoirse', 'Séverine'] %} … {% endif %}
+    {% if name matches '/^S.*e$/'  %} ... {% endif %}
+</div><aside class="prompt" data-type="tip" data-title="" id="yd844w_249"><p id="yd844w_253">Notons que l&rsquo;op&eacute;rateur d&rsquo;identit&eacute; n&rsquo;existe pas &agrave; la place, il faudra utiliser le test <code class="code" id="yd844w_254">same as</code></p></aside><section class="chapter"><h4 id="les-tests" data-toc="les-tests">Les tests</h4><p id="yd844w_255">Les tests sont des fonctions d&eacute;guis&eacute;es en op&eacute;rateur qui rendent le code plus explicite</p><div class="code-block" data-lang="markup">
+    {% if  loop.index is odd %} loop.index est impair {% endif %}
+    {% if  loop.index is even %} loop.index est pair {% endif %}
+    {% if  age is divisible by(3) %} L'âge est un multiple de 3 {% endif %}
+    {% if  user is defined %} La variable user est déclarée et initialisée {% endif %}
+    {% if  user is empty %} La variable user est vide (chaîne vide, tableau vide, null ou false) {% endif %}
+    {% if  user is null %} La variable user est null {% endif %}
+    {% if  age is same as 30 %} La variable age est identique à 30 (équivalent de l’opérateur ===) {% endif %}
+</div></section></section></section><section class="chapter"><h2 id="exercices" data-toc="exercices">Exercices</h2><section class="chapter"><h3 id="recettes" data-toc="recettes">Recettes</h3><p id="yd844w_258">Vous devez r&eacute;aliser une petite application de visualisation de recette. Pour cela, vous avez un contr&ocirc;leur int&eacute;grant des m&eacute;thodes pour acc&eacute;der aux donn&eacute;es et les filtrer.</p><p id="yd844w_259">Vous devez r&eacute;aliser trois routes et deux mod&egrave;les twig.</p><div class="table-wrapper"><table class="wide" id="yd844w_260"><thead><tr class="ijRowHead" id="yd844w_266"><th id="yd844w_270"><p>route</p></th><th id="yd844w_271"><p>description</p></th></tr></thead><tbody><tr id="yd844w_267"><td id="yd844w_272"><p>/recettes</p></td><td id="yd844w_273"><p>La liste de toutes les recettes</p></td></tr><tr id="yd844w_268"><td id="yd844w_274"><p>/recettes/</p></td><td id="yd844w_275"><p>Le d&eacute;tail d'une recette</p></td></tr><tr id="yd844w_269"><td id="yd844w_276"><p>/recettes/par/</p></td><td id="yd844w_277"><p>La liste des recettes d'un type donn&eacute;</p></td></tr></tbody></table></div><p id="yd844w_261">Voici pour vous aider les maquettes de l&rsquo;application</p><section class="chapter"><h4 id="la-liste-de-toutes-les-recettes" data-toc="la-liste-de-toutes-les-recettes">La liste de toutes les recettes</h4><figure id="yd844w_278"><img alt="003-twig-exercice1-maquette-1.png" src="images/003-twig-exercice1-maquette-1.png" title="003-twig-exercice1-maquette-1.png" width="1392" height="1296"></figure></section><section class="chapter"><h4 id="le-d-tail-d-une-recette" data-toc="le-d-tail-d-une-recette">Le d&eacute;tail d'une recette</h4><figure id="yd844w_279"><img alt="003-twig-exercice1-maquuette-2.png" src="images/003-twig-exercice1-maquette-2.png" title="003-twig-exercice1-maquuette-2.png" width="1392" height="1296"></figure></section><section class="chapter"><h4 id="la-liste-des-recettes-d-un-type-donn" data-toc="la-liste-des-recettes-d-un-type-donn">La liste des recettes d'un type donn&eacute;</h4><figure id="yd844w_280"><img alt="003-twig-exercice1-maquette-3.png" src="images/003-twig-exercice1-maquette-3.png" title="003-twig-exercice1-maquette-3.png" width="1392" height="1296"></figure></section><section class="chapter"><h4 id="la-classe-contr-leur" data-toc="la-classe-contr-leur">La classe contr&ocirc;leur</h4><div class="code-block" data-lang="php">
+&lt;?php
+
+namespace App\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Attribute\Route;
+
+class RecipeController extends AbstractController
+{
+
+    public function getRecipeList(): array
+    {
+        return [
+            [
+                &quot;id&quot; =&gt; 1,
+                &quot;title&quot; =&gt; &quot;Quatre quarts&quot;,
+                &quot;ingredients&quot; =&gt; [
+                    &quot;sucre&quot;,
+                    &quot;beurre&quot;,
+                    &quot;farine&quot;,
+                    &quot;oeufs&quot;
+                ],
+                &quot;kind&quot; =&gt; &quot;Dessert&quot;
+            ],
+            [
+                &quot;id&quot; =&gt; 2,
+                &quot;title&quot; =&gt; &quot;Taboulé&quot;,
+                &quot;ingredients&quot; =&gt; [
+                    &quot;Semoule&quot;,
+                    &quot;citron&quot;,
+                    &quot;huile d'olive&quot;,
+                    &quot;persil&quot;
+                ],
+                &quot;kind&quot; =&gt; &quot;Entrée&quot;
+            ],
+            [
+                &quot;id&quot; =&gt; 3,
+                &quot;title&quot; =&gt; &quot;Houmous&quot;,
+                &quot;ingredients&quot; =&gt; [
+                    &quot;pois chiche&quot;,
+                    &quot;tahin&quot;,
+                    &quot;huile d'olive&quot;,
+                    &quot;citron&quot;
+                ],
+                &quot;kind&quot; =&gt; &quot;Entrée&quot;
+            ],
+            [
+                &quot;id&quot; =&gt; 4,
+                &quot;title&quot; =&gt; &quot;Tajine&quot;,
+                &quot;ingredients&quot; =&gt; [
+                    &quot;huile d'olive&quot;,
+                    &quot;tomates&quot;,
+                    &quot;courgettes&quot;,
+                    &quot;oignons&quot;,
+                    &quot;pommes de terre&quot;,
+                    &quot;abricots secs&quot;,
+                    &quot;olives vertes&quot;,
+                    &quot;cumin&quot;,
+                ],
+                &quot;kind&quot; =&gt; &quot;Plat&quot;
+            ],
+
+        ];
+    }
+
+    private function findOneById(int $id): array | null{
+        $found =  array_filter($this-&gt;getRecipeList(), static function(array $item) use ($id){
+            return $item[&quot;id&quot;] === $id;
+        });
+
+        if($found &amp;&amp; count($found)&gt; 0){
+            return array_values($found)[0];
+        }
+
+        return null;
+    }
+    
+    private function findByKind($kind)
+    {
+        $found =  array_filter($this-&gt;getRecipeList(), static function(array $item) use ($kind){
+            return $item[&quot;kind&quot;] === $kind;
+        });
+
+        if($found &amp;&amp; count($found)&gt; 0){
+            return array_values($found);
+        }
+
+        return null;
+        
+    }
+}
+</div></section></section></section><div class="last-modified">Last modified: 01 février 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="003-01-les-services.html" class="navigation-links__prev">Les services</a><a href="002-01-twig-factorisation.html" class="navigation-links__next">Twig factorisation</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.js"></script></body></html>

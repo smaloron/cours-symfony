@@ -1,0 +1,182 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-02-01T11:39:32.238892"><title>Twig factorisation | Symfony support</title><script type="application/json" id="virtual-toc-data">[{"id":"objectif","level":0,"title":"Objectif","anchor":"#objectif"},{"id":"inclusions","level":0,"title":"Inclusions","anchor":"#inclusions"},{"id":"l-h-ritage-des-mod-les","level":0,"title":"L\u0027héritage des modèles","anchor":"#l-h-ritage-des-mod-les"},{"id":"surcharge-et-h-ritage","level":0,"title":"Surcharge et héritage","anchor":"#surcharge-et-h-ritage"},{"id":"h-ritage-et-gestion-des-chemins","level":0,"title":"Héritage et gestion des chemins","anchor":"#h-ritage-et-gestion-des-chemins"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.css" rel="stylesheet"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Twig factorisation | Symfony support"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Symfony support Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation//version 1/002-01-twig-factorisation.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Twig factorisation | Symfony support"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation//version 1/002-01-twig-factorisation.html#webpage",
+    "url": "writerside-documentation//version 1/002-01-twig-factorisation.html",
+    "name": "Twig factorisation | Symfony support",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Symfony support Help"
+}</script><!-- End Schema.org --></head><body data-id="002-01-twig-factorisation" data-main-title="Twig factorisation" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="002-00-twig.md|Twig"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Symfony support version 1 Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="002-01-twig-factorisation" id="002-01-twig-factorisation.md">Twig factorisation</h1><section class="chapter"><h2 id="objectif" data-toc="objectif">Objectif</h2><p id="-j3r51a_8">L&rsquo;objectif de ce document est de recenser les solutions de factorisation propos&eacute;es par Twig, de les mettre en pratique afin d&rsquo;&eacute;valuer leur int&eacute;r&ecirc;t dans le cadre d&rsquo;un usage professionnel.</p></section><section class="chapter"><h2 id="inclusions" data-toc="inclusions">Inclusions</h2><p id="-j3r51a_9">Twig permet l'inclusion du code d'un mod&egrave;le dans un autre mod&egrave;le. Cette fonction, &agrave; l'instar de l'include de PHP r&eacute;alise un copier-coller au niveau du serveur avant l'interpr&eacute;tation des expressions entre moustaches et l'envoi de la r&eacute;ponse au client. Cela implique que les donn&eacute;es disponibles pour le parent le sont &eacute;galement pour le mod&egrave;le enfant. <br> Cette inclusion permet d'extraire des parties d'interfaces graphiques r&eacute;currentes et &eacute;vite ainsi de r&eacute;p&eacute;ter du code de page en page au risque de rendre la maintenance plus fastidieuse.</p><p id="-j3r51a_10">Par exemple, une barre de navigation qui doit apparaitre sur chaque page devrait &ecirc;tre extraite dans un fichier s&eacute;par&eacute;.</p><p id="-j3r51a_11">Par convention, nous commencerons le nom des fichiers Twig, qui ne repr&eacute;sentent qu'une page partielle par un caract&egrave;re &quot;_&quot;. Nous enregistrerons &eacute;galement ces fichiers dans un dossier s&eacute;par&eacute; nomm&eacute; <code class="code" id="-j3r51a_15">fragments</code></p><section class="chapter"><h3 id="exemple-d-inclusion" data-toc="exemple-d-inclusion">Exemple d'inclusion</h3><p id="-j3r51a_16"><code class="code" id="-j3r51a_20">fragments/_nav.html.twig</code></p><div class="code-block" data-lang="markup">
+&lt;nav&gt;
+    &lt;ul&gt;
+        &lt;li&gt;
+            &lt;a href=&quot;{{ path('twig_grocery_list') }}&quot;&gt;Liste de courses&lt;/a&gt;
+        &lt;/li&gt;
+
+        &lt;li&gt;
+            &lt;a href=&quot;{{ path('twig_book_list') }}&quot;&gt;Ma bibliothèque&lt;/a&gt;
+        &lt;/li&gt;
+
+        &lt;li&gt;
+            &lt;a href=&quot;{{ path('twig_team') }}&quot;&gt;Mon équipe&lt;/a&gt;
+        &lt;/li&gt;
+
+        &lt;li&gt;
+            &lt;a href=&quot;{{ path('twig_hello', {'age': '25', 'name': 'Alex'}) }}&quot;&gt;hello&lt;/a&gt;
+        &lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/nav&gt;
+</div><p id="-j3r51a_18"><code class="code" id="-j3r51a_21">books.html.twig</code></p><div class="code-block" data-lang="markup">
+&lt;!doctype html&gt;
+&lt;html lang=&quot;fr&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Premier modèle Twig&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+{{ include('fragments/_nav.html.twig') }}
+
+&lt;h1&gt;Ma bibliothèque&lt;/h1&gt;
+&lt;table&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Titre&lt;/th&gt;
+            &lt;th&gt;Auteur&lt;/th&gt;
+        &lt;/tr&gt;
+    &lt;/thead&gt;
+    {% for book in bookList %}
+        &lt;tr&gt;
+            &lt;td&gt;{{ book.title }}&lt;/td&gt;
+            &lt;td&gt;{{ book.author }}&lt;/td&gt;
+        &lt;/tr&gt;
+    {% endfor %}
+&lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</div></section><section class="chapter"><h3 id="passage-de-param-tres" data-toc="passage-de-param-tres">Passage de param&egrave;tres</h3><p id="-j3r51a_22">L'inclusion h&eacute;rite du contexte de son parent, mais nous pouvons passer des param&egrave;tres suppl&eacute;mentaires en argument de la fonction include.</p><p id="-j3r51a_23">Le code ci-dessous passe &agrave; la barre de navigation une information sur la page parente. Cette donn&eacute;e est ensuite utilis&eacute;e pour changer l'apparence du lien pointant vers la page en-cours.</p><p id="-j3r51a_24"><code class="code" id="-j3r51a_28">fragments/_nav.html.twig</code></p><div class="code-block" data-lang="markup">
+&lt;nav&gt;
+    &lt;ul&gt;
+        &lt;li class=&quot;{{ activePage == 'grocery'?'active':''}}&quot;&gt;
+            &lt;a href=&quot;{{ path('twig_grocery_list') }}&quot;&gt;Liste de courses&lt;/a&gt;
+        &lt;/li&gt;
+
+        &lt;li class=&quot;{{ activePage == 'books'?'active':''}}&quot;&gt;
+            &lt;a href=&quot;{{ path('twig_book_list') }}&quot;&gt;Ma bibliothèque&lt;/a&gt;
+        &lt;/li&gt;
+
+        &lt;li class=&quot;{{ activePage == 'team'?'active':''}}&quot;&gt;
+            &lt;a href=&quot;{{ path('twig_team') }}&quot;&gt;Mon équipe&lt;/a&gt;
+        &lt;/li&gt;
+
+        &lt;li class=&quot;{{ activePage == 'hello'?'active':''}}&quot;&gt;
+            &lt;a href=&quot;{{ path('twig_hello', {'age': '25', 'name': 'Alex'}) }}&quot;&gt;hello&lt;/a&gt;
+        &lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/nav&gt;
+</div><p id="-j3r51a_26"><code class="code" id="-j3r51a_29">books.html.twig</code></p><div class="code-block" data-lang="markup">
+&lt;!doctype html&gt;
+&lt;html lang=&quot;fr&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Premier modèle Twig&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+{{ include('fragments/_nav.html.twig', { activePage: 'books'}) }}
+
+&lt;h1&gt;Ma bibliothèque&lt;/h1&gt;
+&lt;table&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Titre&lt;/th&gt;
+            &lt;th&gt;Auteur&lt;/th&gt;
+        &lt;/tr&gt;
+    &lt;/thead&gt;
+    {% for book in bookList %}
+        &lt;tr&gt;
+            &lt;td&gt;{{ book.title }}&lt;/td&gt;
+            &lt;td&gt;{{ book.author }}&lt;/td&gt;
+        &lt;/tr&gt;
+    {% endfor %}
+&lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</div></section></section><section class="chapter"><h2 id="l-h-ritage-des-mod-les" data-toc="l-h-ritage-des-mod-les">L'h&eacute;ritage des mod&egrave;les</h2><p id="-j3r51a_30">Pour aller encore plus loin dans la factorisation, et l'&eacute;limination de la redondance, Twig propose un syst&egrave;me d'h&eacute;ritage des mod&egrave;les. Le principe est similaire &agrave; ce que l'on trouve dans la programmation orient&eacute;e objet. Un mod&egrave;le parent que nous pourrons appeler gabarit, propose un contenu dont ses enfants h&eacute;riteront. Pour garantir la souplesse du syst&egrave;me, les enfants peuvent surcharger le contenu du parent.</p><p id="-j3r51a_31">Il est &eacute;galement possible un enfant d'&ecirc;tre lui-m&ecirc;me parent d'un mod&egrave;le.</p><p id="-j3r51a_32">Au c&oelig;ur de ce syst&egrave;me se trouve le principe des blocs. Ce sont des r&eacute;gions modifiables, d&eacute;clar&eacute;es dans le code du mod&egrave;le parent, et &eacute;ventuellement surcharg&eacute;es dans le code du mod&egrave;le enfant.</p><section class="chapter"><h3 id="exemple" data-toc="exemple">Exemple</h3><section class="chapter"><h4 id="le-parent" data-toc="le-parent">Le parent</h4><p id="-j3r51a_36"><code class="code" id="-j3r51a_38">base.html.twig</code></p><div class="code-block" data-lang="markup">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;{% block title %}Welcome!{% endblock %}&lt;/title&gt;
+    &lt;link rel=&quot;icon&quot;
+          href=&quot;data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22&gt;&lt;text y=%221.2em%22 font-size=%2296%22&gt;⚫️&lt;/text&gt;&lt;text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22&gt;sf&lt;/text&gt;&lt;/svg&gt;&quot;&gt;
+    
+    {% block stylesheets %}
+    &lt;link href=&quot;
+https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css
+&quot; rel=&quot;stylesheet&quot;&gt;
+    {% endblock %}
+
+    {% block javascripts %}
+    &lt;script src=&quot;
+    https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js
+    &quot;&gt;&lt;/script&gt;
+    {% endblock %}
+&lt;/head&gt;
+&lt;body class=&quot;container-fluid p-4&quot;&gt;
+{% block body %}{% endblock %}
+&lt;/body&gt;
+&lt;/html&gt;
+</div></section><section class="chapter"><h4 id="un-enfant" data-toc="un-enfant">Un enfant</h4><div class="code-block" data-lang="markup">
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ include('fragments/_nav.html.twig', {activePage: 'books'}) }}
+    &lt;h1&gt;Ma bibliothèque&lt;/h1&gt;
+    &lt;table&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Titre&lt;/th&gt;
+                &lt;th&gt;Auteur&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        {% for book in bookList %}
+            &lt;tr&gt;
+                &lt;td&gt;{{ book.title }}&lt;/td&gt;
+                &lt;td&gt;{{ book.author }}&lt;/td&gt;
+            &lt;/tr&gt;
+        {% endfor %}
+    &lt;/table&gt;
+{% endblock %}
+</div><p id="-j3r51a_40">Ici l&rsquo;enfant red&eacute;finit le contenu du bloc body</p><aside class="prompt" data-type="tip" data-title="" id="-j3r51a_41"><p id="-j3r51a_44">Attention&nbsp;: Le tag {% extends %} doit &ecirc;tre la premi&egrave;re ligne du fichier et &agrave; partir du moment o&ugrave; un mod&egrave;le h&eacute;rite d&rsquo;un autre, il ne peut contenir de code en dehors de la port&eacute;e d&rsquo;un bloc.</p></aside><p id="-j3r51a_42">L&rsquo;int&eacute;r&ecirc;t de l&rsquo;h&eacute;ritage, c&rsquo;est que nous allons pouvoir d&eacute;finir dans le gabarit parent, l&rsquo;ensemble des &eacute;l&eacute;ments qui sont r&eacute;p&eacute;t&eacute;s sur la majorit&eacute; des pages de notre application. Pour les cas particuliers, nous pouvons toujours surcharger les blocs et ainsi proposer un contenu diff&eacute;rent de celui de la plupart des pages de notre application. Il faut ici arbitrer entre la souplesse et la simplicit&eacute;. Si nous souhaitons un maximum de souplesse alors, il nous faudra d&eacute;finir de nombreux blocs. Si on revanche, nous voulons simplifier notre travail, il vaudra mieux limiter le nombre de ces blocs.</p><p id="-j3r51a_43">Comme souvent, lorsqu&rsquo;il est question de factorisation, le plus grand b&eacute;n&eacute;fice, appara&icirc;t lorsque nous devons faire la maintenance de l&rsquo;application. C&rsquo;est &agrave; ce moment-l&agrave; que la duplication du code provoque frustration et risque d&rsquo;erreur.</p></section></section></section><section class="chapter"><h2 id="surcharge-et-h-ritage" data-toc="surcharge-et-h-ritage">Surcharge et h&eacute;ritage</h2><p id="-j3r51a_45">Parfois, nous souhaitons conserver le code du parent et y ajouter celui de l&rsquo;enfant. Twig a pr&eacute;vu ce cas et propose une fonction <code class="code" id="-j3r51a_47">parent</code> qui ins&egrave;re ce code du bloc du parent.</p><div class="code-block" data-lang="markup">
+{% block javascript %}
+    {{ parent() }}
+    &lt;script&gt;
+        alert('page enfant')
+    &lt;/script&gt;
+{% endblock %}
+</div></section><section class="chapter"><h2 id="h-ritage-et-gestion-des-chemins" data-toc="h-ritage-et-gestion-des-chemins">H&eacute;ritage et gestion des chemins</h2><p id="-j3r51a_48">Imaginons que nous souhaitions ranger nos mod&egrave;les Twig dans des dossiers, par exemple un dossier par contr&ocirc;leur. Nous aurions donc une arborescence ressemblant &agrave; ceci.</p><div class="code-block" data-lang="none">
+templates
+    base.html.twig
+    product
+        index.html.twig
+        details.html.twig       
+</div><p id="-j3r51a_50">&Agrave; l&rsquo;int&eacute;rieur du dossier <code class="code" id="-j3r51a_57">product</code>, le chemin utilis&eacute; dans le bloc <code class="code" id="-j3r51a_58">extends</code> ne sera pas un chemin relatif, nous aurons donc ceci.</p><div class="code-block" data-lang="none">
+{% extends 'base.html.twig' %}
+</div><p id="-j3r51a_52">La r&eacute;solution du chemin s&rsquo;effectue donc toujours par rapport &agrave; une racine immuable, le dossier <code class="code" id="-j3r51a_59">templates</code>.</p><p id="-j3r51a_53">Si par exemple, nous avons l&rsquo;arborescence suivante&nbsp;:</p><div class="code-block" data-lang="none">
+templates
+    layout
+        base.html.twig
+    product
+        index.html.twig
+        details.html.twig       
+</div><p id="-j3r51a_55">Le chemin vers le parent sera le suivant&nbsp;:</p><div class="code-block" data-lang="none">
+{% extends 'layout/base.html.twig' %}
+</div></section><div class="last-modified">Last modified: 01 février 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="002-00-twig.html" class="navigation-links__prev">Twig</a><a href="002-02-assetmapper.html" class="navigation-links__next">AssetMapper</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.js"></script></body></html>
