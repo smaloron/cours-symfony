@@ -1,0 +1,86 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-02-05T08:27:01.725322"><title>Les Tests | Symfony support</title><script type="application/json" id="virtual-toc-data">[{"id":"objectifs","level":0,"title":"Objectifs","anchor":"#objectifs"},{"id":"principe","level":0,"title":"Principe","anchor":"#principe"},{"id":"installation","level":0,"title":"Installation","anchor":"#installation"},{"id":"les-types-de-tests","level":0,"title":"Les types de tests","anchor":"#les-types-de-tests"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.css" rel="stylesheet"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Les Tests | Symfony support"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Symfony support Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation//version 1/007-00-tests.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Les Tests | Symfony support"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation//version 1/007-00-tests.html#webpage",
+    "url": "writerside-documentation//version 1/007-00-tests.html",
+    "name": "Les Tests | Symfony support",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Symfony support Help"
+}</script><!-- End Schema.org --></head><body data-id="007-00-Tests" data-main-title="Les Tests" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs=""><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Symfony support version 1 Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="007-00-Tests" id="007-00-Tests.md">Les Tests</h1><section class="chapter"><h2 id="objectifs" data-toc="objectifs">Objectifs</h2><ul class="list _bullet" id="z3ked9c_9"><li class="list__item" id="z3ked9c_10"><p>Identifier le r&ocirc;le des diff&eacute;rents types de tests.</p></li><li class="list__item" id="z3ked9c_11"><p>&Eacute;crire et ex&eacute;cuter des tests.</p></li></ul></section><section class="chapter"><h2 id="principe" data-toc="principe">Principe</h2><p id="z3ked9c_7">Les tests unitaires et les tests d'int&eacute;gration sont couverts par PHPUnit qui s'int&egrave;gre parfaitement &agrave; Symfony. A cela le framework ajoute les composants suivants :</p><ul class="list _bullet" id="z3ked9c_8"><li class="list__item" id="z3ked9c_12"><p>Un acc&egrave;s au noyau (kernel) pour tester les services et l'injection de d&eacute;pendances.</p></li><li class="list__item" id="z3ked9c_13"><p>Un testeur de r&eacute;ponse HTTP pour des tests fonctionnels rapides.</p></li><li class="list__item" id="z3ked9c_14"><p>Un navigateur sans interface (headless) pour des tests de bout en bout (end to end).</p></li></ul></section><section class="chapter"><h2 id="installation" data-toc="installation">Installation</h2><div class="code-block" data-lang="none">
+composer require --dev symfony/test-pack
+</div><section class="chapter"><h3 id="maker" data-toc="maker">Maker</h3><p id="z3ked9c_17">L'intallation du framework de test expose une nouvelle fonction <code class="code" id="z3ked9c_20">Maker</code>.</p><div class="code-block" data-lang="none">
+symfony console make:test
+</div><figure id="z3ked9c_19"><img alt="CleanShot 2025-02-02 at 11.40.00@2x.png" src="images/CleanShot%202025-02-02%20at%2011.40.00%402x.png" title="CleanShot 2025-02-02 at 11.40.00@2x.png" width="2442" height="586"></figure></section></section><section class="chapter"><h2 id="les-types-de-tests" data-toc="les-types-de-tests">Les types de tests</h2><section class="chapter"><h3 id="tests-unitaires" data-toc="tests-unitaires">Tests unitaires</h3><p id="z3ked9c_25">Les tests unitaires sont les plus petits tests possibles. Ils permettent de tester une seule unit&eacute; de code (une classe ou une m&eacute;thode) en isolant cette derni&egrave;re du reste du syst&egrave;me.</p><section class="chapter"><h4 id="outils" data-toc="outils">Outils</h4><ul class="list _bullet" id="z3ked9c_28"><li class="list__item" id="z3ked9c_29"><p>PHPUnit</p></li></ul></section><section class="chapter"><h4 id="a-retenir" data-toc="a-retenir">A retenir</h4><ul class="list _bullet" id="z3ked9c_30"><li class="list__item" id="z3ked9c_31"><p>Les d&eacute;pendances externes doivent &ecirc;tre simul&eacute;es avec des mocks ou des stubs.</p></li><li class="list__item" id="z3ked9c_32"><p>Il n&rsquo;y a pas d&rsquo;interaction avec la base de donn&eacute;es ou le conteneur de services.</p></li></ul></section></section><section class="chapter"><h3 id="les-tests-fonctionnels" data-toc="les-tests-fonctionnels">Les tests fonctionnels</h3><p id="z3ked9c_33">Les tests fonctionnels permettent de tester une partie plus large du code, notamment les actions des contr&ocirc;leurs et leurs interactions avec d'autres services.</p><section class="chapter"><h4 id="outils_1" data-toc="outils_1">Outils :</h4><ul class="list _bullet" id="z3ked9c_37"><li class="list__item" id="z3ked9c_38"><p>PHPUnit (pour l'ex&eacute;cution)</p></li><li class="list__item" id="z3ked9c_39"><p>WebTestCase (fourni par Symfony pour tester des parties du framework)</p></li></ul></section><section class="chapter"><h4 id="exemple-de-code" data-toc="exemple-de-code">Exemple de code</h4><div class="code-block" data-lang="php">
+namespace App\Tests\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+
+class HomeControllerTest extends WebTestCase
+{
+    public function testHomePage()
+    {
+        // Simulation d'une requête HTTP
+        $client = static::createClient();
+        $crawler = $client-&gt;request('GET', '/');
+
+        // WebTestCase fournit de nouvelles assertions 
+        // sur la réponse HTTP 
+        $this-&gt;assertResponseIsSuccessful();
+        
+        // Ici on utilise un sélecteur CSS
+        // pour tester le contenu de la réponse
+        $this-&gt;assertSelectorTextContains('h1', 'Bienvenue');
+    }
+}
+</div><ul class="list _bullet" id="z3ked9c_41"><li class="list__item" id="z3ked9c_42"><p>On cr&eacute;e un client HTTP fictif avec <code class="code" id="z3ked9c_46">static::createClient()</code>.</p></li><li class="list__item" id="z3ked9c_43"><p>On effectue une requ&ecirc;te GET sur /.</p></li><li class="list__item" id="z3ked9c_44"><p>On v&eacute;rifie si la r&eacute;ponse est correcte.</p></li><li class="list__item" id="z3ked9c_45"><p>On teste si la page contient bien un titre <code class="code" id="z3ked9c_47">&lt;h1&gt;</code> avec &quot;Bienvenue&quot;.</p></li></ul></section><section class="chapter"><h4 id="a-retenir_1" data-toc="a-retenir_1">A retenir</h4><ul class="list _bullet" id="z3ked9c_48"><li class="list__item" id="z3ked9c_49"><p>Ces tests incluent l&rsquo;utilisation du conteneur de services de Symfony.</p></li><li class="list__item" id="z3ked9c_50"><p>Ils peuvent interagir avec la base de donn&eacute;es (via des fixtures de test).</p></li><li class="list__item" id="z3ked9c_51"><p>L'objectif est de tester le contenu de la R&eacute;ponse HTTP.</p></li><li class="list__item" id="z3ked9c_52"><p>Le code Javascript n'est pas ex&eacute;cut&eacute;.</p></li></ul></section></section><section class="chapter"><h3 id="les-tests-d-int-gration" data-toc="les-tests-d-int-gration">Les tests d'int&eacute;gration</h3><p id="z3ked9c_53">Les tests d'int&eacute;gration v&eacute;rifient que plusieurs composants fonctionnent bien ensemble. Contrairement aux tests unitaires, ils ne se limitent pas &agrave; une seule classe.</p><section class="chapter"><h4 id="outils_2" data-toc="outils_2">Outils</h4><ul class="list _bullet" id="z3ked9c_57"><li class="list__item" id="z3ked9c_58"><p>PHPUnit</p></li><li class="list__item" id="z3ked9c_59"><p>KernelTestCase (offrant un acc&egrave;s au conteneur Symfony)</p></li></ul></section><section class="chapter"><h4 id="exemple-de-code_1" data-toc="exemple-de-code_1">Exemple de code</h4><div class="code-block" data-lang="php">
+namespace App\Tests\Service;
+
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use App\Service\EmailService;
+
+class EmailServiceTest extends KernelTestCase
+{
+    public function testSendEmail()
+    {
+        // Lancement du noyau
+        self::bootKernel();
+        
+        // Récupération du conteneur de service
+        $container = self::$kernel-&gt;getContainer();
+        
+        // Récupération d'un service
+        $emailService = $container-&gt;get(EmailService::class);
+
+        $result = $emailService-&gt;sendEmail(
+            'test@example.com', 
+            'Test', 
+            'Message de test'
+        );
+
+        $this-&gt;assertTrue($result);
+    }
+}
+</div><ul class="list _bullet" id="z3ked9c_61"><li class="list__item" id="z3ked9c_62"><p>On charge le kernel Symfony (self::bootKernel()).</p></li><li class="list__item" id="z3ked9c_63"><p>On r&eacute;cup&egrave;re un service d&eacute;fini dans le conteneur (EmailService).</p></li><li class="list__item" id="z3ked9c_64"><p>On teste son fonctionnement dans un environnement r&eacute;el.</p></li></ul></section><section class="chapter"><h4 id="a-retenir_2" data-toc="a-retenir_2">A retenir</h4><ul class="list _bullet" id="z3ked9c_65"><li class="list__item" id="z3ked9c_66"><p>Contrairement aux tests unitaires, on peut tester les interactions entre plusieurs classes.</p></li><li class="list__item" id="z3ked9c_67"><p>Il est conseill&eacute; d&rsquo;utiliser des bases de donn&eacute;es sp&eacute;cifiques pour les tests.</p></li></ul></section></section><section class="chapter"><h3 id="les-tests-end-to-end-e2e" data-toc="les-tests-end-to-end-e2e">Les tests end-to-end (E2E)</h3><p id="z3ked9c_68">Les tests end-to-end permettent de tester l&rsquo;application dans son ensemble, en simulant un utilisateur r&eacute;el naviguant sur le site.</p><section class="chapter"><h4 id="outils_3" data-toc="outils_3">Outils</h4><ul class="list _bullet" id="z3ked9c_72"><li class="list__item" id="z3ked9c_73"><p>Panther (un outil bas&eacute; sur ChromeHeadless pour tester l&rsquo;application via un navigateur)</p></li><li class="list__item" id="z3ked9c_74"><p>PantherTestCase</p></li></ul></section><section class="chapter"><h4 id="exemple-de-code_2" data-toc="exemple-de-code_2">Exemple de code</h4><div class="code-block" data-lang="php">
+namespace App\Tests\E2E;
+
+use Symfony\Component\Panther\PantherTestCase;
+
+class HomePageTest extends PantherTestCase
+{
+    public function testHomePage()
+    {
+        $client = static::createPantherClient();
+        $crawler = $client-&gt;request('GET', '/');
+
+        $this-&gt;assertPageTitleContains('Accueil');
+        $this-&gt;assertSelectorTextContains('h1', 'Bienvenue');
+    }
+}
+</div></section><section class="chapter"><h4 id="a-retenir_3" data-toc="a-retenir_3">A retenir</h4><ul class="list _bullet" id="z3ked9c_76"><li class="list__item" id="z3ked9c_77"><p>Consid&eacute;rablement plus lent que les autres types de tests.</p></li><li class="list__item" id="z3ked9c_78"><p>Ex&eacute;cute le code Javascript.</p></li><li class="list__item" id="z3ked9c_79"><p>Comportement le plus proche de l'exp&eacute;rience de l'utilisateur.</p></li></ul></section></section></section><div class="last-modified">Last modified: 05 février 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="006-03-userchecker.html" class="navigation-links__prev">UserChecker</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.js"></script></body></html>

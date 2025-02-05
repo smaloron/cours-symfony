@@ -1,0 +1,252 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-02-05T08:27:01.724639"><title>Foundry | Symfony support</title><script type="application/json" id="virtual-toc-data">[{"id":"installation","level":0,"title":"Installation","anchor":"#installation"},{"id":"le-principe","level":0,"title":"Le principe","anchor":"#le-principe"},{"id":"la-gestion-des-r-f-rences","level":0,"title":"La gestion des références","anchor":"#la-gestion-des-r-f-rences"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.css" rel="stylesheet"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Foundry | Symfony support"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Symfony support Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation//version 1/004-02-foundry.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Foundry | Symfony support"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation//version 1/004-02-foundry.html#webpage",
+    "url": "writerside-documentation//version 1/004-02-foundry.html",
+    "name": "Foundry | Symfony support",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Symfony support Help"
+}</script><!-- End Schema.org --></head><body data-id="004-02-Foundry" data-main-title="Foundry" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="004-00-doctrine.md|Doctrine"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Symfony support version 1 Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="004-02-Foundry" id="004-02-Foundry.md">Foundry</h1><p id="csdmk3_3"><code class="code" id="csdmk3_7">Zenstruck Foundry</code> constitue une alternative aux <code class="code" id="csdmk3_8">Doctrine Fixtures</code> qui automatise encore plus la cr&eacute;ation de donn&eacute;es de test.</p><section class="chapter"><h2 id="installation" data-toc="installation">Installation</h2><p id="csdmk3_9">La biblioth&egrave;que de base</p><div class="code-block" data-lang="none">
+composer require --dev zenstruck/foundry
+</div><p id="csdmk3_11">Le bundle pour l'int&eacute;gration dans Symfony</p><div class="code-block" data-lang="none">
+composer require --dev zenstruck/foundry-bundle
+</div></section><section class="chapter"><h2 id="le-principe" data-toc="le-principe">Le principe</h2><p id="csdmk3_13">Foundry fonctionne avec des usines &agrave; objet (factories) qui d&eacute;finissent les donn&eacute;es &agrave; ins&eacute;rer. Chaque usine est li&eacute;e &agrave; une entit&eacute;. Il est possible de cr&eacute;er ces classes &agrave; la main, mais <code class="code" id="csdmk3_18">Maker</code> peut ici nous aider.</p><div class="code-block" data-lang="none">
+symfony console make:factory
+</div><section class="chapter"><h3 id="un-exemple-de-factory" data-toc="un-exemple-de-factory">Un exemple de Factory</h3><p id="csdmk3_19">Imaginons une entit&eacute; <code class="code" id="csdmk3_22">Tag</code> ne poss&eacute;dant qu'une propri&eacute;t&eacute; <code class="code" id="csdmk3_23">tagName</code>.</p><div class="code-block" data-lang="php">
+namespace App\Factory;
+
+use App\Entity\Tag;
+use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
+
+/**
+ * @extends PersistentProxyObjectFactory&lt;Tag&gt;
+ */
+final class TagFactory extends PersistentProxyObjectFactory
+{
+    public function __construct()
+    {
+    }
+
+    public static function class(): string
+    {
+        return Tag::class;
+    }
+
+    protected function defaults(): array|callable
+    {
+        return [
+            'tagName' =&gt; self::faker()-&gt;text(30),
+        ];
+    }
+
+    protected function initialize(): static
+    {
+        return $this
+            // -&gt;afterInstantiate(function(Tag $tag): void {})
+        ;
+    }
+}
+</div><ul class="list _bullet" id="csdmk3_21"><li class="list__item" id="csdmk3_24"><p>La m&eacute;thode <code class="code" id="csdmk3_26">class</code> indique l'entit&eacute; li&eacute;e</p></li><li class="list__item" id="csdmk3_25"><p>La m&eacute;thode defaults retourne un tableau des valeurs par d&eacute;faut de l'entit&eacute;, notons ici que les usines int&egrave;grent un acc&egrave;s &agrave; <code class="code" id="csdmk3_27">Faker</code>.</p></li></ul></section><section class="chapter"><h3 id="utilisation" data-toc="utilisation">Utilisation</h3><p id="csdmk3_28">L'objectif d'une usine est de cr&eacute;er des objets, pour cela <code class="code" id="csdmk3_31">Foundry</code> propose des m&eacute;thodes statiques.</p><ul class="list _bullet" id="csdmk3_29"><li class="list__item" id="csdmk3_32"><p><code class="code" id="csdmk3_37">createOne</code>: g&eacute;n&egrave;re un objet</p></li><li class="list__item" id="csdmk3_33"><p><code class="code" id="csdmk3_38">createMany</code>: g&eacute;n&egrave;re plusieurs objets</p></li><li class="list__item" id="csdmk3_34"><p><code class="code" id="csdmk3_39">createSequence</code>: g&eacute;n&egrave;re une s&eacute;quence d'objets</p></li><li class="list__item" id="csdmk3_35"><p><code class="code" id="csdmk3_40">createRange</code>: g&eacute;n&egrave;re un nombre al&eacute;atoire d'objets entre min et max</p></li><li class="list__item" id="csdmk3_36"><p><code class="code" id="csdmk3_41">findOrCreate</code>: g&eacute;n&egrave;re ou retourne une instance en fonction des donn&eacute;es pass&eacute;es dans les crit&egrave;res.</p></li></ul><section class="chapter"><h4 id="exemple" data-toc="exemple">Exemple</h4><div class="code-block" data-lang="php">
+// Génère un objet avec les valeurs par défaut
+TagFactory::createOne();
+
+// Génère un objet en fixant tout ou partie des valeurs
+TagFactory::createOne(['tagName' =&gt; 'Angular']);
+
+// Génère cinq objets avec les valeurs par défaut
+TagFactory::createMany(5);
+
+// Génère trois objets avec un tagName fixé
+// en l'ocurrence ce n'est pas judicieux 
+// car nous obtenons trois tags Laravel
+tagFactory::createMany(3, ['tagName' =&gt; 'Laravel']);
+
+// Génère une séquence d'objets avec des valeurs différentes
+TagFactory::createSequence([
+            ['tagName' =&gt; 'Symfony'],
+            ['tagName' =&gt; 'PHP'],
+            ['tagName' =&gt; 'JavaScript'],
+            ['tagName' =&gt; 'Java'],
+            ['tagName' =&gt; 'C#'],
+]);
+
+// Génère un nouveau tag s'il n'existe pas, 
+// sinon retourne une instance du tag trouvé
+tagFactory::findOrCreate(['tagName' =&gt; 'Laravel']);
+</div><p id="csdmk3_43">L'appel &agrave; ces m&eacute;thodes persiste automatiquement les entit&eacute;s (pas besoin d'EntityManager) et retourne une instance ou un tableau d'instances selon les cas.</p></section></section><section class="chapter"><h3 id="utilisation-dans-les-fixtures" data-toc="utilisation-dans-les-fixtures">Utilisation dans les fixtures</h3><div class="code-block" data-lang="php">
+&lt;?php
+
+namespace App\DataFixtures;
+
+use App\Factory\CommentFactory;
+use App\Factory\PostFactory;
+use App\Factory\PostThemeFactory;
+use App\Factory\TagFactory;
+use App\Factory\UserFactory;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Persistence\ObjectManager;
+
+class AppFixtures extends Fixture
+{
+    public function load(ObjectManager $manager): void
+    {
+        TagFactory::createOne(['tagName' =&gt; 'Angular']);
+        
+        TagFactory::createSequence([
+            ['tagName' =&gt; 'Symfony'],
+            ['tagName' =&gt; 'PHP'],
+            ['tagName' =&gt; 'JavaScript'],
+            ['tagName' =&gt; 'Java'],
+            ['tagName' =&gt; 'C#'],
+            ['tagName' =&gt; 'Flutter'],
+            ['tagName' =&gt; 'Android'],
+        ]);
+    }
+}
+</div></section></section><section class="chapter"><h2 id="la-gestion-des-r-f-rences" data-toc="la-gestion-des-r-f-rences">La gestion des r&eacute;f&eacute;rences</h2><p id="csdmk3_45"><code class="code" id="csdmk3_48">Foundry</code> simplifie la gestion des r&eacute;f&eacute;rences aux entit&eacute;s d&eacute;j&agrave; persist&eacute;es et propose des m&eacute;thodes de s&eacute;lections al&eacute;atoires.</p><ul class="list _bullet" id="csdmk3_46"><li class="list__item" id="csdmk3_49"><p><code class="code" id="csdmk3_55">random</code>, s&eacute;lectionne al&eacute;atoirement une instance parmis les entit&eacute;s persist&eacute;es.</p></li><li class="list__item" id="csdmk3_50"><p><code class="code" id="csdmk3_56">randomRange(min, max)</code>, s&eacute;lectionne entre min et max instances al&eacute;atoires d'une entit&eacute; persist&eacute;e.</p></li><li class="list__item" id="csdmk3_51"><p><code class="code" id="csdmk3_57">randomSet(source)</code>, s&eacute;lectionne une valeur al&eacute;atoire dans un tableau source.</p></li><li class="list__item" id="csdmk3_52"><p><code class="code" id="csdmk3_58">find(id)</code>, retourne une instance en fonction de son id.</p></li><li class="list__item" id="csdmk3_53"><p><code class="code" id="csdmk3_59">findOne(crit)</code>, retourne une instance en fonction d'un tableau de crit&egrave;res.</p></li><li class="list__item" id="csdmk3_54"><p><code class="code" id="csdmk3_60">findBy(crit)</code>, retourne un tableau d'instances en fonction d'un tableau de crit&egrave;res.</p></li></ul><section class="chapter"><h3 id="un-exemple-de-gestion-de-r-f-rences" data-toc="un-exemple-de-gestion-de-r-f-rences">Un exemple de gestion de r&eacute;f&eacute;rences</h3><style>.theme-dark .plantuml > svg {filter: hue-rotate(180deg) invert(0.9);}div.plantuml {overflow-x: auto;}</style><div class="plantuml"><?xml version="1.0" encoding="us-ascii" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="154px" preserveAspectRatio="none" style="width:574px;height:154px;background:#FFFFFF;" version="1.1" viewBox="0 0 574 154" width="574px" zoomAndPan="magnify"><defs/><g><!--class Address--><g id="elem_Address"><rect codeLine="5" fill="#F1F1F1" height="113.9531" id="Address" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="121" x="446.25" y="33.53"/><ellipse cx="476.1" cy="49.53" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M479.0731,55.1731 Q478.4921,55.4719 477.8529,55.6213 Q477.2138,55.7707 476.5082,55.7707 Q474.0014,55.7707 472.6815,54.1189 Q471.3617,52.467 471.3617,49.3459 Q471.3617,46.2165 472.6815,44.5647 Q474.0014,42.9128 476.5082,42.9128 Q477.2138,42.9128 477.8612,43.0622 Q478.5087,43.2116 479.0731,43.5105 L479.0731,46.2331 Q478.4423,45.6521 477.8488,45.3823 Q477.2553,45.1125 476.6244,45.1125 Q475.2797,45.1125 474.5949,46.1792 Q473.9101,47.2458 473.9101,49.3459 Q473.9101,51.4377 474.5949,52.5044 Q475.2797,53.571 476.6244,53.571 Q477.2553,53.571 477.8488,53.3012 Q478.4423,53.0315 479.0731,52.4504 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="56" x="493.4" y="54.821">Address</text><line style="stroke:#181818;stroke-width:0.5;" x1="447.25" x2="566.25" y1="65.53" y2="65.53"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="74" x="452.25" y="83.0652">id : integer</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="91" x="452.25" y="99.5534">street : string</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="75" x="452.25" y="116.0417">city : string</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="109" x="452.25" y="132.53">zipCode : string</text><line style="stroke:#181818;stroke-width:0.5;" x1="447.25" x2="566.25" y1="139.4831" y2="139.4831"/></g><!--class Client--><g id="elem_Client"><rect codeLine="12" fill="#F1F1F1" height="113.9531" id="Client" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="240" x="138.25" y="7"/><ellipse cx="234" cy="23" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M236.9731,28.6431 Q236.3921,28.9419 235.7529,29.0913 Q235.1138,29.2407 234.4082,29.2407 Q231.9014,29.2407 230.5815,27.5889 Q229.2617,25.937 229.2617,22.8159 Q229.2617,19.6865 230.5815,18.0347 Q231.9014,16.3828 234.4082,16.3828 Q235.1138,16.3828 235.7612,16.5322 Q236.4087,16.6816 236.9731,16.9805 L236.9731,19.7031 Q236.3423,19.1221 235.7488,18.8523 Q235.1553,18.5825 234.5244,18.5825 Q233.1797,18.5825 232.4949,19.6492 Q231.8101,20.7158 231.8101,22.8159 Q231.8101,24.9077 232.4949,25.9744 Q233.1797,27.041 234.5244,27.041 Q235.1553,27.041 235.7488,26.7712 Q236.3423,26.5015 236.9731,25.9204 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="40" x="254.5" y="28.291">Client</text><line style="stroke:#181818;stroke-width:0.5;" x1="139.25" x2="377.25" y1="39" y2="39"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="74" x="144.25" y="56.5352">id : integer</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="90" x="144.25" y="73.0234">name : string</text><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="139.25" x2="377.25" y1="79.9766" y2="79.9766"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="122" x="144.25" y="97.5117">address : Address</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="228" x="144.25" y="114">friends : ArrayCollection&lt;Client&gt;</text></g><!--reverse link Client to Address--><g id="link_Client_Address"><path codeLine="20" d="M391.25,91 C412.99,91 424.84,90.93 445.91,90.84 " fill="none" id="Client-backto-Address" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="379.25,91,385.25,95,391.25,91,385.25,87,379.25,91" style="stroke:#181818;stroke-width:1.0;"/></g><!--reverse link Client to Client--><g id="link_Client_Client"><path codeLine="21" d="M190.2314,117.1093 C103.7414,125.1393 6,117.86 6,85.75 C6,62.23 64.9,52.63 130.41,52.33 " fill="none" id="Client-backto-Client" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="202.18,116,195.8359,112.5718,190.2314,117.1093,196.5755,120.5375,202.18,116" style="stroke:#181818;stroke-width:1.0;"/></g><!--SRC=[NOv13W8X34NtFGKNc3a0CIQ6an3QmIO8fdGp6kykCuXZNFNtjts_YHOrMenmlAf15WhA9GE4v6ir5qIXLf_0QApXh1H9eAeGQJEQu1mXiAv7z-2xAqY7yHeubvYo_jEol_qippFuJweT-R18EyJT4V6hAodrHqyTUTuokhHsd9Tf-WB6R82sMVVW3G00]--></g></svg></div><section class="chapter"><h4 id="les-factories" data-toc="les-factories">Les factories</h4><p id="csdmk3_64"><span class="control" id="csdmk3_68">L'adresse</span></p><div class="code-block" data-lang="php">
+namespace App\Factory;
+
+use App\Entity\Tag;
+use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
+
+/**
+ * @extends PersistentProxyObjectFactory&lt;Tag&gt;
+ */
+final class AddressFactory extends PersistentProxyObjectFactory
+{
+    public function __construct()
+    {
+    }
+
+    public static function class(): string
+    {
+        return Address::class;
+    }
+
+    protected function defaults(): array|callable
+    {
+        // Valeurs aléatoires par défaut
+        return [
+            'street' =&gt; self::faker()-&gt;streetAddress(),
+            'city' =&gt; self::faker()-&gt;city(),
+            'zipCode' =&gt; self::faker()-&gt;postcode(),
+        ];
+    }
+
+    protected function initialize(): static
+    {
+        return $this
+            // -&gt;afterInstantiate(function(Tag $tag): void {})
+        ;
+    }
+}
+</div><p id="csdmk3_66"><span class="control" id="csdmk3_69">Le client</span></p><div class="code-block" data-lang="php">
+namespace App\Factory;
+
+use App\Entity\Tag;
+use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
+
+/**
+ * @extends PersistentProxyObjectFactory&lt;Tag&gt;
+ */
+final class ClientFactory extends PersistentProxyObjectFactory
+{
+    public function __construct()
+    {
+    }
+
+    public static function class(): string
+    {
+        return Address::class;
+    }
+
+    protected function defaults(): array|callable
+    {
+        // Valeurs aléatoires par défaut
+        return [
+            'name' =&gt; self::faker()-&gt;name(),
+            // Sélection aléatoire d'une ville
+            'address' =&gt; AddressFactory::random(),
+        ];
+    }
+
+    protected function initialize(): static
+    {
+        return $this
+            // -&gt;afterInstantiate(function(Tag $tag): void {})
+        ;
+    }
+}
+</div></section><section class="chapter"><h4 id="les-fixtures" data-toc="les-fixtures">Les fixtures</h4><div class="code-block" data-lang="php">
+namespace App\DataFixtures;
+
+use App\Factory\AddressFactory;
+use App\Factory\ClientFactory;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Persistence\ObjectManager;
+
+class AppFixtures extends Fixture
+{
+    public function load(ObjectManager $manager): void
+    {
+        // Création d'une adresse en fixant toutes les données
+        TagFactory::createOne([
+            'street' =&gt; '3 rue de la grande truanderie',
+            'zipCode' =&gt; '75003',
+            'city' =&gt; 'Paris'
+        ]);
+        
+        // Création de trois adresses à Paris, 
+        // les autres données utiliseront les valeurs par défaut
+        // de la factory
+        TagFactory::createMany(3, [
+            'city' =&gt; 'Paris'
+        ]);
+        
+        // Création de dix adresses aléatoires
+        TagFactory::createMany(10);
+        
+        // Création d'un client aléatoire
+        ClientFactory::createOne();
+        
+        // Création de 10 clients aléatoires
+        ClientFactory::createMany(10);
+        
+        // Création d'un client en fixant des valeurs
+        // Ici la première adresse trouvée à Paris
+        ClientFactory::createOne([
+            'address' =&gt; AddressFactory::findOne(['city' =&gt; 'Paris']);
+        ]);
+        
+        // Création d'un client en fixant des valeurs
+        // Ici une adresse aléatoire
+        ClientFactory::createOne([
+            'address' =&gt; AddressFactory::random()
+        ]);
+        
+        // Récupération de toutes les adresses à paris
+        $addressesInParis = AddressFactory::findBy(
+            ['city' =&gt; 'Paris']
+        );
+        
+        // Création d'un client en fixant des valeurs
+        // Ici une adresse aléatoire à Paris
+        ClientFactory::createOne([
+            'address' =&gt; AddressFactory::randomSet($addressesInParis)
+        ]);
+        
+        // Création d'un client en fixant des valeurs
+        // Ici un nombre aléatoire d'amis entre 1 et 5
+        ClientFactory::createOne([
+            'friends' =&gt; ClientFactory::randomRange(1, 5)
+        ]);      
+    }
+}
+</div><aside class="prompt" data-type="tip" data-title="" id="csdmk3_71"><p id="csdmk3_72">Attention : Dans le dernier cas, pour l'ajout d'amis, nous n'avons pas, &agrave; dessein, pr&eacute;cis&eacute; de d&eacute;faut dans ClientFactory. En effet cela aurait provoqu&eacute; une r&eacute;f&eacute;rence circulaire et fait planter les fixtures.</p></aside></section></section></section><div class="last-modified">Last modified: 05 février 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="004-01-fixtures.html" class="navigation-links__prev">Les fixtures</a><a href="004-04-la-classe-repository.html" class="navigation-links__next">La classe Repository</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.js"></script></body></html>

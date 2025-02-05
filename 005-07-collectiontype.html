@@ -1,0 +1,216 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-02-05T08:27:01.729355"><title>CollectionType | Symfony support</title><script type="application/json" id="virtual-toc-data">[{"id":"objectifs","level":0,"title":"Objectifs","anchor":"#objectifs"},{"id":"principe","level":0,"title":"Principe","anchor":"#principe"},{"id":"mise-en-place","level":0,"title":"Mise en place","anchor":"#mise-en-place"},{"id":"exercice","level":0,"title":"Exercice","anchor":"#exercice"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.css" rel="stylesheet"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="CollectionType | Symfony support"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Symfony support Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation//version 1/005-07-collectiontype.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="CollectionType | Symfony support"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation//version 1/005-07-collectiontype.html#webpage",
+    "url": "writerside-documentation//version 1/005-07-collectiontype.html",
+    "name": "CollectionType | Symfony support",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Symfony support Help"
+}</script><!-- End Schema.org --></head><body data-id="005-07-CollectionType" data-main-title="CollectionType" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="005-00-formulaires.md|Formulaires"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Symfony support version 1 Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="005-07-CollectionType" id="005-07-CollectionType.md">CollectionType</h1><section class="chapter"><h2 id="objectifs" data-toc="objectifs">Objectifs</h2></section><section class="chapter"><h2 id="principe" data-toc="principe">Principe</h2><p id="-bgnayu_7">Nous avons vu comment g&eacute;rer les associations <code class="code" id="-bgnayu_10">ManyToOne</code> dans un formulaire en utilisant soit un <code class="code" id="-bgnayu_11">EntityType</code> soit un formulaire imbriqu&eacute;. Mais quid des associations <code class="code" id="-bgnayu_12">ManyToMany</code> o&ugrave; une m&ecirc;me entit&eacute; peut accueillir un tableau d'entit&eacute;s associ&eacute;es ?</p><p id="-bgnayu_8">Pour traiter ce genre de cas Symfony propose un champ de type <code class="code" id="-bgnayu_13">CollectionType</code>.</p><section class="chapter"><h3 id="cas-d-utilisation" data-toc="cas-d-utilisation">Cas d'utilisation</h3><ul class="list _bullet" id="-bgnayu_14"><li class="list__item" id="-bgnayu_15"><p>Une pizza, une recette avec une collection d'ingr&eacute;dients.</p></li><li class="list__item" id="-bgnayu_16"><p>Un Article poss&eacute;dant une collection de tags.</p></li><li class="list__item" id="-bgnayu_17"><p>Une commande r&eacute;f&eacute;ren&ccedil;ant plusieurs produits.</p></li></ul></section></section><section class="chapter"><h2 id="mise-en-place" data-toc="mise-en-place">Mise en place</h2><p id="-bgnayu_18">Imaginons une relation de plusieurs &agrave; plusieurs entre une entit&eacute; post et une entit&eacute; tag. Lors de la saisie d'un nouveau poste, nous devons pouvoir ajouter des tags. Nous avons vu une solution &agrave; ce probl&egrave;me dans le chapitre pr&eacute;c&eacute;dent, nous allons d&eacute;sormais &eacute;tudier une alternative avec <code class="code" id="-bgnayu_27">CollectionType</code>.</p><p id="-bgnayu_19">Tout d'abord, nous d&eacute;finissons un formulaire pour les tags.</p><div class="code-block" data-lang="php">
+namespace App\Form;
+
+use App\Entity\Tag;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+class TagType extends AbstractType
+{
+    public function buildForm(
+        FormBuilderInterface $builder, 
+        array $options
+    ): void
+    {
+        $builder
+            -&gt;add('tagName', null, [
+                'label' =&gt; false,
+                'attr' =&gt; [
+                    'placeholder' =&gt; 'Entrez votre tag'
+                ]
+            ])
+            // Ajout d'un bouton pour la suppression
+            // la classe delete-tag sera utilisée
+            // pour la délégation d'événement
+            -&gt;add('delete', ButtonType::class, [
+                'label' =&gt; 'Supprimer',
+                'attr' =&gt; [
+                    'class' =&gt; 'btn btn-danger delete-tag',
+                ],
+            ]);
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver-&gt;setDefaults([
+            'data_class' =&gt; Tag::class,
+            // Ajout d'une classe sur la racine du formulaire
+            // pour gérer l'affichage du bouton et du champ texte 
+            // côte à côte 
+            'attr' =&gt; ['class' =&gt; 'tag-item'
+            ]
+        ]);
+    }
+}
+</div><p id="-bgnayu_21">Et ensuite, nous modifions le formulaire pour les posts</p><div class="code-block" data-lang="php">
+namespace App\Form;
+
+use App\Entity\Post;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+
+class PostType extends AbstractType
+{
+    public function buildForm(
+        FormBuilderInterface $builder, 
+        array $options
+    ): void
+    {
+        $builder
+            -&gt;add('createdAt', null, [
+                'widget' =&gt; 'single_text',
+            ])
+            -&gt;add('title', TextType::class, [])
+            -&gt;add('content', TextareaType::class, [])
+
+            -&gt;add('tags', CollectionType::class, [
+                'entry_type' =&gt; TagType::class,
+                'allow_add' =&gt; true,
+                'allow_delete' =&gt; true,
+                'entry_options' =&gt; [
+                    // Supprime la légende du prototype
+                    'label' =&gt; false
+                ],
+
+                // Important pour que Doctrine gère bien l'ajout
+                'by_reference' =&gt; false,
+            ]);
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver-&gt;setDefaults([
+            'data_class' =&gt; Post::class,
+        ]);
+    }
+}
+</div><p id="-bgnayu_23">Un collectionType est donc un moyen pour imbriquer de multiples instances du m&ecirc;me formulaire dans un formulaire principal.</p><p id="-bgnayu_24">Si nous testons la route <code class="code" id="-bgnayu_28">/post/form</code> nous obtenons ce r&eacute;sultat. Il est bien fait mention de tags, mais impossible d'en ajouter.</p><figure id="-bgnayu_25"><img alt="CleanShot 2025-02-01 at 13.27.56@2x.png" src="images/CleanShot%202025-02-01%20at%2013.27.56%402x.png" title="CleanShot 2025-02-01 at 13.27.56@2x.png" width="1372" height="1248"></figure><section class="chapter"><h3 id="ajout-de-nouveaux-tags" data-toc="ajout-de-nouveaux-tags">Ajout de nouveaux tags</h3><p id="-bgnayu_29">Pour ajouter de nouveau tag, il nous faudrait ajouter au formulaire d&eacute;j&agrave; charg&eacute; une nouvelle instance du formulaire tag. Comme cette op&eacute;ration s'effectue apr&egrave;s le chargement de la page, c'est donc JavaScript qui va devoir s'occuper d'ajouter le formulaire.</p><p id="-bgnayu_30">Si nous inspectons la page, nous constatons que nous avons un attribut <code class="code" id="-bgnayu_39">data-prototype</code> qui contient le code html de notre sous formulaire.</p><figure id="-bgnayu_31"><img alt="CleanShot 2025-02-01 at 13.34.25@2x.png" src="images/CleanShot%202025-02-01%20at%2013.34.25%402x.png" title="CleanShot 2025-02-01 at 13.34.25@2x.png" width="1372" height="1798"></figure><p id="-bgnayu_32">Voici le contenu de <code class="code" id="-bgnayu_40">data-prototype</code> dans un format plus lisible :</p><div class="code-block" data-lang="none">
+&lt;fieldset class=&quot;mb-3&quot;&gt;
+    &lt;div id=&quot;post_tags___name__&quot;&gt;
+        &lt;div class=&quot;mb-3&quot;&gt;
+            &lt;input type=&quot;text&quot; id=&quot;post_tags___name___tagName&quot; 
+                name=&quot;post[tags][__name__][tagName]&quot; 
+                required=&quot;required&quot; 
+                maxlength=&quot;80&quot; 
+                placeholder=&quot;Entrez votre tag&quot; 
+                class=&quot;form-control&quot; 
+            /&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/fieldset&gt;
+</div><p id="-bgnayu_34">Et voici ce que nous devons faire avec javascript :</p><ol class="list _decimal" id="-bgnayu_35" type="1"><li class="list__item" id="-bgnayu_41"><p>Cibler le conteneur des tags, ici <code class="code" id="-bgnayu_46">#post-tags</code> dans une constante <code class="code" id="-bgnayu_47">CollectionHolder</code>.</p></li><li class="list__item" id="-bgnayu_42"><p>R&eacute;cup&eacute;rer l'attribut <code class="code" id="-bgnayu_48">data-prototype</code> de cet &eacute;l&eacute;ment dans une constante <code class="code" id="-bgnayu_49">template</code>.</p></li><li class="list__item" id="-bgnayu_43"><p>D&eacute;finir un attribut <code class="code" id="-bgnayu_50">data-index</code> sur <code class="code" id="-bgnayu_51">CollectionHolder</code> et lui attribuer comme valeur le nombre d'enfants de <code class="code" id="-bgnayu_52">CollectionHolder</code>.</p></li><li class="list__item" id="-bgnayu_44"><p>Cr&eacute;er un bouton et l'ajouter aux enfants du conteneur <code class="code" id="-bgnayu_53">CollectionHolder</code>.</p></li><li class="list__item" id="-bgnayu_45"><p>Cr&eacute;er une fonction qui r&eacute;agit au clic sur ce bouton et fait les choses suivantes : </p><ul class="list _bullet" id="-bgnayu_54"><li class="list__item" id="-bgnayu_55"><p>R&eacute;cup&eacute;rer la valeur de <code class="code" id="-bgnayu_61">data-index</code>.</p></li><li class="list__item" id="-bgnayu_56"><p>Remplacer <code class="code" id="-bgnayu_62">__name__</code> dans <code class="code" id="-bgnayu_63">template</code> par <code class="code" id="-bgnayu_64">data-index</code> et stocker le r&eacute;sultat dans une variable <code class="code" id="-bgnayu_65">newForm</code>.</p></li><li class="list__item" id="-bgnayu_57"><p>Incr&eacute;menter <code class="code" id="-bgnayu_66">data-index</code>.</p></li><li class="list__item" id="-bgnayu_58"><p>Convertir <code class="code" id="-bgnayu_67">newForm</code> en &eacute;l&eacute;ment HTML.</p></li><li class="list__item" id="-bgnayu_59"><p>Ajouter cet &eacute;l&eacute;ment &agrave; <code class="code" id="-bgnayu_68">CollectionHolder</code>.</p></li><li class="list__item" id="-bgnayu_60"><p>G&eacute;rer la suppression des tags (au clic sur le bouton supprimer on supprime le parent du parent du parent).</p></li></ul></li></ol><p id="-bgnayu_36"><span class="control" id="-bgnayu_69">La fonction de conversion</span></p><div class="code-block" data-lang="javascript">
+/**
+ * Conversion d'une chaine de caractères
+ * contenant du code HTML
+ * en un objet de type HTMLElement
+ * @param htmlString
+ * @returns {Element}
+ */
+function createElementFromHTML(htmlString) {
+    const div = document.createElement('div');
+    div.innerHTML = htmlString.trim();
+    
+    return div.firstElementChild;
+}
+</div><section class="chapter"><div class="collapse"><div class="collapse__title"><h4 id="le-code-javascript" data-toc="le-code-javascript">Le code JavaScript</h4></div><div class="collapse__content"><div class="code-block" data-lang="javascript">
+{% block javascripts %}
+    {{ parent() }}
+
+    &lt;script&gt;
+
+        /**
+         * Conversion d'une chaine de caractères
+         * contenant du code HTML
+         * en un objet de type HTMLElement
+         * @param htmlString
+         * @returns {Element}
+         */
+        function createElementFromHTML(htmlString) {
+            const div = document.createElement('div');
+            div.innerHTML = htmlString.trim();
+            
+            return div.firstElementChild;
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Ciblage du conteneur des tags
+            let collectionHolder = document.querySelector('#post_tags');
+
+            // Définition de l'index de départ
+            collectionHolder.setAttribute(
+                'data-index',
+                collectionHolder.children.length + ''
+            );
+
+            // Création du bouton pour ajouter les tags
+            let addButton = document.createElement('button');
+            addButton.innerText = 'Ajouter un tag';
+            addButton.type = 'button';
+            addButton.setAttribute('class', 'btn btn-secondary');
+            // Prepend pour que le bouton apparaisse avant les tags
+            collectionHolder.prepend(addButton);
+
+
+            // Récupération du modèle du formulaire
+            const template = collectionHolder
+                .getAttribute('data-prototype');
+
+            // Evénement d'ajout de tag
+            addButton.addEventListener('click', function () {
+                // Récupération de l'index
+                let index = collectionHolder.getAttribute('data-index');
+                
+                // Préparation du code d'un nouveau tag
+                // on remplace __name__ par l'index en cours
+                let newForm = template.replace(
+                    /__name__/g,
+                    index
+                );
+
+                // Incrémentation de l'index
+                index = parseInt(index) + 1;
+                collectionHolder.setAttribute('data-index', index + '');
+                
+                // Conversion du code du formulaire en élément HTML
+                const newFormContainer = createElementFromHTML(newForm)
+                
+                // Ajout du sous formulaire au parent
+                collectionHolder.appendChild(newFormContainer);
+                
+            });
+
+            // Gestion de la suppression
+            collectionHolder.addEventListener('click', function (even){
+                if(even.target.classList.contains('delete-tag')){
+                    even.target .parentElement
+                        .parentElement
+                        .parentElement
+                        .remove();
+                }
+            });
+        });
+
+    &lt;/script&gt;
+{% endblock %}
+</div></div></div></section></section></section><section class="chapter"><h2 id="exercice" data-toc="exercice">Exercice</h2><p id="-bgnayu_71">Faire de m&ecirc;me pour les Pizzas et les Ingr&eacute;dients</p></section><div class="last-modified">Last modified: 05 février 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="005-06-datatransformer.html" class="navigation-links__prev">DataTransformer</a><a href="006-00-securite.html" class="navigation-links__next">S&eacute;curit&eacute;</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.10.0-b575/app.js"></script></body></html>
