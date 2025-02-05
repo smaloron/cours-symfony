@@ -20,6 +20,7 @@
         <toc-element topic="004-002-Utilisation-des-associations.md"/>
         <toc-element topic="004-01-fixtures.md">
         </toc-element>
+        <toc-element topic="004-02-Foundry.md"/>
         <toc-element topic="004-04-La-classe-Repository.md"/>
         <toc-element topic="004-05-Le-cycle-de-vie-des-entites.md"/>
         <toc-element topic="004-06-QueryBuilder.md"/>
@@ -40,4 +41,5 @@
         <toc-element topic="006-02-Les-voters.md"/>
         <toc-element topic="006-03-UserChecker.md"/>
     </toc-element>
+    <toc-element topic="007-00-Tests.md"/>
 </instance-profile>

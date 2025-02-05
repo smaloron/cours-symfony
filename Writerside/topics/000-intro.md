@@ -5,6 +5,13 @@
 L’objectif de ce document est d’apprendre à installer un projet Symfony et tester notre installation en lançant un
 serveur.
 
+## Les outils
+
+- PHP 8.4
+- Visual Studio Code ou PHPStorm
+- Docker
+- Composer
+
 ## Présentation de Symfony
 
 Symfony est un cadre de travail ou framework PHP, qui propose une architecture moderne pour la réalisation d’application
@@ -132,6 +139,20 @@ Si nous souhaitons un projet plus complet, nous pouvons ajouter des options à l
 ```
 symfony new [dossier] --webapp --docker
 ```
+
+## Configuration de l'IDE
+
+Voici quelques plugins por Visual Studio Code
+
+- Symfony Essential Extension Pack
+- PHP Language Essential Extension Pack
+- Modern Twig
+- Twig Link Resolver
+- Twigs IntelliSense
+- Mysql (Weijan Chen)
+- Docker Essentials
+- HTML to CSS completion suggestions
+- HTML CSS Support
 
 ## Symfony une approche modulaire
 
